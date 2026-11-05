@@ -1,0 +1,2 @@
+# Entorno inicial comprobado en Python 3.12. Instalar en entorno virtual.
+fastf1==3.9.2

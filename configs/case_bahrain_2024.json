@@ -1,0 +1,12 @@
+{
+  "year": 2024,
+  "event": "Bahrain",
+  "session": "R",
+  "driver": "VER",
+  "driver_number": 1,
+  "expected_laps": 57,
+  "official_winner_time_s": 5504.742,
+  "official_reference": "https://www.fia.com/events/fia-formula-one-world-championship/season-2024/bahrain-grand-prix/race-classification",
+  "status": "CANDIDATE_PENDING_AUDIT_AND_CALIBRATION",
+  "note": "El tiempo oficial es una referencia observada, nunca un parámetro para forzar un ajuste exacto."
+}

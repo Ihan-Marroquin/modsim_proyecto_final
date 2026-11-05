@@ -1,0 +1,26 @@
+{
+  "purpose": "SYNTHETIC_DEMO_NOT_REAL_VALIDATION",
+  "constraints": {
+    "race_laps": 12,
+    "allowed_compounds": ["SOFT", "HARD"],
+    "min_stops": 1,
+    "max_stops": 2,
+    "min_distinct_compounds": 2,
+    "max_age_by_compound": {"SOFT": 10, "HARD": 12}
+  },
+  "parameters": {
+    "compounds": {
+      "SOFT": {"base_lap_s": 90.0, "degradation_s_per_lap": 0.3},
+      "HARD": {"base_lap_s": 91.0, "degradation_s_per_lap": 0.1}
+    },
+    "additional_pit_loss_s": 20.0,
+    "start_penalty_s": 3.0,
+    "residual_sd_s": 0.25,
+    "provenance": "SYNTHETIC_DEMO_NOT_CALIBRATED"
+  },
+  "strategy": {
+    "name": "synthetic_manual_demo",
+    "stops_after_lap": [6],
+    "stints": [{"compound": "SOFT", "initial_age": 2}, {"compound": "HARD", "initial_age": 0}]
+  }
+}
