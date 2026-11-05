@@ -55,7 +55,11 @@ def main():
                               'provenance': params.provenance})
             (out/f'best_seed_{seed}.json').write_text(json.dumps(asdict(result['strategy']), indent=2), encoding='utf-8')
         write_csv(out/'search_runs.csv', summaries)
-        print(json.dumps(summaries, indent=2))
+        print(json.dumps({'runs': len(summaries), 'seeds': [summaries[0]['seed'], summaries[-1]['seed']],
+                          'best_time_s': min(r['best_time_s'] for r in summaries),
+                          'reference_time_s': reference['best_time_s'],
+                          'max_gap_s': max(r['gap_s'] for r in summaries),
+                          'output': 'results/optimizer_demo/search_runs.csv'}, indent=2))
         print('Resultados SINTÉTICOS; no constituyen experimentos finales ni mejora real de F1.')
         return
     result = simulate(strategy_from_dict(config['strategy']),

@@ -67,6 +67,7 @@ def optimize(initial: Strategy, params: ModelParameters, limits: Constraints,
         raise ValueError('Cambios de compuesto con neumáticos usados aún no implementados')
     current, best = initial, initial
     current_score = simulate(current, params, limits)['total_time_s']
+    initial_score = current_score
     best_score = current_score
     rng = random.Random(seed)
     temperature = settings.initial_temperature_s
@@ -91,8 +92,7 @@ def optimize(initial: Strategy, params: ModelParameters, limits: Constraints,
                         'candidate_s': candidate_score, 'current_s': current_score,
                         'best_s': best_score, 'objective_evaluations': evaluations})
         temperature = max(settings.minimum_temperature_s, temperature * settings.cooling_factor)
-    return {'strategy': best, 'best_time_s': best_score, 'initial_time_s':
-            simulate(initial, params, limits)['total_time_s'],
+    return {'strategy': best, 'best_time_s': best_score, 'initial_time_s': initial_score,
             'seed': seed, 'objective_evaluations': evaluations, 'history': history,
             'parameter_provenance': params.provenance,
             'objective_kind': 'DETERMINISTIC_APPROXIMATION_OF_EXPECTED_TIME'}
