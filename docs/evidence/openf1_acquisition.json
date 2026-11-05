@@ -1,0 +1,228 @@
+{
+  "source_kind": "PUBLIC_OBSERVATION_OPENF1",
+  "provider": "OpenF1",
+  "retrieved_at_utc": "2026-11-05T23:29:28.583232+00:00",
+  "case": {
+    "year": 2024,
+    "event": "Bahrain",
+    "session": "R",
+    "driver": "VER",
+    "driver_number": 1,
+    "expected_laps": 57,
+    "official_winner_time_s": 5504.742,
+    "official_reference": "https://www.fia.com/events/fia-formula-one-world-championship/season-2024/bahrain-grand-prix/race-classification",
+    "status": "CANDIDATE_PENDING_AUDIT_AND_CALIBRATION",
+    "note": "El tiempo oficial es una referencia observada, nunca un parámetro para forzar un ajuste exacto."
+  },
+  "session_key": 9472,
+  "audit": {
+    "rows_total": 57,
+    "eligible_normal_laps": 0,
+    "exclusion_reason_counts": {
+      "first_lap": 1,
+      "not_flagged_accurate": 57,
+      "not_exclusively_green": 57,
+      "pit_in_lap": 2,
+      "pit_out_lap": 2
+    },
+    "stints": [
+      {
+        "stint": "1",
+        "compounds": [
+          "SOFT"
+        ],
+        "laps": [
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          6.0,
+          7.0,
+          8.0,
+          9.0,
+          10.0,
+          11.0,
+          12.0,
+          13.0,
+          14.0,
+          15.0,
+          16.0,
+          17.0
+        ],
+        "eligible_rows": 0
+      },
+      {
+        "stint": "2",
+        "compounds": [
+          "HARD"
+        ],
+        "laps": [
+          18.0,
+          19.0,
+          20.0,
+          21.0,
+          22.0,
+          23.0,
+          24.0,
+          25.0,
+          26.0,
+          27.0,
+          28.0,
+          29.0,
+          30.0,
+          31.0,
+          32.0,
+          33.0,
+          34.0,
+          35.0,
+          36.0,
+          37.0
+        ],
+        "eligible_rows": 0
+      },
+      {
+        "stint": "3",
+        "compounds": [
+          "SOFT"
+        ],
+        "laps": [
+          38.0,
+          39.0,
+          40.0,
+          41.0,
+          42.0,
+          43.0,
+          44.0,
+          45.0,
+          46.0,
+          47.0,
+          48.0,
+          49.0,
+          50.0,
+          51.0,
+          52.0,
+          53.0,
+          54.0,
+          55.0,
+          56.0,
+          57.0
+        ],
+        "eligible_rows": 0
+      }
+    ],
+    "duplicate_lap_numbers": [],
+    "track_status_counts": {
+      "None": 57
+    },
+    "warning": "Exclusiones solo para ajustar vueltas normales. Conservar todas para la reconstrucción."
+  },
+  "target_laps_rows": 57,
+  "timed_laps_count": 57,
+  "missing_lap_numbers": [],
+  "missing_lap_time_numbers": [],
+  "observed_partial_lap_sum_s": 5505.217,
+  "time_sum_is_complete": true,
+  "difference_from_official_s": 0.4749999999994543,
+  "stints_observed": [
+    {
+      "meeting_key": 1229,
+      "session_key": 9472,
+      "stint_number": 1,
+      "driver_number": 1,
+      "lap_start": 1,
+      "lap_end": 17,
+      "compound": "SOFT",
+      "tyre_age_at_start": 3
+    },
+    {
+      "meeting_key": 1229,
+      "session_key": 9472,
+      "stint_number": 2,
+      "driver_number": 1,
+      "lap_start": 18,
+      "lap_end": 37,
+      "compound": "HARD",
+      "tyre_age_at_start": 0
+    },
+    {
+      "meeting_key": 1229,
+      "session_key": 9472,
+      "stint_number": 3,
+      "driver_number": 1,
+      "lap_start": 38,
+      "lap_end": 57,
+      "compound": "SOFT",
+      "tyre_age_at_start": 0
+    }
+  ],
+  "pits_observed": [
+    {
+      "date": "2024-03-02T15:31:37.825000+00:00",
+      "session_key": 9472,
+      "lap_number": 17,
+      "lane_duration": 25.0,
+      "stop_duration": null,
+      "pit_duration": 25.0,
+      "meeting_key": 1229,
+      "driver_number": 1
+    },
+    {
+      "date": "2024-03-02T16:03:54.529000+00:00",
+      "session_key": 9472,
+      "lap_number": 37,
+      "lane_duration": 24.2,
+      "stop_duration": null,
+      "pit_duration": 24.2,
+      "meeting_key": 1229,
+      "driver_number": 1
+    }
+  ],
+  "weather_rows": 157,
+  "race_control_rows": 71,
+  "requests": [
+    {
+      "url": "https://api.openf1.org/v1/sessions?year=2024&country_name=Bahrain&session_name=Race",
+      "cached": false
+    },
+    {
+      "url": "https://api.openf1.org/v1/laps?session_key=9472&driver_number=1",
+      "cached": false
+    },
+    {
+      "url": "https://api.openf1.org/v1/stints?session_key=9472&driver_number=1",
+      "cached": false
+    },
+    {
+      "url": "https://api.openf1.org/v1/pit?session_key=9472&driver_number=1",
+      "cached": false
+    },
+    {
+      "url": "https://api.openf1.org/v1/weather?session_key=9472",
+      "cached": false
+    },
+    {
+      "url": "https://api.openf1.org/v1/race_control?session_key=9472",
+      "cached": false
+    }
+  ],
+  "sha256": {
+    "laps.json": "6bd45f1cdb75f00fb06736f3dd8e3eff32f960f60a9872bf043c8717aa70590d",
+    "pit.json": "6a5c2f2b2b87263cad54065ec6ada127eeac26520a7eb86fe643ef33aedf158c",
+    "race_control.json": "59aabe48c87566951a746ea3f62e379247ff61ebb716c060b0097947ae5882f3",
+    "sessions.json": "92661aea51c99cdc40c4a3eaed461ffb742a6247c0ed49534d0d90c56a176394",
+    "stints.json": "91d377b3b569d8c6a7079cbd34cdd39b9178a5f92319e4cff3de31b42270ffad",
+    "weather.json": "e5bc0391062b4c8790c440ea98e3d9e742b6d5c19540690de7ccf05ec10ec829"
+  },
+  "quality_status": "PENDING_MANUAL_OR_DOCUMENTED_RACE_CONTROL_REVIEW",
+  "split_status": "NOT_FROZEN",
+  "validation_status": "NO_MODEL_CALIBRATED_OR_VALIDATED",
+  "provider_change_reason": "FastF1 3.9.2 intentó autenticación y no descargó timing en este entorno.",
+  "notes": [
+    "No se transfieren ni inventan banderas IsAccurate/Deleted/TrackStatus de otro proveedor.",
+    "Cero vueltas elegibles en el filtro conservador no significa cero datos: falta la revisión de calidad.",
+    "lane_duration o pit_duration no equivalen automáticamente a pérdida adicional frente a seguir por pista.",
+    "Si faltan tiempos, no derivarlos restando del total oficial para luego llamar independiente esa validación."
+  ],
+  "source_documentation": "https://openf1.org/docs/"
+}

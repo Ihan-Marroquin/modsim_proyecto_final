@@ -1,0 +1,23 @@
+test_bad_parameters_are_rejected (test_core.CoreTests.test_bad_parameters_are_rejected) ... ok
+test_extra_stop_costs_exactly_one_pit_penalty_without_wear (test_core.CoreTests.test_extra_stop_costs_exactly_one_pit_penalty_without_wear) ... ok
+test_invalid_stops_and_noninteger_stops (test_core.CoreTests.test_invalid_stops_and_noninteger_stops) ... ok
+test_inventory_and_age_coverage (test_core.CoreTests.test_inventory_and_age_coverage) ... ok
+test_known_total_and_event_clock (test_core.CoreTests.test_known_total_and_event_clock) ... ok
+test_seed_reproducibility_without_mutating_inputs (test_core.CoreTests.test_seed_reproducibility_without_mutating_inputs) ... ok
+test_used_tyres_keep_initial_age (test_core.CoreTests.test_used_tyres_keep_initial_age) ... ok
+test_generated_missing_and_flagged_laps_cannot_enter_normal_fit (test_data_audit.AuditTests.test_generated_missing_and_flagged_laps_cannot_enter_normal_fit) ... ok
+test_ordinary_lap_is_eligible (test_data_audit.AuditTests.test_ordinary_lap_is_eligible) ... ok
+test_pit_laps_remain_in_dataset_but_are_excluded_from_normal_fit (test_data_audit.AuditTests.test_pit_laps_remain_in_dataset_but_are_excluded_from_normal_fit) ... ok
+test_missing_lap_duration_is_never_imputed (test_openf1_data.OpenF1Tests.test_missing_lap_duration_is_never_imputed) ... ok
+test_normalization_preserves_unknown_quality_and_used_tyres (test_openf1_data.OpenF1Tests.test_normalization_preserves_unknown_quality_and_used_tyres) ... ok
+test_acceptance_matches_metropolis_rule (test_optimization.OptimizationTests.test_acceptance_matches_metropolis_rule) ... ok
+test_invalid_initial_and_unimplemented_used_set_mutations_raise (test_optimization.OptimizationTests.test_invalid_initial_and_unimplemented_used_set_mutations_raise) ... ok
+test_reference_has_size_guard (test_optimization.OptimizationTests.test_reference_has_size_guard) ... ok
+test_reproducibility (test_optimization.OptimizationTests.test_reproducibility) ... ok
+test_small_case_matches_exhaustive_reference (test_optimization.OptimizationTests.test_small_case_matches_exhaustive_reference) ... ok
+test_two_stops_and_compounds_never_return_invalid_candidate (test_optimization.OptimizationTests.test_two_stops_and_compounds_never_return_invalid_candidate) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.052s
+
+OK
