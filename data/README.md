@@ -8,7 +8,7 @@ Resultado inicial: 57 vueltas con tiempos, tres stints SOFT–HARD–SOFT y para
 
 Se observaron 157 registros de clima y 71 mensajes de control de carrera. La suma de vueltas es 5505.217 s y el total FIA citado es 5504.742 s: diferencia +0.475 s pendiente de reconciliar. No ajustar los datos para que coincidan automáticamente.
 
-OpenF1 no proporciona las mismas banderas `IsAccurate`, `Deleted` y `TrackStatus` que FastF1. Se conservan desconocidas. El filtro conservador marca provisionalmente cero vueltas elegibles para calibración hasta revisar control de carrera/calidad. Esto NO significa que falten las 57 observaciones. Mario y Luis Pedro deben definir el filtro correspondiente al proveedor y congelar la partición antes de ajustar.
+OpenF1 no proporciona las mismas banderas `IsAccurate`, `Deleted` y `TrackStatus` que FastF1. Se conservan desconocidas. El filtro propio de OpenF1 (`src/openf1_quality.py`, documentado en `docs/filtro_calidad_openf1.md`) usa control de carrera, pits y clima: deja **51 de 57 vueltas elegibles** para el ajuste de vueltas normales y no borra ninguna. Pendiente de revisión de Luis Pedro y de congelar la partición antes de ajustar.
 
 `lane_duration` es tiempo dentro del pit lane. `stop_duration` es el tiempo detenido y aparece nulo en estos registros; ninguno se debe inventar ni equiparar automáticamente con la pérdida adicional contra circular por pista.
 

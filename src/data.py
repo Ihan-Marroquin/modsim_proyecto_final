@@ -18,7 +18,8 @@ def is_missing(value) -> bool:
     return value is None or str(value).strip().lower() in {'', 'nan', 'none', '<na>'}
 
 
-def exclusion_reasons(row: dict) -> list[str]:
+def structural_reasons(row: dict) -> list[str]:
+    """Comprobaciones válidas para cualquier proveedor: campos, arranque, pits y compuesto."""
     reasons = []
     for field in ('lap_number', 'lap_time_s', 'tyre_life_laps', 'stint'):
         try:
@@ -36,6 +37,14 @@ def exclusion_reasons(row: dict) -> list[str]:
         reasons.append('pit_out_lap')
     elif is_true(row.get('is_pit_out_lap')):
         reasons.append('pit_out_lap')
+    if row.get('compound') not in {'SOFT', 'MEDIUM', 'HARD'}:
+        reasons.append('unsupported_or_unknown_compound')
+    return reasons
+
+
+def exclusion_reasons(row: dict) -> list[str]:
+    """Filtro conservador para FastF1: exige sus banderas de calidad. No usar con OpenF1."""
+    reasons = structural_reasons(row)
     if is_true(row.get('deleted')):
         reasons.append('deleted_lap')
     if is_true(row.get('fastf1_generated')):
@@ -44,8 +53,6 @@ def exclusion_reasons(row: dict) -> list[str]:
         reasons.append('not_flagged_accurate')
     if str(row.get('track_status', '')).strip() != '1':
         reasons.append('not_exclusively_green')
-    if row.get('compound') not in {'SOFT', 'MEDIUM', 'HARD'}:
-        reasons.append('unsupported_or_unknown_compound')
     return reasons
 
 

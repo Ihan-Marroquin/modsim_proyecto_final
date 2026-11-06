@@ -2,7 +2,7 @@
 
 **Responsable:** Mario Fernando Rocha. **Revisión pendiente:** Luis Pedro Lira (ver sección 8).
 **Fecha de consulta de fuente y descarga:** 2026-11-06 (America/Guatemala).
-**Estado:** borrador para revisión. Esta ficha describe y verifica los datos; **no** aplica el filtro de calidad (MA-02) ni congela la partición (MA-03).
+**Estado:** borrador para revisión. Esta ficha describe y verifica los datos. El filtro de calidad (MA-02) está en `docs/filtro_calidad_openf1.md`; la partición (MA-03) va aparte.
 
 ## 1. Fuente y condiciones de uso
 
@@ -128,7 +128,7 @@ Campos: `date` (UTC), `lap_number`, `category`, `flag`, `scope` (`Track`/`Sector
 | CarEvent | 2 | | YELLOW | 1 |
 | SafetyCar | **0** | | CHEQUERED / BLACK AND WHITE | 1 / 1 |
 
-No aparece ningún mensaje en la categoría `SafetyCar`. Las amarillas (3) y su efecto sobre vueltas de VER se analizan en MA-02; no se concluye nada aquí.
+No aparece ningún mensaje en la categoría `SafetyCar`. Las amarillas (3) y su efecto sobre vueltas de VER se analizan en `docs/filtro_calidad_openf1.md`.
 
 ## 5. Tabla normalizada derivada
 
@@ -160,19 +160,19 @@ Ejecutadas el 2026-11-06 sobre los archivos de la sección 3:
 | Suma de sectores vs `lap_duration` | Diferencia máxima 0.000 s en las 57 vueltas |
 | Cobertura de stints | 17 + 20 + 20 = 57 vueltas, sin solapes ni huecos |
 | Paradas | Entradas en 17 y 37; salidas marcadas en 18 y 38, consistentes |
-| Vueltas más lentas | 18 (117.854, salida de pits), 38 (116.445, salida), 17 (99.896, entrada), 37 (99.234, entrada), 1 (97.759, arranque), 9 (97.229, **sin motivo evidente aún: revisar en MA-02**) |
+| Vueltas más lentas | 18 (117.854, salida de pits), 38 (116.445, salida), 17 (99.896, entrada), 37 (99.234, entrada), 1 (97.759, arranque), 9 (97.229; revisada en MA-02: +0.20 s sobre la mediana del stint, variación normal, **no es anomalía**) |
 | Vuelta más rápida | 39, 92.608 s (SOFT nuevo, edad 2) |
 | `date_start[n+1] − date_start[n] − lap_duration[n]` | Entre −0.228 y +0.325 s. Coherente con que `date_start` es aproximado: **no sirve para conciliar diferencias por debajo de ~0.5 s** |
 | Lluvia | 0 en toda la ventana: carrera seca |
 | Safety Car / VSC | Sin mensajes de categoría `SafetyCar` |
-| Suma de `lap_duration` | 5505.217 s; FIA 5504.742 s; diferencia **+0.475 s pendiente (MA-02)** |
+| Suma de `lap_duration` | 5505.217 s; FIA 5504.742 s; diferencia **+0.475 s, ver investigación en MA-02** |
 | Igualdad con la descarga del 2026-11-05 | Mismos conteos, suma y contenido (ver sección 3) |
 
-Cobertura por compuesto para el modelo: SOFT con edades 4–20 (stint 1, juego usado) y 1–20 (stint 3, juego nuevo); HARD con edades 1–20 (stint 2). Un solo stint de HARD; ver hallazgo 7 del plan sobre identificabilidad antes de MA-03.
+Cobertura por compuesto en el dato crudo: SOFT con edades 4–20 (stint 1, juego usado) y 1–20 (stint 3, juego nuevo); HARD con edades 1–20 (stint 2). **Después del filtro MA-02** quedan SOFT 5–19 (stint 1), HARD 2–19 (stint 2) y SOFT 2–20 (stint 3). Un solo stint de HARD; ver hallazgo 7 del plan sobre identificabilidad antes de MA-03.
 
 ## 7. Limitaciones conocidas de la fuente
 
-1. OpenF1 no da banderas de calidad por vuelta equivalentes a `IsAccurate`, `Deleted` o `TrackStatus` de FastF1. El filtro propio se construye en MA-02 con `race_control`, `pit` y comprobaciones internas.
+1. OpenF1 no da banderas de calidad por vuelta equivalentes a `IsAccurate`, `Deleted` o `TrackStatus` de FastF1. El filtro propio (MA-02, `docs/filtro_calidad_openf1.md`) los sustituye con `race_control`, `pit` y `weather`; el borrado de tiempos sí se puede reconstruir desde los mensajes de control de carrera.
 2. `date_start` es aproximado (±0.3 s observado). Los cruces con `race_control` deben tolerar ese margen.
 3. `stop_duration` no está disponible para este caso.
 4. No hay datos de combustible, modos de motor ni inventario de neumáticos por piloto. El inventario se trata en MA-05.
