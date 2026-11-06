@@ -1,6 +1,6 @@
 # Técnica adicional: recocido simulado discreto
 
-Responsable: Ihan Marroquin. Estado: primera implementación y pruebas sintéticas realizadas con asistencia de Codex. Falta revisión de Jonathan, conexión con parámetros reales y redacción final revisada por Ihan.
+Responsable: Ihan Marroquin. Estado: entrega inicial realizada y verificada con asistencia de Codex. Incluye implementación y pruebas sintéticas. La conexión con parámetros reales y la revisión de integración se harán al disponer de los datos calibrados; no se presentan como completadas.
 
 ## Problema y representación
 

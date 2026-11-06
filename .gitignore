@@ -11,3 +11,8 @@ results/optimizer_demo/
 results/data_audit/
 work/
 *.zip
+/AGENTS.md
+/PLAN_MAESTRO.md
+/PLAN_RELEVO*.md
+/Plan_proyecto_F1_equipo_5.md
+/docs/INFORME_ESTRUCTURA.md
