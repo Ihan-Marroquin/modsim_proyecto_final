@@ -49,6 +49,17 @@ def exclusion_reasons(row: dict) -> list[str]:
     return reasons
 
 
+def portable_sha256(path: Path) -> str:
+    """Huella SHA-256 que no depende del sistema operativo.
+
+    Windows guarda los saltos de línea como CRLF y macOS/Linux como LF, así que el
+    mismo contenido produce bytes distintos. Se convierte CRLF a LF antes de calcular
+    la huella para que Windows, macOS y Linux obtengan el mismo valor. Para archivos
+    de texto (JSON/CSV) del proyecto; no usar en binarios.
+    """
+    return hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+
+
 def write_csv(path: Path, rows: list[dict], fieldnames=None):
     path.parent.mkdir(parents=True, exist_ok=True)
     if not rows and fieldnames is None:
@@ -140,6 +151,7 @@ def download_case(config: dict, root: Path) -> dict:
         'difference_from_official_s': observed_sum-config['official_winner_time_s'],
         'coverage_matches_expected': len(target_rows) == config['expected_laps'],
         'data_sha256': {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in [all_path, target_path]},
+        'data_sha256_portable': {p.name: portable_sha256(p) for p in [all_path, target_path]},
         'split_status': 'PROPOSED_ONLY_NOT_FROZEN_OR_USED_FOR_CALIBRATION',
         'validation_status': 'NO_MODEL_CALIBRATED_OR_VALIDATED',
         'rights_note': 'FastF1 es un proveedor no oficial; su licencia de software no establece por sí sola derechos sobre los datos.'
