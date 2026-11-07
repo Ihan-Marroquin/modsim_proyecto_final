@@ -28,6 +28,7 @@ def structural_reasons(row: dict) -> list[str]:
         except (KeyError, TypeError, ValueError):
             reasons.append(f'missing_or_invalid_{field}')
     if str(row.get('lap_number')) in {'1', '1.0'}:
+        # La vuelta 1 cuenta en la carrera; solo sale del ajuste de ritmo normal (salida desde parado).
         reasons.append('first_lap')
     if not is_missing(row.get('pit_in_time_s')):
         reasons.append('pit_in_lap')

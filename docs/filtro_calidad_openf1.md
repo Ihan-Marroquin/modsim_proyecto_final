@@ -18,7 +18,7 @@ Decididas antes de calibrar. Ninguna se eligió mirando errores del modelo.
 
 | Código | Efecto | Regla |
 |---|---|---|
-| `first_lap` | Excluye | Vuelta 1: incluye la salida desde parrilla; la penalización de arranque se modela aparte (JO-02). |
+| `first_lap` | Excluye | Vuelta 1: **cuenta en la carrera y en la reconstrucción**; solo se excluye del ajuste del ritmo normal porque empieza con salida desde parado al apagarse los semáforos. Esa pérdida se modela aparte como penalización de arranque (JO-02). La vuelta de formación no forma parte de los datos. Evidencia: `date_start` de la vuelta 1 (15:03:42.341 UTC) coincide con *"SESSION STARTED"* de control de carrera (15:03:42). |
 | `pit_in_lap` | Excluye | Vuelta registrada en `pit`. |
 | `pit_out_lap` | Excluye | `is_pit_out_lap = True`. |
 | `time_deleted_race_control` | Excluye | Mensaje de control de carrera `CAR <n> (...) TIME ... DELETED ... LAP <k>` para el piloto objetivo. Es el equivalente reconstruido de `Deleted` de FastF1. `(NEXT LAP)` se resuelve como la vuelta siguiente al último borrado del mismo auto. |
@@ -41,7 +41,7 @@ Decididas antes de calibrar. Ninguna se eligió mirando errores del modelo.
 
 | Vuelta | Decisión | Motivo | Evidencia |
 |---:|---|---|---|
-| 1 | Excluida | `first_lap` | También doble amarilla sector 2, 15:03:59–15:04:03 y 15:04:29–15:04:36 UTC |
+| 1 | Excluida solo del ajuste (cuenta en la carrera) | `first_lap` | Salida desde parado; 97.759 s frente a 96.296 s de la vuelta 2. También doble amarilla sector 2, 15:03:59–15:04:03 y 15:04:29–15:04:36 UTC |
 | 2 | Elegible, advertencia | `unpaired_clear_in_lap` | `CLEAR IN TRACK SECTOR 4` a las 15:05:55 sin amarilla previa; coincide con el trompo de STR (#18) en T1 y "superficie resbaladiza en sector 4" |
 | 10, 11 | Elegibles, advertencia | `local_yellow_overlap` | `YELLOW IN TRACK SECTOR 4`, 15:19:07–15:19:58 UTC |
 | 17, 37 | Excluidas | `pit_in_lap` | Registro `pit` |

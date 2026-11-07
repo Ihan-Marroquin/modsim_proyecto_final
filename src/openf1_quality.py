@@ -21,7 +21,9 @@ DELETED_PATTERN = re.compile(
 
 RULES = {
     'missing_or_invalid_*': 'Excluye: falta o es inválido un campo necesario (no se imputa).',
-    'first_lap': 'Excluye: vuelta de arranque; su pérdida se modela aparte.',
+    'first_lap': ('Excluye solo del ajuste de ritmo normal: la vuelta 1 cuenta en la carrera y en la '
+                  'reconstrucción, pero empieza con salida desde parado al apagarse los semáforos; '
+                  'esa pérdida se modela aparte como penalización de arranque.'),
     'pit_in_lap': 'Excluye: vuelta de entrada a pits (registro en pit).',
     'pit_out_lap': 'Excluye: vuelta de salida de pits (is_pit_out_lap).',
     'unsupported_or_unknown_compound': 'Excluye: compuesto distinto de SOFT/MEDIUM/HARD.',
