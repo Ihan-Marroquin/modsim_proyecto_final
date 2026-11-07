@@ -1,0 +1,387 @@
+{
+  "task": "MA-05",
+  "status": "INFERRED_NOT_CERTIFIED_PENDING_REVIEW",
+  "sessions": [
+    "Practice 1",
+    "Practice 2",
+    "Practice 3",
+    "Qualifying",
+    "Race"
+  ],
+  "driver_stints_by_session": {
+    "Practice 1": [
+      {
+        "stint_number": 1,
+        "compound": "MEDIUM",
+        "lap_start": 1,
+        "lap_end": 3,
+        "tyre_age_at_start": 0
+      },
+      {
+        "stint_number": 2,
+        "compound": "MEDIUM",
+        "lap_start": 4,
+        "lap_end": 6,
+        "tyre_age_at_start": 3
+      },
+      {
+        "stint_number": 3,
+        "compound": "MEDIUM",
+        "lap_start": 7,
+        "lap_end": 12,
+        "tyre_age_at_start": 0
+      },
+      {
+        "stint_number": 4,
+        "compound": "MEDIUM",
+        "lap_start": 13,
+        "lap_end": 21,
+        "tyre_age_at_start": 6
+      }
+    ],
+    "Practice 2": [
+      {
+        "stint_number": 1,
+        "compound": "SOFT",
+        "lap_start": 1,
+        "lap_end": 6,
+        "tyre_age_at_start": 0
+      },
+      {
+        "stint_number": 2,
+        "compound": "SOFT",
+        "lap_start": 7,
+        "lap_end": 9,
+        "tyre_age_at_start": 0
+      },
+      {
+        "stint_number": 3,
+        "compound": "SOFT",
+        "lap_start": 10,
+        "lap_end": 25,
+        "tyre_age_at_start": 3
+      }
+    ],
+    "Practice 3": [
+      {
+        "stint_number": 1,
+        "compound": "HARD",
+        "lap_start": 1,
+        "lap_end": 6,
+        "tyre_age_at_start": 0
+      },
+      {
+        "stint_number": 2,
+        "compound": "SOFT",
+        "lap_start": 7,
+        "lap_end": 13,
+        "tyre_age_at_start": 0
+      },
+      {
+        "stint_number": 3,
+        "compound": "SOFT",
+        "lap_start": 14,
+        "lap_end": 16,
+        "tyre_age_at_start": 7
+      }
+    ],
+    "Qualifying": [
+      {
+        "stint_number": 1,
+        "compound": "SOFT",
+        "lap_start": 1,
+        "lap_end": 3,
+        "tyre_age_at_start": 0
+      },
+      {
+        "stint_number": 2,
+        "compound": "SOFT",
+        "lap_start": 4,
+        "lap_end": 6,
+        "tyre_age_at_start": 3
+      },
+      {
+        "stint_number": 3,
+        "compound": "SOFT",
+        "lap_start": 7,
+        "lap_end": 9,
+        "tyre_age_at_start": 0
+      },
+      {
+        "stint_number": 4,
+        "compound": "SOFT",
+        "lap_start": 10,
+        "lap_end": 11,
+        "tyre_age_at_start": 3
+      },
+      {
+        "stint_number": 5,
+        "compound": "SOFT",
+        "lap_start": 12,
+        "lap_end": 14,
+        "tyre_age_at_start": 0
+      },
+      {
+        "stint_number": 6,
+        "compound": "SOFT",
+        "lap_start": 15,
+        "lap_end": 17,
+        "tyre_age_at_start": 0
+      }
+    ],
+    "Race": [
+      {
+        "stint_number": 1,
+        "compound": "SOFT",
+        "lap_start": 1,
+        "lap_end": 17,
+        "tyre_age_at_start": 3
+      },
+      {
+        "stint_number": 2,
+        "compound": "HARD",
+        "lap_start": 18,
+        "lap_end": 37,
+        "tyre_age_at_start": 0
+      },
+      {
+        "stint_number": 3,
+        "compound": "SOFT",
+        "lap_start": 38,
+        "lap_end": 57,
+        "tyre_age_at_start": 0
+      }
+    ]
+  },
+  "sets_used_before_race": [
+    {
+      "id": 1,
+      "compound": "MEDIUM",
+      "first_session": "Practice 1",
+      "laps": 6,
+      "used_in": [
+        "Practice 1",
+        "Practice 1"
+      ]
+    },
+    {
+      "id": 2,
+      "compound": "MEDIUM",
+      "first_session": "Practice 1",
+      "laps": 15,
+      "used_in": [
+        "Practice 1",
+        "Practice 1"
+      ]
+    },
+    {
+      "id": 3,
+      "compound": "SOFT",
+      "first_session": "Practice 2",
+      "laps": 6,
+      "used_in": [
+        "Practice 2"
+      ]
+    },
+    {
+      "id": 4,
+      "compound": "SOFT",
+      "first_session": "Practice 2",
+      "laps": 19,
+      "used_in": [
+        "Practice 2",
+        "Practice 2"
+      ]
+    },
+    {
+      "id": 5,
+      "compound": "HARD",
+      "first_session": "Practice 3",
+      "laps": 6,
+      "used_in": [
+        "Practice 3"
+      ]
+    },
+    {
+      "id": 6,
+      "compound": "SOFT",
+      "first_session": "Practice 3",
+      "laps": 10,
+      "used_in": [
+        "Practice 3",
+        "Practice 3"
+      ]
+    },
+    {
+      "id": 7,
+      "compound": "SOFT",
+      "first_session": "Qualifying",
+      "laps": 6,
+      "used_in": [
+        "Qualifying",
+        "Qualifying"
+      ]
+    },
+    {
+      "id": 8,
+      "compound": "SOFT",
+      "first_session": "Qualifying",
+      "laps": 5,
+      "used_in": [
+        "Qualifying",
+        "Qualifying"
+      ]
+    },
+    {
+      "id": 9,
+      "compound": "SOFT",
+      "first_session": "Qualifying",
+      "laps": 3,
+      "used_in": [
+        "Qualifying"
+      ]
+    },
+    {
+      "id": 10,
+      "compound": "SOFT",
+      "first_session": "Qualifying",
+      "laps": 3,
+      "used_in": [
+        "Qualifying"
+      ]
+    }
+  ],
+  "reconstruction_notes": [
+    "Practice 1 stint 4: 2 juegos MEDIUM con 6 vueltas; se asigna el más reciente (ambigüedad sin efecto en conteos)"
+  ],
+  "new_sets_used_before_race": {
+    "HARD": 1,
+    "MEDIUM": 2,
+    "SOFT": 7
+  },
+  "new_sets_unused_before_race": {
+    "HARD": 1,
+    "MEDIUM": 1,
+    "SOFT": 1
+  },
+  "race_stint_limits_observed": {
+    "HARD": 30,
+    "SOFT": 21
+  },
+  "search_space": {
+    "inventory_main/strict_model_coverage": {
+      "total": 6,
+      "by_stops": {
+        "2": 6
+      },
+      "by_set_sequence": {
+        "S0-H0-S3": 1,
+        "S0-S3-H0": 1,
+        "H0-S0-S3": 1,
+        "H0-S3-S0": 1,
+        "S3-S0-H0": 1,
+        "S3-H0-S0": 1
+      },
+      "historical_is_feasible": true
+    },
+    "inventory_main/observed_race_feasibility": {
+      "total": 1323,
+      "by_stops": {
+        "2": 1323
+      },
+      "by_set_sequence": {
+        "S0-H0-S3": 91,
+        "S0-S3-H0": 91,
+        "H0-S0-S3": 91,
+        "H0-S3-S0": 91,
+        "S3-S0-H0": 91,
+        "S3-H0-S0": 91,
+        "S0-H0-S5": 66,
+        "S0-S5-H0": 66,
+        "H0-S0-S5": 66,
+        "H0-S5-S0": 66,
+        "S5-S0-H0": 66,
+        "S5-H0-S0": 66,
+        "H0-S3-S3": 55,
+        "S3-H0-S3": 55,
+        "S3-S3-H0": 55,
+        "H0-S3-S5": 36,
+        "H0-S5-S3": 36,
+        "S3-H0-S5": 36,
+        "S3-S5-H0": 36,
+        "S5-H0-S3": 36,
+        "S5-S3-H0": 36
+      },
+      "historical_is_feasible": true
+    },
+    "inventory_alternative/strict_model_coverage": {
+      "total": 6,
+      "by_stops": {
+        "2": 6
+      },
+      "by_set_sequence": {
+        "S0-H0-S3": 1,
+        "S0-S3-H0": 1,
+        "H0-S0-S3": 1,
+        "H0-S3-S0": 1,
+        "S3-S0-H0": 1,
+        "S3-H0-S0": 1
+      },
+      "historical_is_feasible": true
+    },
+    "inventory_alternative/observed_race_feasibility": {
+      "total": 1746,
+      "by_stops": {
+        "2": 1746
+      },
+      "by_set_sequence": {
+        "S0-H0-S3": 91,
+        "S0-S3-H0": 91,
+        "H0-S0-S3": 91,
+        "H0-S3-S0": 91,
+        "S3-S0-H0": 91,
+        "S3-H0-S0": 91,
+        "S0-H0-S5": 66,
+        "S0-S5-H0": 66,
+        "H0-S0-S5": 66,
+        "H0-S5-S0": 66,
+        "S5-S0-H0": 66,
+        "S5-H0-S0": 66,
+        "S0-H0-S6": 55,
+        "S0-S6-H0": 55,
+        "H0-S0-S6": 55,
+        "H0-S6-S0": 55,
+        "S6-S0-H0": 55,
+        "S6-H0-S0": 55,
+        "H0-S3-S5": 36,
+        "H0-S5-S3": 36,
+        "S3-H0-S5": 36,
+        "S3-S5-H0": 36,
+        "S5-H0-S3": 36,
+        "S5-S3-H0": 36,
+        "H0-S3-S6": 28,
+        "H0-S6-S3": 28,
+        "S3-H0-S6": 28,
+        "S3-S6-H0": 28,
+        "S6-H0-S3": 28,
+        "S6-S3-H0": 28,
+        "H0-S5-S6": 15,
+        "H0-S6-S5": 15,
+        "S5-H0-S6": 15,
+        "S5-S6-H0": 15,
+        "S6-H0-S5": 15,
+        "S6-S5-H0": 15
+      },
+      "historical_is_feasible": true
+    }
+  },
+  "sha256_portable_inputs": {
+    "race_stints_all_drivers.json": "ef949b98e0ff0e7d0bb1773b3b90588a8b1cd3fa948ba4b0e40786073a0252a9",
+    "sessions.json": "aa9139b70a2437c76f22304abfa9e661cd2cb801b289274cc6b9db4d7f31d0c1",
+    "stints_9465.json": "2b871fc1cb5bfd572ef4c1df0006290ce4c02757392c06f2f68c183237bfdec3",
+    "stints_9466.json": "4b3c1043818583a7faf0382b738d61ece9a5b0e7f9fb2c72ada0835c9febd0d5",
+    "stints_9467.json": "1638c3d84927671a73d55f06611b94d7d55a995d0191a5e08edfb49e94eccf16",
+    "stints_9468.json": "4bd07c781820284574baa36f268a9f64e2dfeceab7a6e7a1824dd9d056f3d345",
+    "stints_9472.json": "9e973c322a32aa15690a4a78a0e40daf2116d36272e32dfc18e3f57353d3f24d"
+  }
+}

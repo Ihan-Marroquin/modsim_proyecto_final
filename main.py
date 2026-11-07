@@ -19,6 +19,7 @@ def main():
     download.add_argument('--provider', choices=['openf1', 'fastf1'], default='openf1')
     sub.add_parser('reconcile', help='Conciliar tiempos OpenF1 contra Jolpica/FIA (requiere download)')
     sub.add_parser('partition', help='Congelar partición entrenamiento/validación (requiere download)')
+    sub.add_parser('inventory', help='Reconstruir inventario de neumáticos y contar estrategias factibles')
     search = sub.add_parser('optimize-demo', help='Probar el optimizador en un caso SINTÉTICO')
     search.add_argument('--seed', type=int, default=42)
     search.add_argument('--runs', type=int, default=1)
@@ -51,6 +52,16 @@ def main():
                                                    'coverage', 'identifiability_training', 'code_state')},
                          indent=2, ensure_ascii=False))
         print('Manifiesto: results/data_audit/partition_manifest.json; partición: data/processed/partition_split.csv')
+        return
+    if args.command == 'inventory':
+        from src.inventory import inventory_report
+        config = json.loads((ROOT/'configs/case_bahrain_2024.json').read_text(encoding='utf-8'))
+        tyres = json.loads((ROOT/'configs/tyre_inventory_bahrain_2024.json').read_text(encoding='utf-8'))
+        report = inventory_report(config, tyres, ROOT)
+        print(json.dumps({k: report[k] for k in ('sets_used_before_race', 'new_sets_unused_before_race',
+                                                 'race_stint_limits_observed', 'search_space')},
+                         indent=2, ensure_ascii=False))
+        print('Detalle: results/data_audit/tyre_inventory.json')
         return
     config = json.loads((ROOT/'configs/synthetic_demo.json').read_text(encoding='utf-8'))
     if args.command == 'optimize-demo':
