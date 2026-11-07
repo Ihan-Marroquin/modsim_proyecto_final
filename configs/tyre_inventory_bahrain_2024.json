@@ -1,0 +1,51 @@
+{
+  "task": "MA-05",
+  "status": "INFERRED_NOT_CERTIFIED_PENDING_REVIEW",
+  "documentation": "docs/inventario_neumaticos.md",
+  "regulation": {
+    "source": "FIA 2024 Formula 1 Sporting Regulations, Issue 5 (2024-02-28), art. 30",
+    "url": "https://api.fia.com/sites/default/files/fia_2024_formula_1_sporting_regulations_-_issue_5_-_2024-02-28.pdf",
+    "dry_allocation_no_sprint": {"HARD": 2, "MEDIUM": 3, "SOFT": 8},
+    "min_distinct_dry_specifications_in_race": 2,
+    "mandatory_race_specification": "Por verificar en las notas del evento (art. 30.2c ii); no consultadas."
+  },
+  "inventory_main": {
+    "assumption": "Tras la clasificación se devolvió el SOFT más usado (6 vueltas), art. 30.5h i.",
+    "sets": [
+      {"compound": "SOFT", "initial_age": 0},
+      {"compound": "HARD", "initial_age": 0},
+      {"compound": "SOFT", "initial_age": 3},
+      {"compound": "SOFT", "initial_age": 3},
+      {"compound": "SOFT", "initial_age": 5}
+    ]
+  },
+  "inventory_alternative": {
+    "assumption": "Se devolvió uno de los SOFT de 3 vueltas. Solo para sensibilidad.",
+    "sets": [
+      {"compound": "SOFT", "initial_age": 0},
+      {"compound": "HARD", "initial_age": 0},
+      {"compound": "SOFT", "initial_age": 3},
+      {"compound": "SOFT", "initial_age": 5},
+      {"compound": "SOFT", "initial_age": 6}
+    ]
+  },
+  "excluded_from_optimization": {
+    "MEDIUM": "VER conservaba 1 juego nuevo, pero ningún piloto usó MEDIUM en la carrera: no hay datos para calibrarlo. Limitación del proyecto, no regla FIA."
+  },
+  "allowed_compounds": ["SOFT", "HARD"],
+  "min_stops": 1,
+  "max_stops": 2,
+  "max_age_scenarios": {
+    "strict_model_coverage": {
+      "max_age_by_compound": {"SOFT": 20, "HARD": 20},
+      "basis": "Edad máxima observada en las vueltas de VER (entrenamiento + validación)."
+    },
+    "observed_race_feasibility": {
+      "max_age_by_compound": {"SOFT": 21, "HARD": 30},
+      "basis": "Edad máxima al final de un stint de cualquier piloto en la carrera (OpenF1, 20 pilotos). Las predicciones con edades de VER > 20 son extrapolación y se analizan aparte."
+    }
+  },
+  "main_search_scenario": "observed_race_feasibility",
+  "decided_on": "2026-11-06",
+  "decided_before_optimization_results": true
+}

@@ -1,9 +1,22 @@
+import tempfile
 import unittest
+from pathlib import Path
+from unittest import mock
+from urllib.error import HTTPError
 from src.data import exclusion_reasons
-from src.openf1_data import normalize_laps
+from src.openf1_data import download_openf1_case, normalize_laps
 
 
 class OpenF1Tests(unittest.TestCase):
+    def test_live_session_401_gives_clear_message_without_retrying(self):
+        error = HTTPError('https://api.openf1.org/v1/sessions', 401, 'Unauthorized', {}, None)
+        config = {'year': 2024, 'event': 'Bahrain', 'driver_number': 1}
+        with tempfile.TemporaryDirectory() as tmp, \
+                mock.patch('src.openf1_data.urlopen', side_effect=error) as fake:
+            with self.assertRaisesRegex(RuntimeError, 'sesión de F1 en vivo'):
+                download_openf1_case(config, Path(tmp))
+        self.assertEqual(fake.call_count, 1)
+
     def test_normalization_preserves_unknown_quality_and_used_tyres(self):
         laps = [{'driver_number': 1, 'lap_number': 5, 'lap_duration': 96.0,
                  'is_pit_out_lap': False, 'date_start': '2024-03-02T15:00:00Z'}]

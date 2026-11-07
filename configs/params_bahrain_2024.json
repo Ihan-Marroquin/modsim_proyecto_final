@@ -1,0 +1,66 @@
+{
+  "purpose": "REAL_PARAMETERS_CALIBRATED_ON_TRAINING_ONLY",
+  "documentation": "docs/calibracion.md",
+  "units": {
+    "base_lap_s": "s",
+    "degradation_s_per_lap": "s por vuelta de edad",
+    "race_trend_s_per_lap": "s por vuelta de carrera",
+    "additional_pit_loss_s": "s por parada",
+    "start_penalty_s": "s",
+    "residual_sd_s": "s"
+  },
+  "main_scenario": "trend_fuel_reference",
+  "parameters": {
+    "compounds": {
+      "HARD": {
+        "base_lap_s": 95.6518,
+        "degradation_s_per_lap": 0.1052
+      },
+      "SOFT": {
+        "base_lap_s": 96.414,
+        "degradation_s_per_lap": 0.0761
+      }
+    },
+    "race_trend_s_per_lap": -0.0444,
+    "additional_pit_loss_s": 25.5223,
+    "start_penalty_s": 0.5656,
+    "residual_sd_s": 0.1631,
+    "provenance": "CALIBRATED_MA04_TRAINING_ONLY_TREND_FUEL_REFERENCE"
+  },
+  "sensitivity_parameters": {
+    "trend_zero": {
+      "compounds": {
+        "HARD": {
+          "base_lap_s": 94.9414,
+          "degradation_s_per_lap": 0.0608
+        },
+        "SOFT": {
+          "base_lap_s": 96.5916,
+          "degradation_s_per_lap": 0.0317
+        }
+      },
+      "race_trend_s_per_lap": 0.0,
+      "additional_pit_loss_s": 25.5223,
+      "start_penalty_s": 0.5656,
+      "residual_sd_s": 0.1631,
+      "provenance": "CALIBRATED_MA04_TRAINING_ONLY_TREND_ZERO"
+    },
+    "trend_double": {
+      "compounds": {
+        "HARD": {
+          "base_lap_s": 96.3622,
+          "degradation_s_per_lap": 0.1496
+        },
+        "SOFT": {
+          "base_lap_s": 96.2364,
+          "degradation_s_per_lap": 0.1205
+        }
+      },
+      "race_trend_s_per_lap": -0.0888,
+      "additional_pit_loss_s": 25.5223,
+      "start_penalty_s": 0.5656,
+      "residual_sd_s": 0.1631,
+      "provenance": "CALIBRATED_MA04_TRAINING_ONLY_TREND_DOUBLE"
+    }
+  }
+}

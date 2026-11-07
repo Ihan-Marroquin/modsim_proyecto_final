@@ -18,7 +18,8 @@ def is_missing(value) -> bool:
     return value is None or str(value).strip().lower() in {'', 'nan', 'none', '<na>'}
 
 
-def exclusion_reasons(row: dict) -> list[str]:
+def structural_reasons(row: dict) -> list[str]:
+    """Comprobaciones válidas para cualquier proveedor: campos, arranque, pits y compuesto."""
     reasons = []
     for field in ('lap_number', 'lap_time_s', 'tyre_life_laps', 'stint'):
         try:
@@ -27,6 +28,7 @@ def exclusion_reasons(row: dict) -> list[str]:
         except (KeyError, TypeError, ValueError):
             reasons.append(f'missing_or_invalid_{field}')
     if str(row.get('lap_number')) in {'1', '1.0'}:
+        # La vuelta 1 cuenta en la carrera; solo sale del ajuste de ritmo normal (salida desde parado).
         reasons.append('first_lap')
     if not is_missing(row.get('pit_in_time_s')):
         reasons.append('pit_in_lap')
@@ -36,6 +38,14 @@ def exclusion_reasons(row: dict) -> list[str]:
         reasons.append('pit_out_lap')
     elif is_true(row.get('is_pit_out_lap')):
         reasons.append('pit_out_lap')
+    if row.get('compound') not in {'SOFT', 'MEDIUM', 'HARD'}:
+        reasons.append('unsupported_or_unknown_compound')
+    return reasons
+
+
+def exclusion_reasons(row: dict) -> list[str]:
+    """Filtro conservador para FastF1: exige sus banderas de calidad. No usar con OpenF1."""
+    reasons = structural_reasons(row)
     if is_true(row.get('deleted')):
         reasons.append('deleted_lap')
     if is_true(row.get('fastf1_generated')):
@@ -44,9 +54,18 @@ def exclusion_reasons(row: dict) -> list[str]:
         reasons.append('not_flagged_accurate')
     if str(row.get('track_status', '')).strip() != '1':
         reasons.append('not_exclusively_green')
-    if row.get('compound') not in {'SOFT', 'MEDIUM', 'HARD'}:
-        reasons.append('unsupported_or_unknown_compound')
     return reasons
+
+
+def portable_sha256(path: Path) -> str:
+    """Huella SHA-256 que no depende del sistema operativo.
+
+    Windows guarda los saltos de línea como CRLF y macOS/Linux como LF, así que el
+    mismo contenido produce bytes distintos. Se convierte CRLF a LF antes de calcular
+    la huella para que Windows, macOS y Linux obtengan el mismo valor. Para archivos
+    de texto (JSON/CSV) del proyecto; no usar en binarios.
+    """
+    return hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 
 
 def write_csv(path: Path, rows: list[dict], fieldnames=None):
@@ -140,6 +159,7 @@ def download_case(config: dict, root: Path) -> dict:
         'difference_from_official_s': observed_sum-config['official_winner_time_s'],
         'coverage_matches_expected': len(target_rows) == config['expected_laps'],
         'data_sha256': {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in [all_path, target_path]},
+        'data_sha256_portable': {p.name: portable_sha256(p) for p in [all_path, target_path]},
         'split_status': 'PROPOSED_ONLY_NOT_FROZEN_OR_USED_FOR_CALIBRATION',
         'validation_status': 'NO_MODEL_CALIBRATED_OR_VALIDATED',
         'rights_note': 'FastF1 es un proveedor no oficial; su licencia de software no establece por sí sola derechos sobre los datos.'

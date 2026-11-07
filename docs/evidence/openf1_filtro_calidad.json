@@ -1,0 +1,130 @@
+{
+  "filter_version": "openf1-v1",
+  "rules": {
+    "missing_or_invalid_*": "Excluye: falta o es inválido un campo necesario (no se imputa).",
+    "first_lap": "Excluye solo del ajuste de ritmo normal: la vuelta 1 cuenta en la carrera y en la reconstrucción, pero empieza con salida desde parado al apagarse los semáforos; esa pérdida se modela aparte como penalización de arranque.",
+    "pit_in_lap": "Excluye: vuelta de entrada a pits (registro en pit).",
+    "pit_out_lap": "Excluye: vuelta de salida de pits (is_pit_out_lap).",
+    "unsupported_or_unknown_compound": "Excluye: compuesto distinto de SOFT/MEDIUM/HARD.",
+    "time_deleted_race_control": "Excluye: control de carrera borró el tiempo del piloto en esa vuelta.",
+    "track_neutralization": "Excluye: la vuelta coincide con Safety Car, VSC, bandera roja o amarilla de pista completa.",
+    "rainfall": "Excluye: el clima registra lluvia durante la vuelta.",
+    "missing_lap_window": "Excluye: sin date_start/lap_duration no se pueden cruzar eventos.",
+    "local_yellow_overlap": "Advierte: amarilla local (un sector) activa durante la vuelta; no excluye.",
+    "unpaired_clear_in_lap": "Advierte: CLEAR de sector sin amarilla previa registrada; posible amarilla no publicada.",
+    "deleted_time_mismatch": "Advierte: el tiempo citado en el mensaje de borrado no coincide con lap_duration.",
+    "unclosed_neutralization": "Advierte: hay una neutralización sin cierre; se extendió hasta el final (conservador)."
+  },
+  "window_tolerance_s": 1.0,
+  "rows_total": 57,
+  "eligible_normal_laps": 51,
+  "excluded_laps": {
+    "1": "first_lap",
+    "17": "pit_in_lap",
+    "18": "pit_out_lap",
+    "37": "pit_in_lap",
+    "38": "pit_out_lap",
+    "46": "time_deleted_race_control"
+  },
+  "warning_laps": {
+    "1": "local_yellow_overlap",
+    "2": "unpaired_clear_in_lap",
+    "10": "local_yellow_overlap",
+    "11": "local_yellow_overlap"
+  },
+  "exclusion_reason_counts": {
+    "first_lap": 1,
+    "pit_in_lap": 2,
+    "pit_out_lap": 2,
+    "time_deleted_race_control": 1
+  },
+  "warning_counts": {
+    "local_yellow_overlap": 3,
+    "unpaired_clear_in_lap": 1
+  },
+  "eligible_coverage": [
+    {
+      "stint": 1,
+      "compound": "SOFT",
+      "laps": 15,
+      "lap_range": [
+        2,
+        16
+      ],
+      "tyre_life_range": [
+        5,
+        19
+      ]
+    },
+    {
+      "stint": 2,
+      "compound": "HARD",
+      "laps": 18,
+      "lap_range": [
+        19,
+        36
+      ],
+      "tyre_life_range": [
+        2,
+        19
+      ]
+    },
+    {
+      "stint": 3,
+      "compound": "SOFT",
+      "laps": 18,
+      "lap_range": [
+        39,
+        57
+      ],
+      "tyre_life_range": [
+        2,
+        20
+      ]
+    }
+  ],
+  "deleted_laps": {
+    "46": {
+      "message": "CAR 1 (VER) TIME 1:34.193 DELETED - TRACK LIMITS AT TURN 4 LAP 46 19:16:58",
+      "date": "2024-03-02T16:19:06+00:00",
+      "cited_time_s": 94.193,
+      "time_matches_lap_duration": true
+    }
+  },
+  "flag_intervals": [
+    {
+      "kind": "local_yellow",
+      "start": "2024-03-02T15:03:59+00:00",
+      "label": "DOUBLE YELLOW IN TRACK SECTOR 2",
+      "end": "2024-03-02T15:04:03+00:00",
+      "closed": true
+    },
+    {
+      "kind": "local_yellow",
+      "start": "2024-03-02T15:04:29+00:00",
+      "label": "DOUBLE YELLOW IN TRACK SECTOR 2",
+      "end": "2024-03-02T15:04:36+00:00",
+      "closed": true
+    },
+    {
+      "kind": "local_yellow",
+      "start": "2024-03-02T15:19:07+00:00",
+      "label": "YELLOW IN TRACK SECTOR 4",
+      "end": "2024-03-02T15:19:58+00:00",
+      "closed": true
+    }
+  ],
+  "race_control_anomalies": [
+    {
+      "kind": "unpaired_clear",
+      "date": "2024-03-02T15:05:55+00:00",
+      "label": "CLEAR IN TRACK SECTOR 4"
+    }
+  ],
+  "rainfall_samples": 0,
+  "not_used": [
+    "Atípicos estadísticos: no se excluyen (decisión 2026-11-06; vueltas 39-40 son comportamiento real).",
+    "Banderas azules: no indican de forma verificable pérdida de VER."
+  ],
+  "status": "PENDING_PEER_REVIEW_LUIS_PEDRO"
+}

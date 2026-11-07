@@ -17,6 +17,10 @@ def main():
     demo.add_argument('--stochastic', action='store_true')
     download = sub.add_parser('download', help='Descargar el caso real candidato')
     download.add_argument('--provider', choices=['openf1', 'fastf1'], default='openf1')
+    sub.add_parser('reconcile', help='Conciliar tiempos OpenF1 contra Jolpica/FIA (requiere download)')
+    sub.add_parser('partition', help='Congelar partición entrenamiento/validación (requiere download)')
+    sub.add_parser('inventory', help='Reconstruir inventario de neumáticos y contar estrategias factibles')
+    sub.add_parser('calibrate', help='Calibrar parámetros reales solo con entrenamiento (requiere download, reconcile, partition)')
     search = sub.add_parser('optimize-demo', help='Probar el optimizador en un caso SINTÉTICO')
     search.add_argument('--seed', type=int, default=42)
     search.add_argument('--runs', type=int, default=1)
@@ -30,6 +34,45 @@ def main():
             from src.data import download_case
             report = download_case(config, ROOT)
         print(json.dumps(report, indent=2, ensure_ascii=False))
+        return
+    if args.command == 'reconcile':
+        from src.reconciliation import reconcile_case
+        config = json.loads((ROOT/'configs/case_bahrain_2024.json').read_text(encoding='utf-8'))
+        report = reconcile_case(config, ROOT)
+        print(json.dumps({k: report[k] for k in ('lap_comparison', 'reference_sum_equals_official_total',
+                                                 'openf1_minus_official_s', 'pit_durations')},
+                         indent=2, ensure_ascii=False))
+        print('Detalle: results/data_audit/reconciliation.json y data/processed/lap_time_reconciliation.csv')
+        return
+    if args.command == 'partition':
+        from src.partition import freeze_partition
+        config = json.loads((ROOT/'configs/case_bahrain_2024.json').read_text(encoding='utf-8'))
+        manifest = freeze_partition(config, ROOT)
+        print(json.dumps({k: manifest[k] for k in ('training_laps', 'validation_laps', 'excluded_from_fit_laps',
+                                                   'validation_covered_laps', 'validation_extrapolated_laps',
+                                                   'coverage', 'identifiability_training', 'code_state')},
+                         indent=2, ensure_ascii=False))
+        print('Manifiesto: results/data_audit/partition_manifest.json; partición: data/processed/partition_split.csv')
+        return
+    if args.command == 'inventory':
+        from src.inventory import inventory_report
+        config = json.loads((ROOT/'configs/case_bahrain_2024.json').read_text(encoding='utf-8'))
+        tyres = json.loads((ROOT/'configs/tyre_inventory_bahrain_2024.json').read_text(encoding='utf-8'))
+        report = inventory_report(config, tyres, ROOT)
+        print(json.dumps({k: report[k] for k in ('sets_used_before_race', 'new_sets_unused_before_race',
+                                                 'race_stint_limits_observed', 'search_space')},
+                         indent=2, ensure_ascii=False))
+        print('Detalle: results/data_audit/tyre_inventory.json')
+        return
+    if args.command == 'calibrate':
+        from src.calibration import calibrate_case
+        config = json.loads((ROOT/'configs/case_bahrain_2024.json').read_text(encoding='utf-8'))
+        output = calibrate_case(config, ROOT)
+        print(json.dumps({'parameters': output['parameters'],
+                          'sensitivity_parameters': output['sensitivity_parameters'],
+                          'validation_laps_read': output['data_audit']['validation_laps_read']},
+                         indent=2, ensure_ascii=False))
+        print('Parámetros: configs/params_bahrain_2024.json; detalle: results/data_audit/calibration.json')
         return
     config = json.loads((ROOT/'configs/synthetic_demo.json').read_text(encoding='utf-8'))
     if args.command == 'optimize-demo':

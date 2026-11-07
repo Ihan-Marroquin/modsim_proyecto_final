@@ -9,7 +9,8 @@ from pathlib import Path
 from urllib.error import HTTPError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
-from .data import audit_records, is_missing, write_csv
+from .data import is_missing, portable_sha256, write_csv
+from .openf1_quality import apply_openf1_quality_filter
 
 BASE = 'https://api.openf1.org/v1/'
 
@@ -64,6 +65,14 @@ def download_openf1_case(config: dict, root: Path) -> dict:
                 time.sleep(2.1)  # Dentro del límite gratuito de 30 solicitudes/minuto.
                 return value
             except HTTPError as exc:
+                if exc.code == 401:
+                    # Comprobado el 2026-11-06: durante una sesión de F1 en vivo OpenF1 exige
+                    # cuenta incluso para datos históricos. No introducir credenciales en el repo.
+                    raise RuntimeError(
+                        'OpenF1 respondió 401: mientras hay una sesión de F1 en vivo el acceso '
+                        'sin cuenta (incluso a datos históricos) queda restringido. Reintentar '
+                        'cuando termine la sesión. Si data/raw/openf1 ya existe con los mismos '
+                        'URL, la descarga usa esa caché y no necesita red.') from exc
                 if exc.code not in {429, 500, 502, 503, 504} or attempt == 2:
                     raise
                 time.sleep(min(10, 3 * (attempt+1)))
@@ -83,8 +92,13 @@ def download_openf1_case(config: dict, root: Path) -> dict:
         raise ValueError('No hay datos suficientes de vueltas/stints; no sustituir con datos sintéticos')
     records = normalize_laps(laps, stints, pits, config['driver'])
     write_csv(root/'data/raw/openf1_target_laps.csv', records)
-    annotated, audit = audit_records(records)
+    # Filtro propio de OpenF1 (MA-02): marca, no borra. Ver src/openf1_quality.py.
+    annotated, exclusions, quality = apply_openf1_quality_filter(
+        records, laps, race_control, weather, driver_number)
     write_csv(root/'data/processed/openf1_target_laps_annotated.csv', annotated)
+    write_csv(root/'data/processed/openf1_exclusions.csv', exclusions)
+    audit = {k: quality[k] for k in ('filter_version', 'rows_total', 'eligible_normal_laps',
+                                     'excluded_laps', 'warning_laps', 'eligible_coverage')}
     # No particionar como si estuviera depurada una tabla sin revisión de calidad.
     observed_times = [float(r['lap_time_s']) for r in records if not is_missing(r['lap_time_s'])]
     complete = len(observed_times) == config['expected_laps']
@@ -102,13 +116,17 @@ def download_openf1_case(config: dict, root: Path) -> dict:
         'stints_observed': stints, 'pits_observed': pits,
         'weather_rows': len(weather), 'race_control_rows': len(race_control),
         'requests': requests_log,
+        # 'sha256' depende de los saltos de línea del sistema; se conserva por compatibilidad
+        # con la evidencia anterior. Para verificar entre computadoras usar 'sha256_portable'.
         'sha256': {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(raw.glob('*.json'))},
-        'quality_status': 'PENDING_MANUAL_OR_DOCUMENTED_RACE_CONTROL_REVIEW',
+        'sha256_portable': {p.name: portable_sha256(p) for p in sorted(raw.glob('*.json'))},
+        'sha256_note': 'sha256_portable convierte CRLF a LF antes de calcular; coincide en Windows, macOS y Linux.',
+        'quality_status': quality['status'],
         'split_status': 'NOT_FROZEN', 'validation_status': 'NO_MODEL_CALIBRATED_OR_VALIDATED',
         'provider_change_reason': 'FastF1 3.9.2 intentó autenticación y no descargó timing en este entorno.',
         'notes': [
             'No se transfieren ni inventan banderas IsAccurate/Deleted/TrackStatus de otro proveedor.',
-            'Cero vueltas elegibles en el filtro conservador no significa cero datos: falta la revisión de calidad.',
+            'Filtro propio de OpenF1 en results/data_audit/openf1_quality_filter.json; las exclusiones no borran filas.',
             'lane_duration o pit_duration no equivalen automáticamente a pérdida adicional frente a seguir por pista.',
             'Si faltan tiempos, no derivarlos restando del total oficial para luego llamar independiente esa validación.'
         ],
@@ -117,4 +135,5 @@ def download_openf1_case(config: dict, root: Path) -> dict:
     out = root/'results/data_audit'
     out.mkdir(parents=True, exist_ok=True)
     (out/'openf1_acquisition.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
+    (out/'openf1_quality_filter.json').write_text(json.dumps(quality, ensure_ascii=False, indent=2), encoding='utf-8')
     return report
