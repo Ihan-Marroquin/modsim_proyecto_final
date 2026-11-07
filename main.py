@@ -20,6 +20,7 @@ def main():
     sub.add_parser('reconcile', help='Conciliar tiempos OpenF1 contra Jolpica/FIA (requiere download)')
     sub.add_parser('partition', help='Congelar partición entrenamiento/validación (requiere download)')
     sub.add_parser('inventory', help='Reconstruir inventario de neumáticos y contar estrategias factibles')
+    sub.add_parser('calibrate', help='Calibrar parámetros reales solo con entrenamiento (requiere download, reconcile, partition)')
     search = sub.add_parser('optimize-demo', help='Probar el optimizador en un caso SINTÉTICO')
     search.add_argument('--seed', type=int, default=42)
     search.add_argument('--runs', type=int, default=1)
@@ -62,6 +63,16 @@ def main():
                                                  'race_stint_limits_observed', 'search_space')},
                          indent=2, ensure_ascii=False))
         print('Detalle: results/data_audit/tyre_inventory.json')
+        return
+    if args.command == 'calibrate':
+        from src.calibration import calibrate_case
+        config = json.loads((ROOT/'configs/case_bahrain_2024.json').read_text(encoding='utf-8'))
+        output = calibrate_case(config, ROOT)
+        print(json.dumps({'parameters': output['parameters'],
+                          'sensitivity_parameters': output['sensitivity_parameters'],
+                          'validation_laps_read': output['data_audit']['validation_laps_read']},
+                         indent=2, ensure_ascii=False))
+        print('Parámetros: configs/params_bahrain_2024.json; detalle: results/data_audit/calibration.json')
         return
     config = json.loads((ROOT/'configs/synthetic_demo.json').read_text(encoding='utf-8'))
     if args.command == 'optimize-demo':

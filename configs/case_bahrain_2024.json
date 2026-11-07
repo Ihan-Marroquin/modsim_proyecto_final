@@ -17,6 +17,28 @@
     "decided_by": "Mario Fernando Rocha (decisión delegada por Luis Pedro Lira y Jonathan Zacarias)",
     "rationale": "Validación temporal: el modelo predice un tramo posterior que no vio. Ver docs/particion_validacion.md."
   },
+  "calibration": {
+    "partition_manifest": "docs/evidence/particion_manifiesto.json",
+    "main_scenario": "trend_fuel_reference",
+    "trend_scenarios_s_per_lap": {
+      "trend_zero": 0.0,
+      "trend_fuel_reference": -0.0444,
+      "trend_double": -0.0888
+    },
+    "trend_reference": {
+      "value_s_per_lap": -0.0444,
+      "formula": "-(t_lap_sens_mass x b_fuel_perlap) = -(0.023 s/kg x 1.93 kg/vuelta)",
+      "source": "TUMFTM race-simulation, racesim/input/parameters/pars_Sakhir_2019.ini (LGPL-3.0), https://github.com/TUMFTM/race-simulation",
+      "paper": "Heilmeier, Graf y Lienkamp (2018), A Race Simulation for Strategy Decisions in Circuit Motorsports, IEEE ITSC, https://doi.org/10.1109/itsc.2018.8570012",
+      "limitations": "Parámetros de 2019, solo efecto de combustible; no incluye evolución de pista. Sensibilidad con 0 y el doble."
+    },
+    "pit_in_lap_for_estimation": 17,
+    "event_laps_read": [
+      1,
+      17,
+      18
+    ]
+  },
   "status": "CANDIDATE_PENDING_AUDIT_AND_CALIBRATION",
   "note": "El tiempo oficial es una referencia observada, nunca un parámetro para forzar un ajuste exacto."
 }
