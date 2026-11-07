@@ -1,0 +1,62 @@
+{
+  "source_kind": "RECONCILIATION_OPENF1_VS_JOLPICA_AND_FIA",
+  "computed_at_utc": "2026-11-07T00:05:24.505505+00:00",
+  "reference_source": "Jolpica (API compatible con Ergast), CC BY-NC-SA 4.0: https://api.jolpi.ca/ergast/f1/",
+  "official_total_config_s": 5504.742,
+  "official_total_jolpica_s": 5504.742,
+  "lap_comparison": {
+    "laps_compared": 57,
+    "laps_matching": 56,
+    "laps_only_in_openf1": [],
+    "laps_only_in_reference": [],
+    "differing_laps": {
+      "1": 0.475
+    },
+    "sum_openf1_s": 5505.217,
+    "sum_reference_s": 5504.742,
+    "sum_of_differences_s": 0.475
+  },
+  "reference_sum_equals_official_total": true,
+  "openf1_minus_official_s": 0.475,
+  "differing_laps_detail": [
+    {
+      "lap_number": 1,
+      "openf1_s": 97.759,
+      "reference_s": 97.284,
+      "difference_s": 0.475,
+      "matches": false
+    }
+  ],
+  "pit_durations": [
+    {
+      "lap_number": 17,
+      "openf1_lane_duration_s": 25.0,
+      "reference_duration_s": 25.064
+    },
+    {
+      "lap_number": 37,
+      "openf1_lane_duration_s": 24.2,
+      "reference_duration_s": 24.209
+    }
+  ],
+  "requests": [
+    {
+      "url": "https://api.jolpi.ca/ergast/f1/2024/1/drivers/max_verstappen/laps.json?limit=100",
+      "cached": true
+    },
+    {
+      "url": "https://api.jolpi.ca/ergast/f1/2024/1/results.json?limit=30",
+      "cached": true
+    },
+    {
+      "url": "https://api.jolpi.ca/ergast/f1/2024/1/drivers/max_verstappen/pitstops.json",
+      "cached": false
+    }
+  ],
+  "sha256_portable": {
+    "laps.json": "008acd4ec55e26e5d7c641d6d918044c3fc7d5cf0b514979929270ddc30fe0f8",
+    "pitstops.json": "88a24eba42734f449a6eb0046c642f60b26281aa445dbffac76f83e5dcc1bfa7",
+    "results.json": "67c306e3f8211f27f8a13f32bf5a5bc12fb50e9228078e1d11a6a782b5b8ec1a"
+  },
+  "note": "Los datos OpenF1 no se modifican. Ver docs/conciliacion_tiempos.md para la interpretación."
+}

@@ -6,7 +6,7 @@ Comando comprobado: `python main.py download`. Descarga historia pública desde 
 
 Resultado inicial: 57 vueltas con tiempos, tres stints SOFT–HARD–SOFT y paradas registradas en 17 y 37. El primer juego SOFT tiene edad inicial de 3 vueltas; los siguientes juegos tienen edad inicial 0. Revisar semántica y fronteras con las fuentes antes de congelar el modelo.
 
-Se observaron 157 registros de clima y 71 mensajes de control de carrera. La suma de vueltas es 5505.217 s y el total FIA citado es 5504.742 s: diferencia +0.475 s pendiente de reconciliar. No ajustar los datos para que coincidan automáticamente.
+Se observaron 157 registros de clima y 71 mensajes de control de carrera. La suma de vueltas es 5505.217 s y el total FIA citado es 5504.742 s: diferencia +0.475 s. **Conciliada** con `python main.py reconcile` (Jolpica, CC BY-NC-SA 4.0): está toda en la vuelta 1 (OpenF1 97.759 s, convención oficial 97.284 s) y las vueltas 2–57 coinciden al milisegundo. Los datos OpenF1 no se modificaron. Detalle y decisiones en `docs/conciliacion_tiempos.md`.
 
 OpenF1 no proporciona las mismas banderas `IsAccurate`, `Deleted` y `TrackStatus` que FastF1. Se conservan desconocidas. El filtro propio de OpenF1 (`src/openf1_quality.py`, documentado en `docs/filtro_calidad_openf1.md`) usa control de carrera, pits y clima: deja **51 de 57 vueltas elegibles** para el ajuste de vueltas normales y no borra ninguna. Pendiente de revisión de Luis Pedro y de congelar la partición antes de ajustar.
 

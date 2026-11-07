@@ -17,6 +17,7 @@ def main():
     demo.add_argument('--stochastic', action='store_true')
     download = sub.add_parser('download', help='Descargar el caso real candidato')
     download.add_argument('--provider', choices=['openf1', 'fastf1'], default='openf1')
+    sub.add_parser('reconcile', help='Conciliar tiempos OpenF1 contra Jolpica/FIA (requiere download)')
     search = sub.add_parser('optimize-demo', help='Probar el optimizador en un caso SINTÉTICO')
     search.add_argument('--seed', type=int, default=42)
     search.add_argument('--runs', type=int, default=1)
@@ -30,6 +31,15 @@ def main():
             from src.data import download_case
             report = download_case(config, ROOT)
         print(json.dumps(report, indent=2, ensure_ascii=False))
+        return
+    if args.command == 'reconcile':
+        from src.reconciliation import reconcile_case
+        config = json.loads((ROOT/'configs/case_bahrain_2024.json').read_text(encoding='utf-8'))
+        report = reconcile_case(config, ROOT)
+        print(json.dumps({k: report[k] for k in ('lap_comparison', 'reference_sum_equals_official_total',
+                                                 'openf1_minus_official_s', 'pit_durations')},
+                         indent=2, ensure_ascii=False))
+        print('Detalle: results/data_audit/reconciliation.json y data/processed/lap_time_reconciliation.csv')
         return
     config = json.loads((ROOT/'configs/synthetic_demo.json').read_text(encoding='utf-8'))
     if args.command == 'optimize-demo':

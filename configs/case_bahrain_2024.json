@@ -7,6 +7,9 @@
   "expected_laps": 57,
   "official_winner_time_s": 5504.742,
   "official_reference": "https://www.fia.com/events/fia-formula-one-world-championship/season-2024/bahrain-grand-prix/race-classification",
+  "reference_lap_source": "Jolpica (API compatible con Ergast), CC BY-NC-SA 4.0: https://api.jolpi.ca/ergast/f1/",
+  "jolpica_round": 1,
+  "jolpica_driver_id": "max_verstappen",
   "status": "CANDIDATE_PENDING_AUDIT_AND_CALIBRATION",
   "note": "El tiempo oficial es una referencia observada, nunca un parámetro para forzar un ajuste exacto."
 }

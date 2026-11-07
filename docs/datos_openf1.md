@@ -165,7 +165,7 @@ Ejecutadas el 2026-11-06 sobre los archivos de la sección 3:
 | `date_start[n+1] − date_start[n] − lap_duration[n]` | Entre −0.228 y +0.325 s. Coherente con que `date_start` es aproximado: **no sirve para conciliar diferencias por debajo de ~0.5 s** |
 | Lluvia | 0 en toda la ventana: carrera seca |
 | Safety Car / VSC | Sin mensajes de categoría `SafetyCar` |
-| Suma de `lap_duration` | 5505.217 s; FIA 5504.742 s; diferencia **+0.475 s, ver investigación en MA-02** |
+| Suma de `lap_duration` | 5505.217 s; FIA 5504.742 s; diferencia +0.475 s, **conciliada**: está toda en la vuelta 1 (convención de inicio del cronómetro); vueltas 2–57 idénticas a Jolpica. Ver `docs/conciliacion_tiempos.md` |
 | Igualdad con la descarga del 2026-11-05 | Mismos conteos, suma y contenido (ver sección 3) |
 
 Cobertura por compuesto en el dato crudo: SOFT con edades 4–20 (stint 1, juego usado) y 1–20 (stint 3, juego nuevo); HARD con edades 1–20 (stint 2). **Después del filtro MA-02** quedan SOFT 5–19 (stint 1), HARD 2–19 (stint 2) y SOFT 2–20 (stint 3). Un solo stint de HARD; ver hallazgo 7 del plan sobre identificabilidad antes de MA-03.
