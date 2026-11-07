@@ -82,9 +82,9 @@ Decidido antes de ver cualquier resultado de optimización.
 3. Las especificaciones obligatorias de carrera no están verificadas.
 4. Los límites de edad del escenario principal vienen de otros pilotos y autos. Indican que el stint es físicamente posible, no cuánto tardaría VER en esas vueltas.
 
-## 7. Revisión (pendiente)
+## 7. Revisión
 
 - [ ] Luis Pedro: reproduce `python main.py inventory` y los conteos 6 / 1323 / 1746.
 - [ ] Ihan: confirma que puede representar el inventario por juego en IH-05.
-- [ ] Jonathan: confirma la convención de edad de los juegos usados.
-- [ ] Observaciones / fecha / commit: ______
+- [x] Jonathan: confirma la convención de edad de los juegos usados (edad al terminar la vuelta = initial_age + vuelta_en_stint; SOFT inicial de edad 3 alcanza edad 4 en vuelta 1 y 20 en vuelta 17).
+- [x] Observaciones / fecha / commit: 2026-11-06, Jonathan Zacarias implementó la convención en `src/model.py` y `src/simulation.py`.
