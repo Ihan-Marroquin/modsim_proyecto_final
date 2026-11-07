@@ -21,6 +21,17 @@ def main():
     sub.add_parser('partition', help='Congelar partición entrenamiento/validación (requiere download)')
     sub.add_parser('inventory', help='Reconstruir inventario de neumáticos y contar estrategias factibles')
     sub.add_parser('calibrate', help='Calibrar parámetros reales solo con entrenamiento (requiere download, reconcile, partition)')
+    sim = sub.add_parser('simulate', help='Simular carrera completa con parámetros reales calibrados (JO-03)')
+    sim.add_argument('--scenario', choices=['trend_fuel_reference', 'trend_zero', 'trend_double'],
+                     default='trend_fuel_reference', help='Escenario de tendencia calibrado')
+    sim.add_argument('--stochastic', action='store_true', help='Activar modo estocástico con ruido gaussiano')
+    sim.add_argument('--seed', type=int, default=42, help='Semilla para modo estocástico')
+    sim.add_argument('--degradation-multiplier', type=float, default=1.0,
+                     help='Multiplicador de degradación para análisis de sensibilidad')
+    sim.add_argument('--strategy', type=str, default=None,
+                     help='Ruta a archivo JSON de estrategia (por defecto usa la histórica)')
+    sim.add_argument('--output-dir', type=str, default='results/simulation',
+                     help='Directorio de salida para los resultados')
     search = sub.add_parser('optimize-demo', help='Probar el optimizador en un caso SINTÉTICO')
     search.add_argument('--seed', type=int, default=42)
     search.add_argument('--runs', type=int, default=1)
@@ -73,6 +84,41 @@ def main():
                           'validation_laps_read': output['data_audit']['validation_laps_read']},
                          indent=2, ensure_ascii=False))
         print('Parámetros: configs/params_bahrain_2024.json; detalle: results/data_audit/calibration.json')
+        return
+    if args.command == 'simulate':
+        from src.model import simulate_bahrain_case
+        from src.data import write_csv
+        strategy_obj = None
+        if args.strategy:
+            strat_data = json.loads(Path(args.strategy).read_text(encoding='utf-8'))
+            strategy_obj = strategy_from_dict(strat_data)
+        report = simulate_bahrain_case(
+            root_dir=ROOT,
+            scenario=args.scenario,
+            stochastic=args.stochastic,
+            seed=args.seed,
+            degradation_multiplier=args.degradation_multiplier,
+            strategy=strategy_obj,
+        )
+        out_dir = ROOT / args.output_dir
+        out_dir.mkdir(parents=True, exist_ok=True)
+        json_path = out_dir / 'bahrain_2024_simulation.json'
+        json_path.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding='utf-8')
+        csv_path = out_dir / 'bahrain_2024_laps.csv'
+        write_csv(csv_path, report['laps'])
+        print(json.dumps({
+            'case': report['case'],
+            'driver': report['driver'],
+            'scenario': report['scenario'],
+            'stochastic': report['stochastic'],
+            'seed': report['seed'],
+            'degradation_multiplier': report['degradation_multiplier'],
+            'strategy': report['strategy']['name'],
+            'stops_after_lap': report['strategy']['stops_after_lap'],
+            'summary': report['summary'],
+            'output_json': str(json_path.relative_to(ROOT)),
+            'output_csv': str(csv_path.relative_to(ROOT)),
+        }, indent=2, ensure_ascii=False))
         return
     config = json.loads((ROOT/'configs/synthetic_demo.json').read_text(encoding='utf-8'))
     if args.command == 'optimize-demo':

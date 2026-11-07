@@ -1,14 +1,16 @@
-"""Primer motor de eventos, solo validado con casos sintéticos de consistencia.
+"""Motor de simulación de eventos discretos para estrategia de paradas en F1 (JO-01, JO-02, JO-03).
 
 La penalización de pits es ADICIONAL al tiempo normal de vuelta. Se carga al
-terminar la vuelta en que se para; el nuevo juego se usa en la siguiente.
-La ubicación temporal exacta de los eventos debe refinarse para contrastar pits
-reales. Este motor todavía NO representa una carrera calibrada de Bahréin.
+terminar la vuelta en que se para (in-lap); el nuevo juego se usa en la siguiente (out-lap).
+La convención agrupa el exceso de entrada y salida sin duplicar tiempos ni contar dos
+veces la pérdida en el pit lane.
+Admite ejecución determinista y estocástica con dispersión residual calibrada.
 """
 import math
 import random
 from .constraints import validate_strategy
 from .domain import Constraints, ModelParameters, Strategy
+from .model import compute_normal_lap_s
 
 
 def simulate(strategy: Strategy, params: ModelParameters, limits: Constraints,
@@ -40,8 +42,13 @@ def simulate(strategy: Strategy, params: ModelParameters, limits: Constraints,
         compound = strategy.stints[stint_index].compound
         p = params.compounds[compound]
         age += 1  # Edad al terminar la vuelta, coherente con TyreLife.
-        normal_s = (p.base_lap_s + p.degradation_s_per_lap * age * degradation_multiplier
-                    + params.race_trend_s_per_lap * (lap - 1))
+        normal_s = compute_normal_lap_s(
+            compound_param=p,
+            tyre_age_end=age,
+            race_lap=lap,
+            race_trend_s_per_lap=params.race_trend_s_per_lap,
+            degradation_multiplier=degradation_multiplier,
+        )
         noise_s = rng.gauss(0.0, params.residual_sd_s) if stochastic else 0.0
         start_s = params.start_penalty_s if lap == 1 else 0.0
         lap_s = normal_s + noise_s + start_s

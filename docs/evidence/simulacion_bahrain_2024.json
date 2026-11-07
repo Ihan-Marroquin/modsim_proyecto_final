@@ -1,0 +1,1055 @@
+{
+  "case": "Bahrain",
+  "year": 2024,
+  "driver": "VER",
+  "scenario": "trend_double",
+  "stochastic": false,
+  "seed": 42,
+  "degradation_multiplier": 1.0,
+  "strategy": {
+    "name": "historical_ver_bahrain_2024",
+    "stops_after_lap": [
+      17,
+      37
+    ],
+    "stints": [
+      {
+        "compound": "SOFT",
+        "initial_age": 3
+      },
+      {
+        "compound": "HARD",
+        "initial_age": 0
+      },
+      {
+        "compound": "SOFT",
+        "initial_age": 0
+      }
+    ]
+  },
+  "parameter_provenance": "CALIBRATED_MA04_TRAINING_ONLY_TREND_DOUBLE",
+  "race_trend_s_per_lap": -0.0888,
+  "residual_sd_s": 0.1631,
+  "summary": {
+    "total_laps": 57,
+    "total_simulated_time_s": 5479.1792,
+    "official_reference_time_s": 5504.742,
+    "simulated_minus_official_s": -25.5628,
+    "total_start_penalty_s": 0.5656,
+    "total_pit_loss_s": 51.0446,
+    "stints": [
+      {
+        "stint": 1,
+        "laps": 17,
+        "lap_range": [
+          1,
+          17
+        ],
+        "duration_s": 1674.6119
+      },
+      {
+        "stint": 2,
+        "laps": 20,
+        "lap_range": [
+          18,
+          37
+        ],
+        "duration_s": 1937.1183
+      },
+      {
+        "stint": 3,
+        "laps": 20,
+        "lap_range": [
+          38,
+          57
+        ],
+        "duration_s": 1867.449
+      }
+    ]
+  },
+  "laps": [
+    {
+      "lap": 1,
+      "stint": 1,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 4,
+      "normal_lap_s": 96.7184,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.5656,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 97.284,
+      "cumulative_s": 97.284
+    },
+    {
+      "lap": 2,
+      "stint": 1,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 5,
+      "normal_lap_s": 96.7501,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 96.7501,
+      "cumulative_s": 194.03410000000002
+    },
+    {
+      "lap": 3,
+      "stint": 1,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 6,
+      "normal_lap_s": 96.7818,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 96.7818,
+      "cumulative_s": 290.81590000000006
+    },
+    {
+      "lap": 4,
+      "stint": 1,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 7,
+      "normal_lap_s": 96.8135,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 96.8135,
+      "cumulative_s": 387.62940000000003
+    },
+    {
+      "lap": 5,
+      "stint": 1,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 8,
+      "normal_lap_s": 96.8452,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 96.8452,
+      "cumulative_s": 484.4746
+    },
+    {
+      "lap": 6,
+      "stint": 1,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 9,
+      "normal_lap_s": 96.8769,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 96.8769,
+      "cumulative_s": 581.3515
+    },
+    {
+      "lap": 7,
+      "stint": 1,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 10,
+      "normal_lap_s": 96.9086,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 96.9086,
+      "cumulative_s": 678.2601
+    },
+    {
+      "lap": 8,
+      "stint": 1,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 11,
+      "normal_lap_s": 96.94030000000001,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 96.94030000000001,
+      "cumulative_s": 775.2004
+    },
+    {
+      "lap": 9,
+      "stint": 1,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 12,
+      "normal_lap_s": 96.972,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 96.972,
+      "cumulative_s": 872.1723999999999
+    },
+    {
+      "lap": 10,
+      "stint": 1,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 13,
+      "normal_lap_s": 97.00370000000001,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 97.00370000000001,
+      "cumulative_s": 969.1760999999999
+    },
+    {
+      "lap": 11,
+      "stint": 1,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 14,
+      "normal_lap_s": 97.0354,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 97.0354,
+      "cumulative_s": 1066.2115
+    },
+    {
+      "lap": 12,
+      "stint": 1,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 15,
+      "normal_lap_s": 97.06710000000001,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 97.06710000000001,
+      "cumulative_s": 1163.2785999999999
+    },
+    {
+      "lap": 13,
+      "stint": 1,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 16,
+      "normal_lap_s": 97.0988,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 97.0988,
+      "cumulative_s": 1260.3773999999999
+    },
+    {
+      "lap": 14,
+      "stint": 1,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 17,
+      "normal_lap_s": 97.13050000000001,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 97.13050000000001,
+      "cumulative_s": 1357.5078999999998
+    },
+    {
+      "lap": 15,
+      "stint": 1,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 18,
+      "normal_lap_s": 97.1622,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 97.1622,
+      "cumulative_s": 1454.6700999999998
+    },
+    {
+      "lap": 16,
+      "stint": 1,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 19,
+      "normal_lap_s": 97.19390000000001,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 97.19390000000001,
+      "cumulative_s": 1551.8639999999998
+    },
+    {
+      "lap": 17,
+      "stint": 1,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 20,
+      "normal_lap_s": 97.2256,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 25.5223,
+      "elapsed_s": 122.7479,
+      "cumulative_s": 1674.6118999999999
+    },
+    {
+      "lap": 18,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 1,
+      "normal_lap_s": 95.0022,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 95.0022,
+      "cumulative_s": 1769.6140999999998
+    },
+    {
+      "lap": 19,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 2,
+      "normal_lap_s": 95.063,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 95.063,
+      "cumulative_s": 1864.6770999999999
+    },
+    {
+      "lap": 20,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 3,
+      "normal_lap_s": 95.1238,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 95.1238,
+      "cumulative_s": 1959.8009
+    },
+    {
+      "lap": 21,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 4,
+      "normal_lap_s": 95.1846,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 95.1846,
+      "cumulative_s": 2054.9855
+    },
+    {
+      "lap": 22,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 5,
+      "normal_lap_s": 95.2454,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 95.2454,
+      "cumulative_s": 2150.2308999999996
+    },
+    {
+      "lap": 23,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 6,
+      "normal_lap_s": 95.3062,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 95.3062,
+      "cumulative_s": 2245.5370999999996
+    },
+    {
+      "lap": 24,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 7,
+      "normal_lap_s": 95.367,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 95.367,
+      "cumulative_s": 2340.9040999999997
+    },
+    {
+      "lap": 25,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 8,
+      "normal_lap_s": 95.42779999999999,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 95.42779999999999,
+      "cumulative_s": 2436.3318999999997
+    },
+    {
+      "lap": 26,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 9,
+      "normal_lap_s": 95.4886,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 95.4886,
+      "cumulative_s": 2531.8205
+    },
+    {
+      "lap": 27,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 10,
+      "normal_lap_s": 95.54939999999999,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 95.54939999999999,
+      "cumulative_s": 2627.3698999999997
+    },
+    {
+      "lap": 28,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 11,
+      "normal_lap_s": 95.6102,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 95.6102,
+      "cumulative_s": 2722.9800999999998
+    },
+    {
+      "lap": 29,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 12,
+      "normal_lap_s": 95.67099999999999,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 95.67099999999999,
+      "cumulative_s": 2818.6510999999996
+    },
+    {
+      "lap": 30,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 13,
+      "normal_lap_s": 95.7318,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 95.7318,
+      "cumulative_s": 2914.3828999999996
+    },
+    {
+      "lap": 31,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 14,
+      "normal_lap_s": 95.79260000000001,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 95.79260000000001,
+      "cumulative_s": 3010.1755
+    },
+    {
+      "lap": 32,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 15,
+      "normal_lap_s": 95.85340000000001,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 95.85340000000001,
+      "cumulative_s": 3106.0289
+    },
+    {
+      "lap": 33,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 16,
+      "normal_lap_s": 95.91420000000001,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 95.91420000000001,
+      "cumulative_s": 3201.9431
+    },
+    {
+      "lap": 34,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 17,
+      "normal_lap_s": 95.975,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 95.975,
+      "cumulative_s": 3297.9181
+    },
+    {
+      "lap": 35,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 18,
+      "normal_lap_s": 96.03580000000001,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 96.03580000000001,
+      "cumulative_s": 3393.9539
+    },
+    {
+      "lap": 36,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 19,
+      "normal_lap_s": 96.0966,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 96.0966,
+      "cumulative_s": 3490.0505
+    },
+    {
+      "lap": 37,
+      "stint": 2,
+      "compound": "HARD",
+      "tyre_age_end_laps": 20,
+      "normal_lap_s": 96.15740000000001,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 25.5223,
+      "elapsed_s": 121.67970000000001,
+      "cumulative_s": 3611.7302
+    },
+    {
+      "lap": 38,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 1,
+      "normal_lap_s": 93.07130000000001,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.07130000000001,
+      "cumulative_s": 3704.8015
+    },
+    {
+      "lap": 39,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 2,
+      "normal_lap_s": 93.10300000000001,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.10300000000001,
+      "cumulative_s": 3797.9045
+    },
+    {
+      "lap": 40,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 3,
+      "normal_lap_s": 93.13470000000001,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.13470000000001,
+      "cumulative_s": 3891.0392
+    },
+    {
+      "lap": 41,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 4,
+      "normal_lap_s": 93.1664,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.1664,
+      "cumulative_s": 3984.2056000000002
+    },
+    {
+      "lap": 42,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 5,
+      "normal_lap_s": 93.19810000000001,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.19810000000001,
+      "cumulative_s": 4077.4037000000003
+    },
+    {
+      "lap": 43,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 6,
+      "normal_lap_s": 93.2298,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.2298,
+      "cumulative_s": 4170.6335
+    },
+    {
+      "lap": 44,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 7,
+      "normal_lap_s": 93.26150000000001,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.26150000000001,
+      "cumulative_s": 4263.8949999999995
+    },
+    {
+      "lap": 45,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 8,
+      "normal_lap_s": 93.2932,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.2932,
+      "cumulative_s": 4357.1882
+    },
+    {
+      "lap": 46,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 9,
+      "normal_lap_s": 93.32490000000001,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.32490000000001,
+      "cumulative_s": 4450.513099999999
+    },
+    {
+      "lap": 47,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 10,
+      "normal_lap_s": 93.3566,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.3566,
+      "cumulative_s": 4543.869699999999
+    },
+    {
+      "lap": 48,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 11,
+      "normal_lap_s": 93.38830000000002,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.38830000000002,
+      "cumulative_s": 4637.257999999999
+    },
+    {
+      "lap": 49,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 12,
+      "normal_lap_s": 93.42,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.42,
+      "cumulative_s": 4730.677999999999
+    },
+    {
+      "lap": 50,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 13,
+      "normal_lap_s": 93.4517,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.4517,
+      "cumulative_s": 4824.129699999999
+    },
+    {
+      "lap": 51,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 14,
+      "normal_lap_s": 93.4834,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.4834,
+      "cumulative_s": 4917.613099999999
+    },
+    {
+      "lap": 52,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 15,
+      "normal_lap_s": 93.5151,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.5151,
+      "cumulative_s": 5011.128199999998
+    },
+    {
+      "lap": 53,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 16,
+      "normal_lap_s": 93.5468,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.5468,
+      "cumulative_s": 5104.674999999998
+    },
+    {
+      "lap": 54,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 17,
+      "normal_lap_s": 93.5785,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.5785,
+      "cumulative_s": 5198.253499999998
+    },
+    {
+      "lap": 55,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 18,
+      "normal_lap_s": 93.6102,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.6102,
+      "cumulative_s": 5291.863699999998
+    },
+    {
+      "lap": 56,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 19,
+      "normal_lap_s": 93.6419,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.6419,
+      "cumulative_s": 5385.505599999998
+    },
+    {
+      "lap": 57,
+      "stint": 3,
+      "compound": "SOFT",
+      "tyre_age_end_laps": 20,
+      "normal_lap_s": 93.6736,
+      "noise_s": 0.0,
+      "start_penalty_s": 0.0,
+      "additional_pit_loss_s": 0.0,
+      "elapsed_s": 93.6736,
+      "cumulative_s": 5479.179199999998
+    }
+  ],
+  "events": [
+    {
+      "event": "lap_completed",
+      "lap": 1,
+      "clock_s": 97.284
+    },
+    {
+      "event": "lap_completed",
+      "lap": 2,
+      "clock_s": 194.03410000000002
+    },
+    {
+      "event": "lap_completed",
+      "lap": 3,
+      "clock_s": 290.81590000000006
+    },
+    {
+      "event": "lap_completed",
+      "lap": 4,
+      "clock_s": 387.62940000000003
+    },
+    {
+      "event": "lap_completed",
+      "lap": 5,
+      "clock_s": 484.4746
+    },
+    {
+      "event": "lap_completed",
+      "lap": 6,
+      "clock_s": 581.3515
+    },
+    {
+      "event": "lap_completed",
+      "lap": 7,
+      "clock_s": 678.2601
+    },
+    {
+      "event": "lap_completed",
+      "lap": 8,
+      "clock_s": 775.2004
+    },
+    {
+      "event": "lap_completed",
+      "lap": 9,
+      "clock_s": 872.1723999999999
+    },
+    {
+      "event": "lap_completed",
+      "lap": 10,
+      "clock_s": 969.1760999999999
+    },
+    {
+      "event": "lap_completed",
+      "lap": 11,
+      "clock_s": 1066.2115
+    },
+    {
+      "event": "lap_completed",
+      "lap": 12,
+      "clock_s": 1163.2785999999999
+    },
+    {
+      "event": "lap_completed",
+      "lap": 13,
+      "clock_s": 1260.3773999999999
+    },
+    {
+      "event": "lap_completed",
+      "lap": 14,
+      "clock_s": 1357.5078999999998
+    },
+    {
+      "event": "lap_completed",
+      "lap": 15,
+      "clock_s": 1454.6700999999998
+    },
+    {
+      "event": "lap_completed",
+      "lap": 16,
+      "clock_s": 1551.8639999999998
+    },
+    {
+      "event": "lap_completed",
+      "lap": 17,
+      "clock_s": 1649.0895999999998
+    },
+    {
+      "event": "tyres_changed",
+      "lap": 17,
+      "clock_s": 1674.6118999999999,
+      "next_compound": "HARD"
+    },
+    {
+      "event": "lap_completed",
+      "lap": 18,
+      "clock_s": 1769.6140999999998
+    },
+    {
+      "event": "lap_completed",
+      "lap": 19,
+      "clock_s": 1864.6770999999999
+    },
+    {
+      "event": "lap_completed",
+      "lap": 20,
+      "clock_s": 1959.8009
+    },
+    {
+      "event": "lap_completed",
+      "lap": 21,
+      "clock_s": 2054.9855
+    },
+    {
+      "event": "lap_completed",
+      "lap": 22,
+      "clock_s": 2150.2308999999996
+    },
+    {
+      "event": "lap_completed",
+      "lap": 23,
+      "clock_s": 2245.5370999999996
+    },
+    {
+      "event": "lap_completed",
+      "lap": 24,
+      "clock_s": 2340.9040999999997
+    },
+    {
+      "event": "lap_completed",
+      "lap": 25,
+      "clock_s": 2436.3318999999997
+    },
+    {
+      "event": "lap_completed",
+      "lap": 26,
+      "clock_s": 2531.8205
+    },
+    {
+      "event": "lap_completed",
+      "lap": 27,
+      "clock_s": 2627.3698999999997
+    },
+    {
+      "event": "lap_completed",
+      "lap": 28,
+      "clock_s": 2722.9800999999998
+    },
+    {
+      "event": "lap_completed",
+      "lap": 29,
+      "clock_s": 2818.6510999999996
+    },
+    {
+      "event": "lap_completed",
+      "lap": 30,
+      "clock_s": 2914.3828999999996
+    },
+    {
+      "event": "lap_completed",
+      "lap": 31,
+      "clock_s": 3010.1755
+    },
+    {
+      "event": "lap_completed",
+      "lap": 32,
+      "clock_s": 3106.0289
+    },
+    {
+      "event": "lap_completed",
+      "lap": 33,
+      "clock_s": 3201.9431
+    },
+    {
+      "event": "lap_completed",
+      "lap": 34,
+      "clock_s": 3297.9181
+    },
+    {
+      "event": "lap_completed",
+      "lap": 35,
+      "clock_s": 3393.9539
+    },
+    {
+      "event": "lap_completed",
+      "lap": 36,
+      "clock_s": 3490.0505
+    },
+    {
+      "event": "lap_completed",
+      "lap": 37,
+      "clock_s": 3586.2079
+    },
+    {
+      "event": "tyres_changed",
+      "lap": 37,
+      "clock_s": 3611.7302,
+      "next_compound": "SOFT"
+    },
+    {
+      "event": "lap_completed",
+      "lap": 38,
+      "clock_s": 3704.8015
+    },
+    {
+      "event": "lap_completed",
+      "lap": 39,
+      "clock_s": 3797.9045
+    },
+    {
+      "event": "lap_completed",
+      "lap": 40,
+      "clock_s": 3891.0392
+    },
+    {
+      "event": "lap_completed",
+      "lap": 41,
+      "clock_s": 3984.2056000000002
+    },
+    {
+      "event": "lap_completed",
+      "lap": 42,
+      "clock_s": 4077.4037000000003
+    },
+    {
+      "event": "lap_completed",
+      "lap": 43,
+      "clock_s": 4170.6335
+    },
+    {
+      "event": "lap_completed",
+      "lap": 44,
+      "clock_s": 4263.8949999999995
+    },
+    {
+      "event": "lap_completed",
+      "lap": 45,
+      "clock_s": 4357.1882
+    },
+    {
+      "event": "lap_completed",
+      "lap": 46,
+      "clock_s": 4450.513099999999
+    },
+    {
+      "event": "lap_completed",
+      "lap": 47,
+      "clock_s": 4543.869699999999
+    },
+    {
+      "event": "lap_completed",
+      "lap": 48,
+      "clock_s": 4637.257999999999
+    },
+    {
+      "event": "lap_completed",
+      "lap": 49,
+      "clock_s": 4730.677999999999
+    },
+    {
+      "event": "lap_completed",
+      "lap": 50,
+      "clock_s": 4824.129699999999
+    },
+    {
+      "event": "lap_completed",
+      "lap": 51,
+      "clock_s": 4917.613099999999
+    },
+    {
+      "event": "lap_completed",
+      "lap": 52,
+      "clock_s": 5011.128199999998
+    },
+    {
+      "event": "lap_completed",
+      "lap": 53,
+      "clock_s": 5104.674999999998
+    },
+    {
+      "event": "lap_completed",
+      "lap": 54,
+      "clock_s": 5198.253499999998
+    },
+    {
+      "event": "lap_completed",
+      "lap": 55,
+      "clock_s": 5291.863699999998
+    },
+    {
+      "event": "lap_completed",
+      "lap": 56,
+      "clock_s": 5385.505599999998
+    },
+    {
+      "event": "lap_completed",
+      "lap": 57,
+      "clock_s": 5479.179199999998
+    }
+  ]
+}
