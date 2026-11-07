@@ -10,6 +10,13 @@
   "reference_lap_source": "Jolpica (API compatible con Ergast), CC BY-NC-SA 4.0: https://api.jolpi.ca/ergast/f1/",
   "jolpica_round": 1,
   "jolpica_driver_id": "max_verstappen",
+  "partition": {
+    "scheme": "holdout_last_stint",
+    "validation_stint": 3,
+    "decided_on": "2026-11-06",
+    "decided_by": "Mario Fernando Rocha (decisión delegada por Luis Pedro Lira y Jonathan Zacarias)",
+    "rationale": "Validación temporal: el modelo predice un tramo posterior que no vio. Ver docs/particion_validacion.md."
+  },
   "status": "CANDIDATE_PENDING_AUDIT_AND_CALIBRATION",
   "note": "El tiempo oficial es una referencia observada, nunca un parámetro para forzar un ajuste exacto."
 }
