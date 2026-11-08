@@ -74,9 +74,9 @@ Sin Safety Car, VSC, bandera roja ni lluvia en esta carrera. Las reglas quedan i
 - **Ritmo administrado:** VER lideró con amplia ventaja. Sus tiempos no representan necesariamente el ritmo máximo. Debe declararse como limitación del modelo.
 - **Tendencia de pista:** la temperatura de pista baja de 23.8 a 21.9 °C durante la carrera. Se confunde con el combustible en la "tendencia de carrera" (hallazgo 7 del plan; ver MA-03).
 
-## 5. Revisión de Luis Pedro (pendiente)
+## 5. Revisión de Luis Pedro
 
-- [ ] Las reglas de la sección 2 son aceptables y se fijaron antes de calibrar.
-- [ ] La tabla `docs/evidence/openf1_exclusiones.csv` coincide con lo que obtiene al regenerar.
-- [ ] De acuerdo con no excluir atípicos ni amarillas locales.
-- [ ] Observaciones / fecha / commit de revisión: ______
+- [x] Las reglas de la sección 2 son aceptables y se fijaron antes de calibrar. El filtro es del commit `0b34cde` y la calibración, del `c8ed5bd`.
+- [x] La tabla `docs/evidence/openf1_exclusiones.csv` coincide línea por línea con `data/processed/openf1_exclusions.csv` al regenerar.
+- [x] De acuerdo con no excluir atípicos ni amarillas locales. La validación conserva las vueltas 39 y 40 en los conjuntos preregistrados, aunque concentran los mayores errores.
+- [x] Observaciones / fecha / commit: 2026-11-08, rama `luis-pedro/validacion`. La vuelta 46 queda fuera de la validación, pero cuenta en la reconstrucción: su error (+0.908 s) está en el tramo `stint_3_normal`.

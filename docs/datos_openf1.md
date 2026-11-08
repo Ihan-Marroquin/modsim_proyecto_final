@@ -179,9 +179,9 @@ Cobertura por compuesto en el dato crudo: SOFT con edades 4–20 (stint 1, juego
 5. La fuente no es oficial. Las comparaciones contra el total FIA deben reconciliar convenciones antes de interpretarse.
 6. La disponibilidad depende de que no haya una sesión en vivo (sección 1).
 
-## 8. Revisión de Luis Pedro (pendiente)
+## 8. Revisión de Luis Pedro
 
-- [ ] Reproduce `python main.py download` (o usa la caché compartida) y obtiene las mismas `sha256_portable`.
+- [x] Reproduce `python main.py download` y obtiene las mismas `sha256_portable` de los seis JSON (2026-11-08, ver `docs/particion_validacion.md`, sección 5). Las demás casillas siguen pendientes.
 - [ ] Confirma diccionario, unidades y convención de `tyre_life_laps`.
 - [ ] Revisa la interpretación de licencia y la nota sobre redistribución.
 - [ ] Observaciones / fecha / commit de revisión: ______

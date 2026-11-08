@@ -131,7 +131,7 @@ sens = {k: parameters_from_dict(v) for k, v in cfg['sensitivity_parameters'].ite
 
 ## 7. Revisión
 
-- [ ] Luis Pedro: reproduce `python main.py calibrate`, obtiene los mismos parámetros y `validation_laps_read: []`.
+- [x] Luis Pedro: reproduce `python main.py calibrate`, obtiene los mismos parámetros y `validation_laps_read: []` (2026-11-08). `parameters`, `sensitivity_parameters` y `details` son idénticos a `docs/evidence/calibracion.json`. La pérdida de pits se comprobó con la parada 37–38 en LP-03 (`docs/validacion_experimentos.md`).
 - [x] Jonathan: confirma convención de pits y arranque y el escenario principal de tendencia (2026-11-06, JO-01/JO-02/JO-03; ver `docs/modelo_simulacion.md`).
 - [ ] Verificar en Heilmeier et al. (2018) la definición de `t_lap_sens_mass` y `b_fuel_perlap`.
 - [x] Observaciones / fecha / commit: 2026-11-06, Jonathan Zacarias revisó y confirmó las convenciones en `src/model.py` y `src/simulation.py`.

@@ -60,8 +60,8 @@ Recordatorio: el tiempo en el pit lane **no** es la pérdida adicional frente a 
 - Jolpica es un proyecto voluntario sin garantía de exactitud (sus términos lo dicen). Su respaldo aquí es que su suma coincide exactamente con el total FIA y su vuelta rápida con la clasificación FIA.
 - No se obtuvo el PDF oficial *Race Lap Analysis* de la FIA con la vuelta 1 de VER: la página de clasificación no lo enlaza. Si alguien lo consigue, conviene contrastar la vuelta 1 (esperado: 1:37.284).
 
-## 7. Revisión de Luis Pedro (pendiente)
+## 7. Revisión de Luis Pedro
 
-- [ ] Reproduce `python main.py reconcile` y obtiene una sola vuelta distinta (la 1, +0.475 s).
-- [ ] De acuerdo con las decisiones 3 y 4 para JO-02 y LP-03.
-- [ ] Observaciones / fecha / commit de revisión: ______
+- [x] Reproduce `python main.py reconcile` y obtiene una sola vuelta distinta (la 1, +0.475 s). 56 de 57 vueltas coinciden, la suma de Jolpica es 5504.742 s y los pits son 25.0/25.064 s y 24.2/24.209 s.
+- [x] De acuerdo con las decisiones 3 y 4 para JO-02 y LP-03. `src/validation.py` usa la vuelta 1 de 97.284 s y compara contra 5504.742 s. Además comprueba que las vueltas 2–57 de OpenF1 sean iguales a la referencia; si no lo son, se detiene.
+- [x] Observaciones / fecha / commit: 2026-11-08, rama `luis-pedro/validacion`. La diferencia de 0.855 s en pit lane entre ambas paradas según la FIA (25.064 contra 24.209 s) coincide con la diferencia de pérdida que encontró LP-03 en la parada 37–38: la calibrada supera a la implícita en 0.848 s. Ver `docs/validacion_experimentos.md`.
