@@ -209,4 +209,4 @@ En una parada real en boxes se ven afectadas dos vueltas: la vuelta de entrada (
 - [x] **Jonathan Zacarias (JO-02):** Modelado de arranque, pérdida de pits sin doble conteo y juegos usados completados.
 - [x] **Jonathan Zacarias (JO-03):** Conexión de parámetros reales, simulación determinista/estocástica y CLI completados.
 - [ ] **Ihan Marroquin (IH-05):** Verificar compatibilidad con los operadores de recocido e inicializadores de estrategias.
-- [ ] **Luis Pedro Lira (LP-02, LP-03):** Ejecutar validación formal contra el conjunto reservado del Stint 3 con esta salida del simulador.
+- [x] **Luis Pedro Lira (LP-02, LP-03):** Validación formal contra el stint 3 reservado con esta salida del simulador, sin reajuste (2026-11-08). Se reproduce el total de 5514.6992 s y la diferencia de +9.957 s, que se descompone en +0.848 s de la parada 37–38 y +9.111 s del stint 3. Ver `docs/validacion_experimentos.md`.
