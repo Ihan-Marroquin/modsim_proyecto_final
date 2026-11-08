@@ -66,13 +66,13 @@ Decidido antes de ver cualquier resultado de optimización.
 | Alternativa / observado | 1746 | 0 | 1746 | Sí |
 
 **Lectura:**
-1. **Con cobertura estricta solo cabe la estrategia histórica.** Las 6 estrategias son la misma combinación de 17 + 20 + 20 vueltas en distinto orden. Optimizar ahí no tiene sentido; se reporta como evidencia de que, con lo que corrió VER, la estrategia estaba casi forzada.
+1. **La cobertura estricta admite seis órdenes de los mismos stints.** Todos usan los juegos SOFT de edad 3, SOFT nuevo y HARD nuevo durante 17, 20 y 20 vueltas, respectivamente. Bajo el modelo aditivo actual tienen el mismo tiempo determinista hasta el redondeo numérico.
 2. **Ninguna estrategia de una parada es factible** en ningún escenario respaldado por datos. Requeriría un HARD de al menos 36 vueltas y nadie pasó de 30. La comparación 1 contra 2 paradas del plan queda respondida por factibilidad: **en este caso no hay estrategia de una parada que comparar.** Ampliar el límite para forzarla sería fabricar resultados.
 3. **El escenario principal de búsqueda es `observed_race_feasibility`**: 1323 estrategias, suficiente para que el recocido tenga sentido. Cualquier stint de VER con edad mayor a 20 es **extrapolación del modelo**: otro piloto lo corrió, pero el modelo de VER no lo vio. Se marca y se analiza aparte.
 
 ## 5. Qué necesitan Ihan y Jonathan
 
-- **Ihan (IH-05):** `Constraints.max_sets_by_compound` solo cuenta stints por compuesto; no distingue juegos con edades distintas. Además, `propose_neighbor` rechaza hoy los juegos usados (`initial_age != 0`). Para buscar en este espacio hace falta un inventario por juego (lista de `{compound, initial_age}`, cada uno usado a lo sumo una vez). `src/inventory.py::enumerate_feasible` ya genera todas las estrategias factibles. Sirve para comprobar el recocido contra la enumeración exhaustiva (1323 casos, tamaño manejable) y como generador de soluciones iniciales factibles.
+- **Ihan (IH-05):** `src/optimization_case.py` carga el inventario por juego y usa `enumerate_feasible` para generar inicializaciones, filtrar propuestas y comprobar el mínimo del espacio completo. Los juegos con igual compuesto y edad conservan su multiplicidad antes de deduplicar estrategias equivalentes.
 - **Jonathan (JO-02):** los juegos usados conservan su edad (`TyreStint.initial_age`). El SOFT de salida tiene edad 3, no 0, igual que en los datos.
 
 ## 6. Limitaciones
@@ -85,6 +85,6 @@ Decidido antes de ver cualquier resultado de optimización.
 ## 7. Revisión
 
 - [ ] Luis Pedro: reproduce `python main.py inventory` y los conteos 6 / 1323 / 1746.
-- [ ] Ihan: confirma que puede representar el inventario por juego en IH-05.
+- [x] Ihan: confirma la representación por juego y verifica la candidata contra el catálogo en IH-05 (2026-11-08).
 - [x] Jonathan: confirma la convención de edad de los juegos usados (edad al terminar la vuelta = initial_age + vuelta_en_stint; SOFT inicial de edad 3 alcanza edad 4 en vuelta 1 y 20 en vuelta 17).
 - [x] Observaciones / fecha / commit: 2026-11-06, Jonathan Zacarias implementó la convención en `src/model.py` y `src/simulation.py`.

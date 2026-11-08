@@ -35,7 +35,16 @@ def main():
     search = sub.add_parser('optimize-demo', help='Probar el optimizador en un caso SINTÉTICO')
     search.add_argument('--seed', type=int, default=42)
     search.add_argument('--runs', type=int, default=1)
+    calibrated_search = sub.add_parser('optimize', help='Ejecutar pilotos y recocido calibrado de Bahréin')
+    calibrated_search.add_argument('--output-dir', default='results/optimization')
     args = parser.parse_args()
+    if args.command == 'optimize':
+        from src.optimization_case import run_calibrated_search
+        out = ROOT / args.output_dir
+        report = run_calibrated_search(ROOT, out)
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+        print(f'Evidencia y candidata: {out}')
+        return
     if args.command == 'download':
         config = json.loads((ROOT/'configs/case_bahrain_2024.json').read_text(encoding='utf-8'))
         if args.provider == 'openf1':

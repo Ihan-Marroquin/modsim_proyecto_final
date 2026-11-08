@@ -1,0 +1,21 @@
+{
+  "stops_after_lap": [
+    17,
+    36
+  ],
+  "stints": [
+    {
+      "compound": "SOFT",
+      "initial_age": 3
+    },
+    {
+      "compound": "SOFT",
+      "initial_age": 0
+    },
+    {
+      "compound": "HARD",
+      "initial_age": 0
+    }
+  ],
+  "name": "candidate_ver_bahrain_2024"
+}

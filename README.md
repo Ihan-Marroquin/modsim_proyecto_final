@@ -3,13 +3,11 @@
 Proyecto de Modelización y Simulación. Repositorio de trabajo técnico:
 https://github.com/Ihan-Marroquin/modsim_proyecto_final
 
-## Entrega inicial de Ihan realizada
+## Estado del caso de Bahréin 2024
 
-Ihan Marroquin, con asistencia de Codex, completó la implementación inicial del recocido simulado discreto, las restricciones, el historial de convergencia, la referencia exhaustiva pequeña y 30 búsquedas sintéticas reproducibles. La base incluye contratos compartidos, un simulador mínimo por eventos y una descarga pública del caso candidato.
+El simulador y el recocido discreto usan parámetros calibrados con 33 vueltas de entrenamiento de Verstappen. El inventario inferido admite 1323 estrategias de dos paradas y ninguna de una. El recocido igualó el mejor valor de la enumeración en 29 de 30 búsquedas.
 
-Verificación de arranque: **18 pruebas aprobadas**. Las semillas 100–129 alcanzaron el resultado exacto del caso sintético de referencia. Evidencia en `docs/evidence/` y explicación del método en `docs/tecnica_recocido.md`.
-
-Esto documenta la parte inicial realizada. El modelo todavía necesita parámetros calibrados, revisión de datos e integración antes de ejecutar los experimentos finales sobre el caso real. Las demos no demuestran una mejora histórica de F1.
+La candidata congelada para en las vueltas **17 y 36**. La ventaja determinista estimada sobre la estrategia histórica simulada es de **0.075 s**. La validación en las vueltas reservadas y la evaluación A/B/C/D siguen pendientes. Ver [método y límites](docs/tecnica_recocido.md) y [resumen reproducible](docs/evidence/optimization/summary.json).
 
 ## Ejecución
 
@@ -17,12 +15,14 @@ Python 3.12 recomendado. Desde la raíz del repositorio:
 
 ```powershell
 python -m unittest discover -s tests -v
+python main.py optimize
+python main.py simulate --strategy docs/evidence/optimization/candidate.json
 python main.py demo --stochastic --seed 42
 python main.py optimize-demo --seed 100 --runs 30
 python main.py download
 ```
 
-El núcleo, las pruebas, las demos y la descarga histórica OpenF1 usan la biblioteca estándar. La descarga requiere internet; conserva respuestas para reutilizarlas sin repetir solicitudes innecesarias.
+La optimización y la simulación se ejecutan sin internet con los parámetros versionados. `optimize` genera el resumen, la candidata, los pilotos y las trazas en `results/optimization/`. La descarga OpenF1 sí requiere internet y conserva las respuestas para reutilizarlas.
 
 Para bibliotecas opcionales de análisis:
 
@@ -37,8 +37,8 @@ En macOS/Linux, el ejecutable del entorno está en `.venv/bin/python`. `requirem
 
 - `src/domain.py`: estrategias, juegos de neumáticos, límites y parámetros.
 - `src/constraints.py`: comprobación de factibilidad dentro del alcance configurado.
-- `src/simulation.py`: motor mínimo, todavía sin calibración empírica.
-- `src/optimization.py`: implementación inicial del recocido discreto de Ihan.
+- `src/model.py` y `src/simulation.py`: carga de parámetros y motor de carrera calibrado.
+- `src/optimization.py` y `src/optimization_case.py`: recocido discreto y protocolo para Bahréin.
 - `src/openf1_data.py`: adquisición histórica pública comprobada.
 - `src/data.py`: auditoría y adaptador alternativo FastF1.
 - `tests/`: consistencia del motor, optimizador y manejo de datos.
@@ -47,7 +47,7 @@ En macOS/Linux, el ejecutable del entorno está en `.venv/bin/python`. `requirem
 
 ## Caso candidato y datos
 
-Se descargaron 57 vueltas de VER en Bahréin 2024, stints, pits, clima y control de carrera. La suma de vueltas es 5505.217 s frente a 5504.742 s de la referencia FIA: diferencia de 0.475 s pendiente de reconciliar. Ver `data/README.md` y `docs/evidence/openf1_acquisition.json`.
+Se descargaron 57 vueltas de VER, stints, pits, clima y control de carrera. La conciliación con Jolpica y FIA ubicó la diferencia de 0.475 s en la convención de la primera vuelta. Ver [conciliación](docs/conciliacion_tiempos.md) y [partición para validación](docs/particion_validacion.md).
 
 Los datos regenerables y caches quedan excluidos de Git. OpenF1 no ofrece las mismas banderas de calidad de FastF1; no se rellenan desconocidos como si fueran observados. La descarga FastF1 3.9.2 no obtuvo timing sin autenticación en la sesión inicial; OpenF1 es la vía comprobada. No guardar credenciales.
 

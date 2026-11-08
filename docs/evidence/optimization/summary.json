@@ -1,0 +1,209 @@
+{
+  "case": {
+    "event": "Bahrain",
+    "year": 2024,
+    "driver": "VER"
+  },
+  "inventory": "inventory_main",
+  "inventory_scenario": "observed_race_feasibility",
+  "inventory_status": "INFERRED_NOT_CERTIFIED_PENDING_REVIEW",
+  "trend_scenario": "trend_fuel_reference",
+  "parameter_provenance": "CALIBRATED_MA04_TRAINING_ONLY_TREND_FUEL_REFERENCE",
+  "input_sha256_portable": {
+    "optimizer": "105e78bc68e39dbe77c60c5f0cd5c580ed4752dd645f022dccd8458573e50a01",
+    "case_bahrain_2024": "def8c1f8398002546fc42e7eafc024bbbc4ba2d09b6d3dba6ff253a946a7fa26",
+    "params_bahrain_2024": "e73439312822d442ed0d8c09e787782aac747c88bb751bdd0867e8736cffe869",
+    "tyre_inventory_bahrain_2024": "496568c380eaccd35ca40d676b4055600b2b190354f56df7c890efec86416dca"
+  },
+  "objective": {
+    "mode": "deterministic",
+    "degradation_multiplier": 1.0
+  },
+  "feasible_by_stops": {
+    "1": 0,
+    "2": 1323
+  },
+  "reference_by_stops": {
+    "2": {
+      "strategy": {
+        "stops_after_lap": [
+          21,
+          41
+        ],
+        "stints": [
+          {
+            "compound": "HARD",
+            "initial_age": 0
+          },
+          {
+            "compound": "SOFT",
+            "initial_age": 0
+          },
+          {
+            "compound": "SOFT",
+            "initial_age": 3
+          }
+        ],
+        "name": "candidate_ver_bahrain_2024"
+      },
+      "time_s": 5514.624199999996,
+      "objective_evaluations": 1323
+    }
+  },
+  "pilot_by_stops": {
+    "2": {
+      "profiles": [
+        {
+          "name": "compacto",
+          "settings": {
+            "iterations": 120,
+            "initial_temperature_s": 1,
+            "cooling_factor": 0.97,
+            "minimum_temperature_s": 1e-06,
+            "allow_compound_changes": false
+          },
+          "exact_fraction": 1,
+          "mean_gap_s": 3.001332515850663e-12,
+          "mean_evaluations": 63.4
+        },
+        {
+          "name": "medio",
+          "settings": {
+            "iterations": 300,
+            "initial_temperature_s": 1,
+            "cooling_factor": 0.98,
+            "minimum_temperature_s": 1e-06,
+            "allow_compound_changes": false
+          },
+          "exact_fraction": 1,
+          "mean_gap_s": 2.3646862246096135e-12,
+          "mean_evaluations": 158.9
+        },
+        {
+          "name": "amplio",
+          "settings": {
+            "iterations": 600,
+            "initial_temperature_s": 3,
+            "cooling_factor": 0.99,
+            "minimum_temperature_s": 1e-06,
+            "allow_compound_changes": false
+          },
+          "exact_fraction": 1,
+          "mean_gap_s": 1.8189894035458565e-12,
+          "mean_evaluations": 314.7
+        },
+        {
+          "name": "demo",
+          "settings": {
+            "iterations": 1000,
+            "initial_temperature_s": 5,
+            "cooling_factor": 0.995,
+            "minimum_temperature_s": 1e-06,
+            "allow_compound_changes": false
+          },
+          "exact_fraction": 1,
+          "mean_gap_s": 1.0913936421275138e-12,
+          "mean_evaluations": 551
+        }
+      ],
+      "selected": "compacto",
+      "met_pilot_threshold": true
+    }
+  },
+  "strict_diagnostic": {
+    "count_by_stops": {
+      "1": 0,
+      "2": 6
+    },
+    "best_time_s": 5514.699199999997
+  },
+  "historical": {
+    "strategy": {
+      "stops_after_lap": [
+        17,
+        37
+      ],
+      "stints": [
+        {
+          "compound": "SOFT",
+          "initial_age": 3
+        },
+        {
+          "compound": "HARD",
+          "initial_age": 0
+        },
+        {
+          "compound": "SOFT",
+          "initial_age": 0
+        }
+      ],
+      "name": "historical_ver_bahrain_2024"
+    },
+    "time_s": 5514.699200000002
+  },
+  "frozen_candidate": {
+    "strategy": {
+      "stops_after_lap": [
+        17,
+        36
+      ],
+      "stints": [
+        {
+          "compound": "SOFT",
+          "initial_age": 3
+        },
+        {
+          "compound": "SOFT",
+          "initial_age": 0
+        },
+        {
+          "compound": "HARD",
+          "initial_age": 0
+        }
+      ],
+      "name": "candidate_ver_bahrain_2024"
+    },
+    "seed": 2100,
+    "time_s": 5514.624199999998,
+    "gap_to_reference_s": 2.7284841053187847e-12,
+    "laps_with_age_over_20": [
+      57
+    ]
+  },
+  "predicted_saving_s": 0.07500000000345608,
+  "search_run_count": 30,
+  "search_runs_at_reference": 29,
+  "max_search_gap_s": 0.15220000000590517,
+  "evaluation_seeds_reserved": [
+    3300,
+    3301,
+    3302,
+    3303,
+    3304,
+    3305,
+    3306,
+    3307,
+    3308,
+    3309,
+    3310,
+    3311,
+    3312,
+    3313,
+    3314,
+    3315,
+    3316,
+    3317,
+    3318,
+    3319,
+    3320,
+    3321,
+    3322,
+    3323,
+    3324,
+    3325,
+    3326,
+    3327,
+    3328,
+    3329
+  ]
+}
