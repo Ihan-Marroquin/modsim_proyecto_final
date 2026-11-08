@@ -1,10 +1,4 @@
-"""Recocido simulado discreto inicial de Ihan; objetivo determinista.
-
-El número de paradas y las edades iniciales de cada slot son fijos en cada
-búsqueda. Para comparar 1/2 paradas se ejecutan búsquedas independientes.
-Cambiar compuestos solo está implementado para el supuesto de juegos nuevos.
-La integración con el inventario histórico real sigue pendiente.
-"""
+"""Recocido simulado discreto con objetivo determinista y paradas fijas por búsqueda."""
 import itertools
 import math
 import random
@@ -54,6 +48,17 @@ def propose_neighbor(current: Strategy, limits: Constraints, rng: random.Random,
 
 def optimize(initial: Strategy, params: ModelParameters, limits: Constraints,
              settings: SearchSettings = SearchSettings(), *, seed: int = 0) -> dict:
+    if settings.allow_compound_changes and any(s.initial_age != 0 for s in initial.stints):
+        raise ValueError('La demo requiere juegos nuevos para cambiar compuestos')
+    return anneal(
+        initial, params, limits, settings, random.Random(seed),
+        lambda current, rng: propose_neighbor(current, limits, rng, settings.allow_compound_changes),
+    ) | {'seed': seed}
+
+
+def anneal(initial: Strategy, params: ModelParameters, limits: Constraints,
+           settings: SearchSettings, rng: random.Random, propose) -> dict:
+    """Motor común. El operador devuelve None si el movimiento no es factible."""
     if validate_strategy(initial, limits):
         raise ValueError('La estrategia inicial no es factible')
     if type(settings.iterations) is not int or settings.iterations < 1:
@@ -63,22 +68,19 @@ def optimize(initial: Strategy, params: ModelParameters, limits: Constraints,
         raise ValueError('Configuración de temperatura debe ser finita')
     if not 0 < settings.cooling_factor < 1 or not 0 < settings.minimum_temperature_s <= settings.initial_temperature_s:
         raise ValueError('Se requiere 0 < cooling < 1 y 0 < Tmin <= T0')
-    if settings.allow_compound_changes and any(s.initial_age != 0 for s in initial.stints):
-        raise ValueError('Cambios de compuesto con neumáticos usados aún no implementados')
     current, best = initial, initial
     current_score = simulate(current, params, limits)['total_time_s']
     initial_score = current_score
     best_score = current_score
-    rng = random.Random(seed)
     temperature = settings.initial_temperature_s
     evaluations = 1
     history = []
     for iteration in range(1, settings.iterations + 1):
-        candidate = propose_neighbor(current, limits, rng, settings.allow_compound_changes)
-        violations = validate_strategy(candidate, limits)
+        candidate = propose(current, rng)
+        feasible = candidate is not None and not validate_strategy(candidate, limits)
         accepted = False
         candidate_score = None
-        if not violations:
+        if feasible:
             candidate_score = simulate(candidate, params, limits)['total_time_s']
             evaluations += 1
             delta = candidate_score - current_score
@@ -88,12 +90,12 @@ def optimize(initial: Strategy, params: ModelParameters, limits: Constraints,
                 if current_score < best_score:
                     best, best_score = current, current_score
         history.append({'iteration': iteration, 'temperature_s': temperature,
-                        'candidate_feasible': not violations, 'accepted': accepted,
+                        'candidate_feasible': feasible, 'accepted': accepted,
                         'candidate_s': candidate_score, 'current_s': current_score,
                         'best_s': best_score, 'objective_evaluations': evaluations})
         temperature = max(settings.minimum_temperature_s, temperature * settings.cooling_factor)
     return {'strategy': best, 'best_time_s': best_score, 'initial_time_s': initial_score,
-            'seed': seed, 'objective_evaluations': evaluations, 'history': history,
+            'objective_evaluations': evaluations, 'history': history,
             'parameter_provenance': params.provenance,
             'objective_kind': 'DETERMINISTIC_APPROXIMATION_OF_EXPECTED_TIME'}
 

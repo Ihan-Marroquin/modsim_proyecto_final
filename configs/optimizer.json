@@ -1,0 +1,16 @@
+{
+  "inventory": "inventory_main",
+  "trend_scenario": "trend_fuel_reference",
+  "global_move_probability": 0.05,
+  "pilot_seeds": [1100, 1101, 1102, 1103, 1104, 1105, 1106, 1107, 1108, 1109],
+  "search_seeds": [2100, 2101, 2102, 2103, 2104, 2105, 2106, 2107, 2108, 2109, 2110, 2111, 2112, 2113, 2114, 2115, 2116, 2117, 2118, 2119, 2120, 2121, 2122, 2123, 2124, 2125, 2126, 2127, 2128, 2129],
+  "evaluation_seeds_reserved": [3300, 3301, 3302, 3303, 3304, 3305, 3306, 3307, 3308, 3309, 3310, 3311, 3312, 3313, 3314, 3315, 3316, 3317, 3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329],
+  "pilot_min_exact_fraction": 0.9,
+  "exact_tolerance_s": 1e-8,
+  "pilot_settings": {
+    "compacto": {"iterations": 120, "initial_temperature_s": 1, "cooling_factor": 0.97},
+    "medio": {"iterations": 300, "initial_temperature_s": 1, "cooling_factor": 0.98},
+    "amplio": {"iterations": 600, "initial_temperature_s": 3, "cooling_factor": 0.99},
+    "demo": {"iterations": 1000, "initial_temperature_s": 5, "cooling_factor": 0.995}
+  }
+}

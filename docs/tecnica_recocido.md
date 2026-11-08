@@ -1,63 +1,61 @@
-# Técnica adicional: recocido simulado discreto
+# Técnica adicional de Ihan — recocido simulado discreto
 
-Responsable: Ihan Marroquin. Estado: entrega inicial realizada y verificada con asistencia de Codex. Incluye implementación y pruebas sintéticas. La conexión con parámetros reales y la revisión de integración se harán al disponer de los datos calibrados; no se presentan como completadas.
+## Representación y objetivo
 
-## Problema y representación
+Cada estado representa vueltas de parada y una secuencia de juegos identificados por compuesto y edad inicial. El catálogo toma juegos distintos del inventario inferido por Mario, admite cada juego como máximo una vez y agrupa las asignaciones que tienen la misma secuencia de compuestos y edades. Así respeta que hay un solo SOFT nuevo, un HARD nuevo y varios SOFT usados. Las edades de estos últimos se conservan al permutar la secuencia.
 
-Una estrategia tiene vueltas enteras de parada y una secuencia de stints. Cada stint tiene un compuesto y la edad inicial del juego. La función objetivo devuelve segundos simulados de carrera y se minimiza, comprobando previamente restricciones.
+El objetivo minimiza el tiempo total determinista del simulador de Jonathan con la calibración de entrenamiento y degradación ×1.00. Se usa el mismo modelo para la candidata y la estrategia histórica. El alcance principal admite SOFT hasta edad 21 y HARD hasta 30. Una sola parada podría cubrir a lo sumo 51 vueltas aun con ambos juegos nuevos, frente a las 57 requeridas. El catálogo contiene 0 estrategias de una parada y 1323 de dos paradas.
 
-El número de paradas permanece fijo durante cada búsqueda. La comparación 1/2 paradas se realizará con ejecuciones separadas bajo protocolo común, aún pendiente de integrar. El programa acepta una estrategia inicial válida; no inventa juegos de neumáticos disponibles.
+## Algoritmo
 
-## Fundamento
+1. Elegir una estrategia inicial uniformemente del catálogo para el número de paradas, con una semilla por búsqueda.
+2. En el 95 % de las propuestas, elegir entre desplazar una parada ±1, ±2 o ±3 vueltas y proponer una secuencia completa de juegos tomada del grupo. El 5 % restante propone una estrategia uniforme del grupo completo y da acceso a todos los estados factibles. Las combinaciones ausentes del catálogo se rechazan sin simular.
+3. Calcular la diferencia de tiempo Δ entre propuesta y estado actual. Si Δ ≤ 0, aceptar. Si Δ > 0, aceptar con probabilidad exp(−Δ/T). El valor T se expresa en segundos.
+4. Conservar el menor tiempo visitado y reducir T con un factor geométrico hasta un piso de 0.000001 s. Terminar al agotar las propuestas. Registrar temperatura, factibilidad, aceptación, valor actual, mejor valor y llamadas al simulador.
 
-Recocido simulado explora vecinos y permite aceptar empeoramientos para escapar de soluciones locales. Para diferencia `delta = f(vecino) - f(actual)`, aceptar siempre si `delta <= 0`; en otro caso, aceptar con probabilidad `exp(-delta / temperatura)`. Una temperatura alta facilita explorar y una menor favorece aceptar principalmente mejoras. Se conserva por separado la mejor solución factible visitada.
+## Pilotos, referencia y resultados
 
-Nuestra variante usa enfriamiento geométrico `T <- max(Tmin, alpha * T)` y presupuesto finito. No afirmamos convergencia global: los resultados teóricos de esquemas de enfriamiento tienen condiciones que esta implementación práctica no demuestra.
+Se enumeró el tiempo determinista de las 1323 estrategias para medir la distancia al mínimo del catálogo. Cada perfil se probó con las mismas diez semillas piloto (1100–1109) para que la comparación tuviera los mismos arranques. El protocolo escoge el perfil con menos llamadas medias al simulador entre los que alcanzan la referencia en al menos 9 de 10 pilotos, con tolerancia de 10⁻⁸ s. Si ninguno alcanza ese umbral, prioriza la proporción de aciertos y después la brecha media.
 
-## Procedimiento implementado
+| Perfil | Propuestas | T inicial (s) | Factor | Pilotos en el mínimo | Simulaciones medias |
+|---|---:|---:|---:|---:|---:|
+| Compacto | 120 | 1 | 0.970 | 10/10 | 63.4 |
+| Medio | 300 | 1 | 0.980 | 10/10 | 158.9 |
+| Amplio | 600 | 3 | 0.990 | 10/10 | 314.7 |
+| Demo | 1000 | 5 | 0.995 | 10/10 | 551.0 |
 
-1. Comprobar la estrategia inicial y parámetros de búsqueda.
-2. Evaluar la estrategia inicial con el simulador determinista.
-3. Proponer mover una parada ±1, ±2 o ±3 vueltas; opcionalmente cambiar un compuesto si todos los juegos son nuevos.
-4. Si el vecino viola restricciones, registrar el rechazo y seguir; no ordenar ni redondear silenciosamente una solución inválida.
-5. Evaluar el vecino válido, aplicar aceptación y conservar el mejor resultado.
-6. Registrar temperatura, factibilidad, aceptación, objetivo actual/mejor y número de evaluaciones.
-7. Enfriar y terminar al completar el presupuesto.
+Con el perfil compacto se ejecutaron 30 búsquedas con semillas 2100–2129. En 29 se alcanzó el mínimo de referencia. La mayor brecha fue 0.1522 s y el promedio fue de 66.8 evaluaciones por búsqueda. El conteo incluye el inicio y cada propuesta factible evaluada, incluso si repite un estado. La enumeración de referencia y los pilotos tienen un costo aparte. Las 30 búsquedas suman 2004 simulaciones y sirven para medir estabilidad. La enumeración de 1323 simulaciones por sí sola es una alternativa exacta y práctica para este caso.
 
-La propuesta cambia compuestos solo bajo supuesto de juegos nuevos. Para un inicio con neumáticos usados se conserva el compuesto y la edad de cada slot. Falta desarrollar la selección por identidad de juegos reales si el modelo final la requiere. Las edades no se borran para mejorar artificialmente una estrategia.
+| Estrategia | Paradas al final de vuelta | Juegos en orden (edad inicial) | Tiempo determinista (s) |
+|---|---|---|---:|
+| Histórica | 17, 37 | SOFT (3), HARD (0), SOFT (0) | 5514.6992 |
+| Candidata congelada | 17, 36 | SOFT (3), SOFT (0), HARD (0) | 5514.6242 |
 
-## Parámetros iniciales de la demo
+La candidata procede de la semilla 2100. Entre resultados dentro de 10⁻⁸ s del menor valor de las 30 búsquedas, se priorizan menos paradas y luego la menor semilla. Distintas combinaciones de cortes y juegos pueden empatar en tiempo dentro de esa tolerancia. Las semillas 3300–3329 se reservaron para evaluar las estrategias después de congelar la candidata.
 
-| Parámetro | Valor | Interpretación |
-|---|---:|---|
-| Iteraciones | 1000 | Presupuesto de propuestas por búsqueda, no necesariamente 1000 evaluaciones válidas. |
-| Temperatura inicial | 5 s | Escala del empeoramiento aceptable; provisional y solo para demo. |
-| Factor de enfriamiento | 0.995 | Reducción geométrica, provisional. |
-| Temperatura mínima | 0.000001 s | Evitar división por cero. |
-| Semillas del ensayo | 100–129 | 30 búsquedas independientes sintéticas. |
+## Interpretación y alternativas
 
-Estos valores permiten verificar funcionamiento. Deben calibrarse mediante pilotos separados de la evaluación final; no están justificados como los mejores para Bahréin.
+- La diferencia de 0.075 s es una estimación del modelo. La candidata llega a edad 21 en HARD en la vuelta 57, por encima del máximo de 20 observado para Verstappen y del máximo de entrenamiento de 19. Las edades tempranas de SOFT y HARD también pueden quedar fuera del intervalo de entrenamiento. Con el límite de edad 20 en ambos compuestos quedan seis órdenes equivalentes en el modelo y la diferencia estimada desaparece.
+- El inventario es inferido y el modelo usa pérdida fija de pits, desgaste lineal y ritmo sin tráfico ni reacción de rivales. La búsqueda puede favorecer casos donde estos supuestos son débiles. La comparación con el tercer stint reservado y la sensibilidad de degradación quedan para Luis Pedro.
+- El enfriamiento finito no garantiza llegar al óptimo. Hill Climbing aceptaría mejoras sin explorar ascensos y un algoritmo genético necesitaría operadores y restricciones para una población. La comparación cuantitativa hecha aquí es con enumeración. La tabla separa estabilidad del método y rendimiento de la estrategia.
+- El ruido actual del simulador es aditivo, con la misma desviación para todos los compuestos. Con semilla compartida, una histórica y una candidata de 57 vueltas reciben la misma secuencia de perturbaciones y el ruido se cancela en su diferencia, salvo redondeo. Las 30 réplicas de A/B/C/D describirán dispersión de tiempos totales dentro del modelo. La dispersión pareada resultante no cuantifica incertidumbre de parámetros ni del modelo.
 
-## Justificación y alternativas
+## Fuentes verificadas para la redacción
 
-- Frente a Hill Climbing, permite aceptar temporalmente soluciones peores. Hill Climbing ya aparece en el curso.
-- Frente a un genético, el estado y los operadores iniciales son sencillos y el algoritmo básico genético ya fue trabajado en clase. No se afirma superioridad general del recocido.
-- La búsqueda exhaustiva es excelente para verificar un espacio pequeño; podría incluso ser suficiente para el alcance final. Si el espacio resulta pequeño, explicar con honestidad que el recocido se estudia como técnica y comparar calidad/costo, sin exagerar necesidad o complejidad.
+1. Kirkpatrick, Gelatt y Vecchi (1983), *Optimization by Simulated Annealing*, Science 220, pp. 671–680. En p. 672 se describe la aceptación probabilística de ascensos con el criterio de Metropolis. [Artículo](https://www2.stat.duke.edu/~scs/Courses/Stat376/Papers/TemperAnneal/KirkpatrickAnnealScience1983.pdf).
+2. Hajek (1988), *Cooling Schedules for Optimal Annealing*, Mathematics of Operations Research 13, pp. 311–329. La introducción y el teorema relacionan el enfriamiento logarítmico y la profundidad de los mínimos bajo hipótesis específicas. El programa usa enfriamiento geométrico con presupuesto finito. [Artículo](https://web.mit.edu/6.435/www/Hajek88.pdf).
+3. SciPy, documentación de `dual_annealing`, sección *Notes*. Describe otra variante, con distribución de visita generalizada y búsqueda local opcional. El recocido discreto del proyecto usa la biblioteca estándar. [Documentación](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.dual_annealing.html).
 
-## Verificaciones realizadas y límites
+## Reproducción y relevo técnico
 
-Pruebas: aceptación, reproducibilidad, factibilidad, mejor valor no creciente, caso pequeño contra enumeración, dos paradas con compuestos variables bajo supuesto de juegos nuevos y rechazo de cambios de compuesto con juegos usados.
+```bash
+python -m unittest discover -q
+python main.py optimize
+python main.py simulate --strategy docs/evidence/optimization/candidate.json
+```
 
-En la demo de 12 vueltas, las 30 semillas 100–129 alcanzaron el valor de la referencia exhaustiva para esa secuencia fija. Esto no demuestra optimalidad en la carrera real, ni buena calibración del modelo, ni mejor estrategia histórica.
+La optimización escribe el resumen, los pilotos, el CSV de 30 búsquedas y las 30 trazas en `results/optimization/`. La carpeta versionada `docs/evidence/optimization/` contiene el resumen con huellas de entrada, ambos CSV, la traza ganadora y el JSON de la candidata congelada. La demo sintética previa sigue disponible con `python main.py optimize-demo --seed 100 --runs 30`.
 
-Limitaciones: dependencia de temperatura y vecindario; posible atrapamiento en búsqueda finita; objetivo que puede explotar sesgos del modelo; incertidumbre de parámetros no modelada todavía; inventario simplificado; resultados con ruido no equivalente al objetivo determinista. Usar semillas nuevas para evaluar una estrategia congelada y mantener separadas variabilidad del optimizador y variabilidad de carrera.
+Para evaluar, cargar `candidate.json` con `src.domain.strategy_from_dict` y usar `src.model.get_historical_strategy()` para la base. Usar el mismo `ModelParameters` calibrado y las mismas restricciones del escenario principal para ambas. Congelar esta candidata para B y D. Emparejar A/B y C/D con las semillas reservadas, y aplicar degradación ×1.20 solo en C/D. La validación del modelo debe usar primero los grupos registrados en [partición](particion_validacion.md), sin volver a ajustar el modelo.
 
-## Tres fuentes técnicas para investigar y citar
-
-1. Kirkpatrick, S.; Gelatt, C. D.; Vecchi, M. P. (1983). *Optimization by Simulated Annealing*. Science 220(4598), 671–680. https://doi.org/10.1126/science.220.4598.671 . Fundamento del método; copia académica consultable: https://www2.stat.duke.edu/~scs/Courses/Stat376/Papers/TemperAnneal/KirkpatrickAnnealScience1983.pdf
-2. Hajek, B. (1988). *Cooling Schedules for Optimal Annealing*. Mathematics of Operations Research 13(2), 311–329. https://doi.org/10.1287/moor.13.2.311 . Condiciones de enfriamiento y límites de afirmaciones de convergencia; copia académica: https://web.mit.edu/6.435/www/Hajek88.pdf
-3. SciPy. *scipy.optimize.dual_annealing*, documentación técnica. https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.dual_annealing.html . Variante de annealing con otros mecanismos; se usa como comparación documental, no como descripción del código propio ni biblioteca llamada por este módulo.
-
-Referencia adicional de aplicación: TUMFTM, *race-simulation*, https://github.com/TUMFTM/race-simulation . Estudiar cómo se separan ritmo, neumáticos y pérdidas. No se ha copiado ni ejecutado ese simulador como entrega propia.
-
-Antes del informe final, Ihan debe leer las secciones relevantes, comprobar el respaldo de cada afirmación, ajustar parámetros reales y poder explicar cada decisión sin depender de este borrador.
+Revisión de la integración por Jonathan y revisión personal de Ihan para la defensa pendientes.

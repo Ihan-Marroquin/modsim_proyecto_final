@@ -8,6 +8,7 @@ data/raw/
 data/processed/
 results/demo/
 results/optimizer_demo/
+results/optimization/
 results/data_audit/
 results/simulation/
 work/
