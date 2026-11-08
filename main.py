@@ -37,7 +37,56 @@ def main():
     search.add_argument('--runs', type=int, default=1)
     calibrated_search = sub.add_parser('optimize', help='Ejecutar pilotos y recocido calibrado de Bahréin')
     calibrated_search.add_argument('--output-dir', default='results/optimization')
+    validation = sub.add_parser('validate', help='Validar el modelo congelado en el stint 3 reservado (LP-03; requiere download, reconcile, partition)')
+    validation.add_argument('--output-dir', default='results/validation')
+    experiments = sub.add_parser('experiments', help='Ejecutar A/B/C/D con 30 semillas reservadas por condición (LP-04/LP-05)')
+    experiments.add_argument('--output-dir', default='results/experiments')
     args = parser.parse_args()
+    if args.command == 'validate':
+        from src.validation import run_validation
+        out = ROOT / args.output_dir
+        report = run_validation(ROOT, out)
+        main_scenario = report['by_scenario'][report['main_scenario']]
+        keys = ('n_laps', 'MAE_s', 'bias_s', 'cumulative_error_s')
+        print(json.dumps({
+            'main_scenario': report['main_scenario'],
+            'reserved_validation': {name: {k: round(v[k], 4) for k in keys}
+                                    for name, v in main_scenario['reserved_validation'].items()},
+            'full_race_reconstruction_not_validation': {
+                k: round(main_scenario['full_race_reconstruction'][k], 4)
+                for k in ('simulated_total_s', 'official_total_fia_s', 'simulated_minus_official_s')},
+            'second_pit_check': {k: round(main_scenario['second_pit_check'][k], 4)
+                                 for k in ('implied_additional_pit_loss_s', 'calibrated_additional_pit_loss_s')},
+            'trend_sensitivity': [{k: (round(v, 4) if isinstance(v, float) else v) for k, v in row.items()
+                                   if k in ('trend_scenario', 'validation_all_MAE_s', 'validation_all_bias_s',
+                                            'validation_all_cumulative_error_s')}
+                                  for row in report['trend_sensitivity']],
+        }, indent=2, ensure_ascii=False))
+        print(f'Detalle: {out.relative_to(ROOT)} (validacion.json; la tabla por vuelta tiene tiempos de las fuentes y no se versiona)')
+        return
+    if args.command == 'experiments':
+        from src.experiments import run_experiments
+        out = ROOT / args.output_dir
+        report = run_experiments(ROOT, out)
+        main_results = report['results_by_trend_scenario'][report['design']['main_trend_scenario']]
+        print(json.dumps({
+            'seeds': [report['design']['evaluation_seeds'][0], report['design']['evaluation_seeds'][-1]],
+            'replicates_per_condition': report['design']['replicates_per_condition'],
+            'mean_total_time_s': {c: round(v['total_time_s']['mean'], 4)
+                                  for c, v in main_results['by_condition'].items()},
+            'sd_total_time_s': {c: round(v['total_time_s']['sd'], 4)
+                                for c, v in main_results['by_condition'].items()},
+            'paired_mejora_s': {p: {'mean': round(v['mejora_s']['mean'], 4), 'sd': v['mejora_s']['sd'],
+                                    'mejora_pct': round(v['mejora_pct']['mean'], 5)}
+                                for p, v in main_results['by_pair'].items()},
+            'parameter_uncertainty_se_s': {m: round(v['se_s'], 4) for m, v in report['parameter_uncertainty'].items()
+                                           if isinstance(v, dict)},
+            'trend_sensitivity_mejora_s': {s: {p: round(v['deterministic_mejora_s'], 4) for p, v in r['by_pair'].items()}
+                                           for s, r in report['results_by_trend_scenario'].items()},
+        }, indent=2, ensure_ascii=False))
+        print(f'Réplicas, pares, sensibilidad y resumen: {out.relative_to(ROOT)}')
+        print('La dispersión pareada es casi cero porque el ruido compartido se cancela; no mide incertidumbre de parámetros.')
+        return
     if args.command == 'optimize':
         from src.optimization_case import run_calibrated_search
         out = ROOT / args.output_dir
