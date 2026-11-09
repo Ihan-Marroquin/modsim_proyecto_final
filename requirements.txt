@@ -1,2 +1,7 @@
 # Entorno inicial comprobado en Python 3.12. Instalar en entorno virtual.
+# El núcleo (simulación, optimización, validación, experimentos) usa solo la biblioteca estándar.
 fastf1==3.9.2
+# Figuras del informe (LG-01): python main.py figures
+matplotlib==3.11.2
+# Informe Word/PDF (LG-03): python report/build_report.py --pdf
+python-docx==1.2.0

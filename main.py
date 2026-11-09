@@ -41,7 +41,42 @@ def main():
     validation.add_argument('--output-dir', default='results/validation')
     experiments = sub.add_parser('experiments', help='Ejecutar A/B/C/D con 30 semillas reservadas por condición (LP-04/LP-05)')
     experiments.add_argument('--output-dir', default='results/experiments')
+    compare = sub.add_parser('compare', help='Demo: estrategia histórica contra la candidata congelada (LG-02)')
+    compare.add_argument('--degradation-multiplier', type=float, default=1.0)
+    compare.add_argument('--candidate', default='docs/evidence/optimization/candidate.json')
+    figures = sub.add_parser('figures', help='Generar las figuras del informe desde la evidencia (LG-01)')
+    figures.add_argument('--output-dir', default='report/figures')
     args = parser.parse_args()
+    if args.command == 'compare':
+        from src.model import simulate_bahrain_case
+        candidate = strategy_from_dict(json.loads((ROOT / args.candidate).read_text(encoding='utf-8')))
+        runs = {role: simulate_bahrain_case(root_dir=ROOT, degradation_multiplier=args.degradation_multiplier,
+                                            strategy=strategy)
+                for role, strategy in (('historica', None), ('candidata', candidate))}
+        base = runs['historica']['summary']['total_simulated_time_s']
+        cand = runs['candidata']['summary']['total_simulated_time_s']
+        mejora = base - cand
+        print(json.dumps({
+            'modo': 'determinista, tendencia trend_fuel_reference',
+            'degradation_multiplier': args.degradation_multiplier,
+            'observado_FIA_s': runs['historica']['summary']['official_reference_time_s'],
+            'historica_simulada': {'paradas': runs['historica']['strategy']['stops_after_lap'],
+                                   'total_s': base},
+            'candidata_simulada': {'paradas': runs['candidata']['strategy']['stops_after_lap'],
+                                   'total_s': cand},
+            'mejora_s': round(mejora, 4),
+            'mejora_pct': round(100 * mejora / base, 5),
+        }, indent=2, ensure_ascii=False))
+        print('mejora_s = base - candidata (positivo: candidata más rápida). La candidata es una predicción del '
+              'modelo, nunca se observó; ver docs/validacion_experimentos.md para su incertidumbre.')
+        return
+    if args.command == 'figures':
+        from src.visualization import make_figures
+        produced = make_figures(ROOT, ROOT / args.output_dir)
+        print(json.dumps(produced, indent=2, ensure_ascii=False))
+        if produced['fig1_validacion'] is None:
+            print('Figura 1 omitida: ejecutar antes download, reconcile, partition y validate.')
+        return
     if args.command == 'validate':
         from src.validation import run_validation
         out = ROOT / args.output_dir
