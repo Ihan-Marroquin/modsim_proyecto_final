@@ -18,9 +18,41 @@ La candidata congelada para en las vueltas **17 y 36**. La ventaja determinista 
 
 No se detectó una mejora robusta. Ver [validación y experimentos](docs/validacion_experimentos.md).
 
+## Instalación en una computadora nueva (LG-05)
+
+Comprobado el 2026-11-08 con un clon limpio desde GitHub (`main` en `8831988`), en Windows 11 con Python 3.14.6. La instalación de `requirements.txt` tardó 43 s. Todo pasó en ese clon y no quedaron archivos versionados modificados.
+
+```powershell
+git clone https://github.com/Ihan-Marroquin/modsim_proyecto_final.git
+cd modsim_proyecto_final
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m unittest discover -s tests      # 103 pruebas; sin datos se omiten 4
+.\.venv\Scripts\python.exe main.py simulate                    # 5514.6992 s, sin internet
+.\.venv\Scripts\python.exe main.py optimize                    # sin internet
+.\.venv\Scripts\python.exe main.py compare                     # mejora_s 0.075
+.\.venv\Scripts\python.exe main.py experiments                 # sin internet
+.\.venv\Scripts\python.exe main.py download                    # requiere internet
+.\.venv\Scripts\python.exe main.py reconcile
+.\.venv\Scripts\python.exe main.py partition
+.\.venv\Scripts\python.exe main.py validate                    # MAE 0.7116, sesgo 0.4557, acumulado 8.2028
+.\.venv\Scripts\python.exe main.py figures
+.\.venv\Scripts\python.exe report\build_report.py --pdf        # requiere LibreOffice para el PDF
+```
+
+Resultados del clon: `optimize` y `experiments` regeneraron `candidate.json`, `search_runs.csv`, `replicas.csv` y `sensibilidad.csv` idénticos a `docs/evidence/` (salvo el fin de línea), y las figuras 2–5 quedaron idénticas byte a byte a las versionadas.
+
+Problemas conocidos:
+- Si `download` falla con `CERTIFICATE_VERIFY_FAILED`, definir `SSL_CERT_FILE` con la ruta que imprime `python -c "import certifi; print(certifi.where())"`.
+- OpenF1 responde 401 durante sesiones de F1 en vivo; `simulate`, `optimize`, `compare` y `experiments` no lo necesitan.
+- La consola de Windows (cp1252) puede mostrar mal los acentos de los mensajes; los archivos generados están en UTF-8.
+- En macOS/Linux, el ejecutable es `.venv/bin/python`.
+
+Falta repetir esta prueba en la computadora de otro integrante.
+
 ## Ejecución
 
-Python 3.12 recomendado. Desde la raíz del repositorio:
+Python 3.12 recomendado; también se probó con 3.14.6. Desde la raíz del repositorio:
 
 ```powershell
 python -m unittest discover -s tests -v
