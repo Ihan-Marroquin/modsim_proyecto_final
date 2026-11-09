@@ -21,7 +21,7 @@ Estado al 2026-11-08, rama `luis-gilberto/entrega`. Marcar `[x]` solo con eviden
 - [x] Figuras: `python main.py figures` → `report/figures/`.
 - [x] Informe integrado: `report/informe.md`; Word/PDF con `python report/build_report.py --pdf` (se entregan fuera del repositorio).
 - [ ] Portada con el logo de la universidad del Word de avance (el builder genera portada de texto).
-- [ ] Diapositivas.
+- [x] Diapositivas: `presentation/presentacion_proyecto_f1.pdf` (15 páginas, exportadas de la presentación web).
 - [x] Prueba de instalación con clon limpio, venv nuevo e instalación desde cero (LG-05, README). [ ] Repetirla en la computadora de otro integrante.
 - [ ] Confirmar repositorio accesible para el docente y registrar la evidencia de envío.
 - [ ] EQ-01/EQ-02: aprobación del tema y hora de entrega.
