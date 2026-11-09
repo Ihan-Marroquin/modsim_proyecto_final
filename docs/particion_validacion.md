@@ -1,6 +1,6 @@
 # Partición entrenamiento/validación (MA-03)
 
-**Responsable:** Mario Fernando Rocha. **Revisión pendiente:** Luis Pedro Lira (LP-01).
+**Responsable:** Mario Fernando Rocha. **Revisión:** Luis Pedro Lira (LP-01), cerrada el 2026-11-08 (sección 5).
 **Fecha de decisión:** 2026-11-06. Luis Pedro Lira y Jonathan Zacarias delegaron la decisión en Mario.
 **Código:** `src/partition.py`. **Pruebas:** `tests/test_partition.py`. **Comando:** `python main.py partition` (después de `python main.py download`).
 **Evidencia congelada:** `docs/evidence/particion_manifiesto.json` (manifiesto con huellas y commit) y `docs/evidence/particion_entrenamiento_validacion.csv` (rol de cada vuelta; sin tiempos).
@@ -75,10 +75,31 @@ El manifiesto registra:
 
 Para verificar: `python main.py download` y `python main.py partition`, y comparar `sha256_portable_inputs` y `sha256_portable_split` con `docs/evidence/particion_manifiesto.json`.
 
-## 5. Revisión de Luis Pedro (LP-01, pendiente)
+## 5. Revisión de Luis Pedro (LP-01, cerrada el 2026-11-08)
 
-- [ ] De acuerdo con la opción A y sus costos declarados.
-- [ ] De acuerdo con las métricas y los tres conjuntos de validación, fijados antes de calibrar.
-- [ ] Reproduce las huellas del manifiesto.
-- [ ] Revisa la consecuencia de identificabilidad para MA-04 (junto con Jonathan).
-- [ ] Observaciones / fecha / commit de revisión: ______
+- [x] De acuerdo con la opción A y sus costos declarados.
+- [x] De acuerdo con las métricas y los tres conjuntos de validación, fijados antes de calibrar.
+- [x] Reproduce las huellas del manifiesto.
+- [x] Revisa la consecuencia de identificabilidad para MA-04. Jonathan ya la había confirmado en `docs/calibracion.md`.
+- [x] Observaciones / fecha / commit: abajo. Rama `luis-pedro/validacion`, creada desde `7a740c6`.
+
+**Reproducción.** Clon en Windows con Python 3.12.10. Se ejecutaron `python main.py download`, `python main.py reconcile` y `python main.py partition` el 2026-11-08 y se compararon con este manifiesto:
+
+| Huella portable | Congelada | Regenerada |
+|---|---|---|
+| `data/raw/openf1/laps.json` | `4c2f8ab9…` | Igual |
+| `data/raw/openf1/pit.json` | `3bb392be…` | Igual |
+| `data/raw/openf1/race_control.json` | `6ef4044a…` | Igual |
+| `data/raw/openf1/sessions.json` | `dd852c09…` | Igual |
+| `data/raw/openf1/stints.json` | `9e973c32…` | Igual |
+| `data/raw/openf1/weather.json` | `a41e2ad0…` | Igual |
+| `data/processed/openf1_target_laps_annotated.csv` | `a073c360…` | Igual |
+| `sha256_portable_split` (`partition_split.csv`) | `6dcb304d…` | Igual |
+
+También coinciden las listas de vueltas de entrenamiento, validación, excluidas, cubiertas y extrapoladas; los rangos de edad; la cobertura y los rangos de identificabilidad (4 de 5, 3 de 4 y 4 de 4). `python main.py calibrate` reproduce los parámetros versionados con `validation_laps_read: []`. Por eso `configs/params_bahrain_2024.json` se restauró sin cambios: solo diferían los saltos de línea.
+
+**Observaciones.**
+1. El campo `status` del manifiesto sigue en `FROZEN_PENDING_REVIEW_LUIS_PEDRO`. No se edita, para no alterar la evidencia congelada. La revisión queda registrada aquí.
+2. La revisión se registra en la misma sesión que LP-03, después de calibrar. La partición no cambió (huellas idénticas) y la validación usa los conjuntos tal como se preregistraron.
+3. En este entorno Python no validó el certificado de `api.openf1.org` (`CERTIFICATE_VERIFY_FAILED`), aunque `curl` sí. Se resolvió solo en la sesión con `SSL_CERT_FILE` apuntando a `certifi`, sin cambiar código ni datos.
+4. La identificabilidad pesa sobre todo en la comparación de estrategias. Las tres tendencias producen el mismo ajuste de entrenamiento, pero la ventaja de la candidata vale +1.007, +0.075 y −0.857 s. Ver `docs/validacion_experimentos.md`.

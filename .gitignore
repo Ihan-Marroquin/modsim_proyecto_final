@@ -11,6 +11,8 @@ results/optimizer_demo/
 results/optimization/
 results/data_audit/
 results/simulation/
+results/validation/
+results/experiments/
 work/
 *.zip
 /AGENTS.md

@@ -84,7 +84,7 @@ Decidido antes de ver cualquier resultado de optimización.
 
 ## 7. Revisión
 
-- [ ] Luis Pedro: reproduce `python main.py inventory` y los conteos 6 / 1323 / 1746.
+- [x] Luis Pedro: reproduce `python main.py inventory` y los conteos 6 / 1323 / 1746, y 6 en la alternativa estricta (2026-11-08). `search_space` y los juegos usados son idénticos a `docs/evidence/inventario_neumaticos.json`.
 - [x] Ihan: confirma la representación por juego y verifica la candidata contra el catálogo en IH-05 (2026-11-08).
 - [x] Jonathan: confirma la convención de edad de los juegos usados (edad al terminar la vuelta = initial_age + vuelta_en_stint; SOFT inicial de edad 3 alcanza edad 4 en vuelta 1 y 20 en vuelta 17).
 - [x] Observaciones / fecha / commit: 2026-11-06, Jonathan Zacarias implementó la convención en `src/model.py` y `src/simulation.py`.
