@@ -20,3 +20,7 @@ work/
 /PLAN_RELEVO*.md
 /Plan_proyecto_F1_equipo_5.md
 /docs/INFORME_ESTRUCTURA.md
+# Informe Word/PDF: se entrega fuera del repositorio (LG-03)
+report/build/
+# Figura 1 contiene tiempos por vuelta de OpenF1/Jolpica (CC BY-NC-SA); se regenera con validate + figures
+report/figures/fig1_validacion_stint3.png

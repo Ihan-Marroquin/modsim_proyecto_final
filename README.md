@@ -28,6 +28,9 @@ python main.py optimize
 python main.py simulate --strategy docs/evidence/optimization/candidate.json
 python main.py experiments
 python main.py validate          # requiere download, reconcile y partition
+python main.py compare           # demo: histórica contra candidata (añadir --degradation-multiplier 1.2)
+python main.py figures           # figuras del informe en report/figures/ (requiere matplotlib)
+python report/build_report.py --pdf   # informe Word/PDF en report/build/ (requiere python-docx y LibreOffice)
 python main.py demo --stochastic --seed 42
 python main.py optimize-demo --seed 100 --runs 30
 python main.py download
@@ -52,6 +55,9 @@ En macOS/Linux, el ejecutable del entorno está en `.venv/bin/python`. `requirem
 - `src/optimization.py` y `src/optimization_case.py`: recocido discreto y protocolo para Bahréin.
 - `src/validation.py`: validación en el stint 3 reservado y reconstrucción completa, por separado.
 - `src/experiments.py`: experimentos A/B/C/D, diferencias pareadas, incertidumbre y sensibilidad.
+- `src/visualization.py`: las cuatro figuras comprometidas y la de convergencia, leídas de la evidencia sin números escritos a mano.
+- `report/`: informe integrado (`informe.md`), generador Word/PDF y lista de la rúbrica.
+- `presentation/`: guion de 15 minutos y guía de la demo con respaldo.
 - `src/openf1_data.py`: adquisición histórica pública comprobada.
 - `src/data.py`: auditoría y adaptador alternativo FastF1.
 - `tests/`: consistencia del motor, optimizador y manejo de datos.
