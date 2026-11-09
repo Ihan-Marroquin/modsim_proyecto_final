@@ -31,6 +31,7 @@ from docx.shared import Cm, Pt, RGBColor
 REPORT_DIR = Path(__file__).resolve().parent
 SOURCE = REPORT_DIR / 'informe.md'
 BUILD = REPORT_DIR / 'build'
+LOGO = REPORT_DIR / 'assets/logo_uvg.png'
 FONT = 'Times New Roman'
 INLINE = re.compile(r'(\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*)')
 
@@ -116,8 +117,12 @@ def add_image(doc, target):
 
 
 def cover(doc, title, meta):
-    for _ in range(4):
-        doc.add_paragraph()
+    if LOGO.exists():
+        doc.add_picture(str(LOGO), width=Cm(6))
+        doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
+    else:
+        for _ in range(4):
+            doc.add_paragraph()
     for line in ('Universidad del Valle de Guatemala', 'Modelización y Simulación'):
         paragraph = doc.add_paragraph()
         paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
