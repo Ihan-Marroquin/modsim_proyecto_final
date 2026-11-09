@@ -139,10 +139,12 @@ Las tres tendencias producen exactamente el mismo ajuste en entrenamiento (tramo
 
 | Condición | Determinista (s) | Media de 30 (s) | DE (s) | IC 95 % de la media (s) |
 |---|---:|---:|---:|---|
-| A | 5514.699 | 5514.810 | 1.304 | 5514.323 – 5515.297 |
-| B | 5514.624 | 5514.735 | 1.304 | 5514.248 – 5515.222 |
-| C | 5525.419 | 5525.529 | 1.304 | 5525.043 – 5526.016 |
-| D | 5525.481 | 5525.592 | 1.304 | 5525.105 – 5526.079 |
+| A | 5514.699 | 5514.810 | 1.303 | 5514.323 – 5515.297 |
+| B | 5514.624 | 5514.735 | 1.303 | 5514.248 – 5515.222 |
+| C | 5525.419 | 5525.529 | 1.303 | 5525.043 – 5526.016 |
+| D | 5525.481 | 5525.592 | 1.303 | 5525.105 – 5526.079 |
+
+Corrección del 2026-11-08 (Luis Gilberto): la DE por condición es 1.30350 s en `resumen.json` y redondea a 1.303 s; antes decía 1.304. `tests/test_report_numbers.py` comprueba esta tabla contra la evidencia.
 
 La DE teórica del total es σ·√57 = 1.231 s. La media supera al valor determinista en 0.11 s por efecto muestral de las 30 semillas, y ese efecto es igual en las cuatro condiciones.
 
