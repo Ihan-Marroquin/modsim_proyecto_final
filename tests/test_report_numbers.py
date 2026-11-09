@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = ROOT / 'docs/evidence'
 REPORT = ROOT / 'report/informe.md'
+VALIDATION_DOC = ROOT / 'docs/validacion_experimentos.md'
 
 
 def load(path):
@@ -67,6 +68,8 @@ class ReportNumbersTests(unittest.TestCase):
             row = (f'| {condition} | {plain(item["deterministic_time_s"], 3)} | {plain(stats["mean"], 3)} '
                    f'| {plain(stats["sd"], 3)} | {plain(low, 3)} – {plain(high, 3)} |')
             self.assertInReport(row)
+            self.assertIn(row, VALIDATION_DOC.read_text(encoding='utf-8'),
+                          f'docs/validacion_experimentos.md no coincide con la evidencia: {row!r}')
         for pair, item in results['by_pair'].items():
             self.assertInReport(f'| {signed(item["mejora_s"]["mean"], 4)} | {signed(item["mejora_pct"]["mean"], 5)} % '
                                 f'| {item["candidate_faster_in_replicates"]} / {item["mejora_s"]["n"]} |')
