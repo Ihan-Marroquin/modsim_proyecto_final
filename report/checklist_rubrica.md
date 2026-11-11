@@ -1,6 +1,6 @@
 # Lista de cierre contra la rúbrica (LG-06)
 
-Estado al 2026-11-08, rama `luis-gilberto/entrega`. Marcar `[x]` solo con evidencia; cada fila requiere el visto bueno de todo el equipo antes de entregar.
+Estado al 2026-11-11. Marcar `[x]` solo con evidencia; cada fila requiere el visto bueno de todo el equipo antes de entregar.
 
 | Criterio | Pts | Evidencia en el repositorio | Estado |
 |---|---:|---|---|
@@ -12,7 +12,7 @@ Estado al 2026-11-08, rama `luis-gilberto/entrega`. Marcar `[x]` solo con eviden
 | Experimentos y validación | 5 | `src/validation.py`, `src/experiments.py`, `docs/evidence/{validation,experiments}/` | [x] LP-06 revisada y aprobada por Mario el 2026-11-09 (`docs/validacion_experimentos.md` §8) |
 | Comparación real | 6 | Informe §8, `docs/validacion_experimentos.md` §5.5 | [x] |
 | Resultados y conclusiones | 4 | 4 figuras comprometidas + 1 adicional desde CSV (`src/visualization.py`), tablas, informe §9–10 | [x] |
-| Presentación y dominio | 8 | `presentation/presentacion_proyecto_f1.pdf`, demo interactiva con `python main.py replay` (`src/replay.py`, `presentation/replay/`) | [ ] Faltan diapositivas y ensayo (EQ-04) |
+| Presentación y dominio | 8 | `presentation/presentacion_proyecto_f1.pdf`, demo interactiva con `python main.py replay` (`src/replay.py`, `presentation/replay/`) | [ ] Diapositivas finales listas el 2026-11-11; falta el ensayo (EQ-04) |
 
 ## Entregables finales
 
@@ -21,7 +21,7 @@ Estado al 2026-11-08, rama `luis-gilberto/entrega`. Marcar `[x]` solo con eviden
 - [x] Figuras: `python main.py figures` → `report/figures/`.
 - [x] Informe integrado: `report/informe.md` (fuente) y `report/informe_proyecto_f1.pdf` (13 páginas); se regenera con `python report/build_report.py --pdf`.
 - [x] Portada con el logo de la UVG (`report/assets/logo_uvg.png`).
-- [x] Diapositivas: `presentation/presentacion_proyecto_f1.pdf` (15 páginas, exportadas de la presentación web).
+- [x] Diapositivas: `presentation/presentacion_proyecto_f1.pdf` (15 páginas, exportadas de la presentación web). Versión final del 2026-11-11: el ritmo separado de las penalizaciones de arranque y pits (diapositivas 4 y 5), `compare` y `replay` en la demo (8), las 33 vueltas de ajuste 2–16 y 19–36 (10), y el empate de la histórica limitado al escenario con límite estricto de edad (13).
 - [x] Prueba de instalación con clon limpio, venv nuevo e instalación desde cero (LG-05, README). [ ] Repetirla en la computadora de otro integrante.
 - [ ] Confirmar repositorio accesible para el docente y registrar la evidencia de envío.
 - [ ] EQ-01/EQ-02: aprobación del tema y hora de entrega.
