@@ -11,6 +11,7 @@ results/optimizer_demo/
 results/optimization/
 results/data_audit/
 results/simulation/
+results/replay/
 results/validation/
 results/experiments/
 work/
