@@ -1,9 +1,14 @@
-# Simulación y optimización de estrategias de paradas en boxes mediante recocido simulado
+# Simulación y optimización de estrategias de paradas en boxes mediante recocido simulado (*simulated annealing*)
 
-**Curso:** Modelización y Simulación, Universidad del Valle de Guatemala, 2026.
-**Equipo 5:** Mario Fernando Rocha, Jonathan Zacarias, Ihan Marroquin, Luis Pedro Lira y Luis Gilberto Marroquin.
+Mario Fernando Rocha – 23501
+Jonathan Zacarias – 231104
+Ihan Marroquin – 23108
+Luis Pedro Lira – 23669
+Luis Gilberto Marroquin - 23353
+
 **Caso:** Max Verstappen (VER), Gran Premio de Bahréin 2024, carrera principal.
-**Repositorio:** https://github.com/Ihan-Marroquin/modsim_proyecto_final
+**Repositorio:** [https://github.com/Ihan-Marroquin/modsim_proyecto_final](https://github.com/Ihan-Marroquin/modsim_proyecto_final)
+Guatemala, 9 de noviembre del 2026
 
 > Integración editorial de Luis Gilberto Marroquin (LG-03). Cada sección resume el documento técnico de su autor, que sigue siendo la fuente con el detalle completo. Las cifras salen de `docs/evidence/` y las comprueba `tests/test_report_numbers.py`. Convenciones de signo en todo el informe: `error = predicho − observado` y `mejora_s = tiempo_base − tiempo_candidata` (positivo: la candidata es más rápida). Las columnas observadas solo contienen mediciones; los valores de la candidata son siempre simulados.
 
@@ -13,7 +18,25 @@ Se construyó un simulador por eventos discretos de una carrera de Fórmula 1, c
 
 ## 1. Problema y objetivos
 
-*Fuente: propuesta del equipo y documentos de Mario Fernando Rocha. Pendiente la redacción final de MA-06.*
+*Redacción: Mario Fernando Rocha (MA-06), a partir de la propuesta del equipo y de docs/datos_openf1.md, docs/inventario_neumaticos.md y docs/calibracion.md.*
+
+**Contexto.** En una carrera de Fórmula 1 en seco, la estrategia de neumáticos es una de las pocas decisiones que el equipo controla durante la carrera: en qué vueltas parar y qué juego montar en cada parada. Es un compromiso con dos fuerzas opuestas. Cada parada cuesta tiempo fijo: en este caso se estimaron 25.522 s, más de la cuarta parte de una vuelta de unos 95.6 s. Por otro lado, un neumático gastado pierde ritmo en cada vuelta: con los parámetros calibrados, unos 0.076 s por vuelta de edad en el SOFT y 0.105 s en el HARD, de modo que tras 20 vueltas un juego pierde entre 1.5 y 2.1 s por vuelta. Parar más seguido renueva el ritmo y paga más pérdida en pits. El reglamento además obliga a usar al menos dos especificaciones de neumático de seco (FIA, art. 30.5 l) y limita los juegos disponibles (art. 30.2 y 30.5).
+
+**Justificación.** El problema encaja con el curso por tres razones:
+1. Es un sistema con estados y eventos discretos: vuelta, juego montado, edad y reloj, con eventos de fin de vuelta, parada y bandera a cuadros.
+2. Tiene variabilidad natural vuelta a vuelta que pide un modo estocástico con semillas y réplicas.
+3. Su espacio de decisiones es combinatorio. Con el inventario reconstruido hay 1323 estrategias factibles en el escenario principal. Son demasiadas para compararlas a mano y justifican un método de búsqueda, pero son pocas para enumerarlas todas y comprobar si la búsqueda encuentra el óptimo.
+
+Además, la pregunta se puede contrastar con la realidad: existe una estrategia histórica, un tiempo oficial de la FIA y datos públicos por vuelta.
+
+**Por qué este caso.** Se eligió a Max Verstappen en el Gran Premio de Bahréin 2024 porque aísla el efecto de los neumáticos mejor que una carrera típica:
+- Fue una carrera seca: lluvia 0 en las 157 muestras de clima.
+- No hubo Safety Car ni VSC: ningún mensaje de esa categoría en control de carrera.
+- Verstappen salió desde la pole y lideró con amplia ventaja, así que el tráfico pesa poco: ninguna bandera azul de las vueltas 41–46 fue para él.
+- Hizo dos paradas con tres stints en dos compuestos.
+- Los datos son públicos y se concilian al milisegundo con el total oficial (sección 2).
+
+El costo de esta elección se declara desde el inicio. Con un piloto que administra una ventaja amplia, sus tiempos no muestran necesariamente el ritmo máximo, y con un solo stint por compuesto en entrenamiento la tendencia de carrera no se puede identificar (sección 3).
 
 **Pregunta.** ¿Qué vueltas de parada y qué secuencia de neumáticos minimizan el tiempo esperado de carrera de un piloto, bajo las restricciones y supuestos estudiados?
 
@@ -30,9 +53,11 @@ Se construyó un simulador por eventos discretos de una carrera de Fórmula 1, c
 
 ## 2. Datos
 
-*Fuente: docs/datos_openf1.md, docs/filtro_calidad_openf1.md, docs/conciliacion_tiempos.md (Mario Fernando Rocha; revisión de Luis Pedro Lira).*
+*Fuente: docs/datos_openf1.md, docs/filtro_calidad_openf1.md, docs/conciliacion_tiempos.md*
 
-**Fuente.** OpenF1 (https://openf1.org), API pública no oficial con licencia CC BY-NC-SA 4.0. FastF1 3.9.2 no obtuvo tiempos sin autenticación en este entorno, así que OpenF1 es la vía comprobada. Se descargaron 57 vueltas de VER, 3 stints, 2 paradas, 157 registros de clima y 71 mensajes de control de carrera. Los datos crudos no se versionan (licencia *ShareAlike*); cada clon los regenera con `python main.py download` y se comprueban con huellas SHA-256 portables.
+**Fuente.** OpenF1 (https://openf1.org), API pública no oficial con licencia CC BY-NC-SA 4.0. FastF1 3.9.2 no obtuvo tiempos sin autenticación en este entorno, así que OpenF1 es la vía comprobada. Se descargaron 57 vueltas de VER, 3 stints, 2 paradas, 157 registros de clima y 71 mensajes de control de carrera. OpenF1 no es una fuente oficial y no está asociada a Formula 1, así que se cita y se concilia contra la FIA. Los datos crudos no se versionan, por la licencia *ShareAlike*: cada clon los regenera con `python main.py download` y se comprueban con huellas SHA-256 portables. Las huellas normalizan los saltos de línea porque las de Windows y las de macOS diferían solo por eso.
+
+**Condiciones de la carrera.** La lluvia fue 0 en las 157 muestras de clima. La pista se enfrió de 23.8 a 21.9 °C durante la carrera, que fue al atardecer. Hubo 0 mensajes de Safety Car o VSC. Solo hubo amarillas locales de un sector: una doble en la vuelta 1, que ya está fuera del ajuste, y una sencilla en las vueltas 10–11, sin pérdida medible. La documentación de OpenF1 declara que `date_start` es aproximado (se observó ±0.3 s), así que no sirve para conciliar diferencias menores a medio segundo. Por eso la conciliación se hizo vuelta a vuelta contra una segunda fuente.
 
 **Referencia oficial.** La FIA registra 57 vueltas en 1:31:44.742 = 5504.742 s. La suma de vueltas de OpenF1 da 5505.217 s; la conciliación con Jolpica ubicó toda la diferencia (+0.475 s) en la vuelta 1, por la convención de inicio. Las vueltas 2–57 son iguales a Jolpica al milisegundo.
 
@@ -46,13 +71,17 @@ Se construyó un simulador por eventos discretos de una carrera de Fórmula 1, c
 | Validación (18) | 39–57 sin la 46 (stint 3) | SOFT nuevo | 2–20 |
 | Fuera del ajuste (6) | 1, 17, 18, 37, 38, 46 | — | — |
 
-**Inventario de neumáticos** (`docs/inventario_neumaticos.md`). Con el art. 30 del Reglamento Deportivo FIA 2024 y los stints del fin de semana se infirieron 6 juegos disponibles para la carrera. La variante principal usa SOFT 0, HARD 0, SOFT 3, SOFT 3 y SOFT 5 (edad inicial en vueltas). MEDIUM queda fuera por falta de datos de carrera. El inventario es inferido, no certificado por Pirelli. Límites de edad del escenario principal: SOFT 21 y HARD 30 vueltas; con cobertura estricta (20 y 20) solo quedan 6 estrategias.
+**Inventario de neumáticos** (`docs/inventario_neumaticos.md`). Con el art. 30 del Reglamento Deportivo FIA 2024 y los stints del fin de semana se infirieron 6 juegos disponibles para la carrera: SOFT, HARD y MEDIUM nuevos, y 3 de los 4 SOFT usados en la clasificación. MEDIUM queda fuera porque ningún piloto lo usó en la carrera y no hay datos para calibrarlo; es una limitación del proyecto, no una regla FIA. Así, la variante principal usa 5 juegos: SOFT 0, HARD 0, SOFT 3, SOFT 3 y SOFT 5 (edad inicial en vueltas). El inventario es inferido, no certificado por Pirelli. La regla de compuestos se cumple sin conocer la lista de especificaciones obligatorias del evento. El art. 30.5 l) exige dos especificaciones de seco, una de ellas obligatoria (art. 30.2 c ii). La carrera real de VER solo usó SOFT y HARD y fue válida, así que una de las dos era obligatoria. Toda estrategia del modelo usa ambas. Límites de edad del escenario principal: SOFT 21 y HARD 30 vueltas; con cobertura estricta (20 y 20) solo quedan 6 estrategias.
 
 ## 3. Modelo y simulador
 
-*Fuente: docs/modelo_simulacion.md (Jonathan Zacarias; revisión de Ihan pendiente).*
+*Fuente: docs/modelo_simulacion.md*
 
 El simulador es de eventos discretos, con reloj continuo en segundos y eventos de fin de vuelta, parada/cambio de neumáticos y bandera a cuadros. Estados: vuelta, stint, compuesto, edad del juego y reloj acumulado.
+
+![Diagrama 1](figures/diagrama_simulador.png)
+
+**Diagrama 1.** Flujo del simulador por vuelta: actualización de edad, cálculo del tiempo, decisión de parada y condición de término en la vuelta 57.
 
 **Vuelta normal:** `t_normal(l, c, a) = b_c + d_c · a · μ + g · (l − 1)`, donde `b_c` es el ritmo base del compuesto (s), `d_c` la degradación (s por vuelta de edad), `a` la edad al terminar la vuelta, `μ` el multiplicador de degradación (1.00 base, 1.20 en sensibilidad) y `g` la tendencia de carrera (s/vuelta).
 
@@ -64,9 +93,13 @@ El simulador es de eventos discretos, con reloj continuo en segundos y eventos d
 
 ## 4. Calibración
 
-*Fuente: docs/calibracion.md (Mario Fernando Rocha; revisiones de Jonathan y Luis Pedro).*
+*Fuente: docs/calibracion.md*
 
-Mínimos cuadrados ordinarios por compuesto, solo con las 33 vueltas de entrenamiento (la auditoría registra `validation_laps_read: []`). Escenario principal `trend_fuel_reference`:
+**Protocolo.** Antes de leer cualquier tiempo, la calibración comprueba que la partición coincide con su huella congelada y se detiene si no coincide. Después ajusta base y desgaste por compuesto con mínimos cuadrados ordinarios sobre `tiempo − g·(vuelta − 1)`, solo con las 33 vueltas de entrenamiento. La auditoría registra `validation_laps_read: []`. El arranque y la pérdida de pits se estiman aparte, con las vueltas 1, 17 y 18 y con la misma convención del simulador.
+
+**Origen de la tendencia fija.** El valor viene del archivo de parámetros de Bahréin 2019 del simulador de TUM (Heilmeier et al., 2018), que también es una carrera de 57 vueltas. Ese archivo define `t_lap_sens_mass` = 0.023 s/kg, la sensibilidad del tiempo de vuelta a la masa, y `b_fuel_perlap` = 1.93 kg/vuelta, el consumo de combustible. En su código el término es `masa de combustible actual × t_lap_sens_mass`, y la masa baja 1.93 kg al final de cada vuelta. Por eso cada vuelta es 0.023 × 1.93 = 0.0444 s más rápida. Solo se tomaron esos dos números, no se reutilizó código. Son autos de 2019 y el valor representa solo el combustible, no la evolución de la pista, así que se acompaña de dos escenarios de sensibilidad: 0 y el doble.
+
+Escenario principal `trend_fuel_reference`:
 
 | Parámetro | Estimación | Error estándar | IC 95 % |
 |---|---:|---:|---|
@@ -78,17 +111,22 @@ Mínimos cuadrados ordinarios por compuesto, solo con las 33 vueltas de entrenam
 | Penalización de arranque (s) | 0.566 | | 1 observación |
 | Pérdida adicional por parada (s) | 25.522 | | parada de la vuelta 17 |
 
-La segunda parada (37–38) se dejó sin usar para comprobarla en la validación. Resultados contraintuitivos que no se corrigieron: el HARD tiene base más rápida y más desgaste que el SOFT en el escenario principal. La autocorrelación de orden 1 de los residuos es 0.21 en SOFT y 0.00 en HARD; el modo estocástico supone independencia.
+La segunda parada (37–38) se dejó sin usar para comprobarla en la validación. Las tres tendencias producen exactamente el mismo ajuste en entrenamiento: misma dispersión, arranque y pérdida de pits. Los datos no pueden elegir entre ellas, y por eso la elección pesa en las estrategias y en el stint 3, no en la calidad del ajuste.
+
+Resultados contraintuitivos que no se corrigieron: el HARD tiene base más rápida y más desgaste que el SOFT en el escenario principal. Hay tres causas posibles, sin verificar:
+- La tendencia de referencia omite la evolución de la pista, que afecta más al stint 1.
+- VER administró el ritmo al inicio.
+- El SOFT del stint 1 era un juego usado en clasificación. La autocorrelación de orden 1 de los residuos es 0.21 en SOFT y 0.00 en HARD; el modo estocástico supone independencia.
 
 ## 5. Técnica adicional: recocido simulado discreto
 
-*Fuente: docs/tecnica_recocido.md (Ihan Marroquin; revisión de Jonathan pendiente).*
+*Fuente: docs/tecnica_recocido.md*
 
 **Representación.** Un estado son las vueltas de parada y una secuencia de juegos (compuesto y edad inicial) tomada del inventario, con cada juego usado como máximo una vez. El catálogo tiene 0 estrategias de una parada (una parada cubriría como mucho 51 de las 57 vueltas) y 1323 de dos paradas.
 
 **Algoritmo.** Estado inicial aleatorio con semilla; vecinos que desplazan una parada ±1, ±2 o ±3 vueltas o cambian la secuencia de juegos (95 %), y saltos uniformes al catálogo completo (5 %). Se acepta toda mejora y un empeoramiento Δ con probabilidad `exp(−Δ/T)` (criterio de Metropolis, Kirkpatrick et al., 1983). Enfriamiento geométrico hasta 10⁻⁶ s. El objetivo es el tiempo determinista del simulador con los parámetros de entrenamiento.
 
-**Pilotos y búsqueda.** Cuatro perfiles con las semillas piloto 1100–1109; todos llegaron al óptimo en 10/10 y se eligió el compacto (120 propuestas, T inicial 1 s, factor 0.97) por usar menos simulaciones (63.4 en promedio). Con él se corrieron 30 búsquedas (semillas 2100–2129): **29 de 30 alcanzaron el mínimo de la enumeración**; la mayor brecha fue 0.1522 s.
+**Pilotos y búsqueda.** Cuatro perfiles con las semillas piloto 1100–1109; todos llegaron al óptimo en 10/10 y se eligió el compacto (120 propuestas, T inicial 1 s, factor 0.97) por usar menos simulaciones (unas 63 en promedio). Con él se corrieron 30 búsquedas (semillas 2100–2129): **29 de 30 alcanzaron el mínimo de la enumeración**; la mayor brecha fue 0.1522 s.
 
 | Estrategia | Paradas tras la vuelta | Juegos (edad inicial) | Tiempo determinista simulado (s) |
 |---|---|---|---:|
@@ -99,7 +137,7 @@ La segunda parada (37–38) se dejó sin usar para comprobarla en la validación
 
 ## 6. Validación en el stint 3 reservado
 
-*Fuente: docs/validacion_experimentos.md, secciones 4 y 5.5 (Luis Pedro Lira; revisión de Mario pendiente).*
+*Fuente: docs/validacion_experimentos.md, secciones 4 y 5.5*
 
 Estrategia histórica, modo determinista, parámetros congelados, sin reajuste. Vueltas 2–57 de OpenF1 y vuelta 1 con la convención oficial.
 
@@ -125,7 +163,7 @@ El modelo predice el stint 3 sistemáticamente más lento que lo observado. En e
 
 ## 7. Experimentos A/B/C/D
 
-*Fuente: docs/validacion_experimentos.md, sección 5 (Luis Pedro Lira).*
+*Fuente: docs/validacion_experimentos.md, sección 5*
 
 | Condición | Estrategia | Degradación | Réplicas | Semillas |
 |---|---|---:|---:|---|
@@ -238,7 +276,7 @@ python main.py validate                       # stint 3 reservado
 python main.py figures                        # figuras en report/figures/
 ```
 
-`optimize` y `experiments` regeneran archivos idénticos a los de `docs/evidence/` salvo el fin de línea (comprobado el 2026-11-08). La guía de la demo está en `presentation/demo.md`.
+`optimize` y `experiments` regeneran archivos idénticos a los de `docs/evidence/` salvo el fin de línea (comprobado el 2026-11-08).
 
 ## 13. Contribuciones y uso de IA
 
@@ -256,9 +294,8 @@ El detalle por fecha, archivos y revisiones está en `docs/CONTRIBUCIONES.md`. U
 
 1. OpenF1. *OpenF1 API documentation*. https://openf1.org/docs/ (CC BY-NC-SA 4.0).
 2. FIA. *2024 Bahrain Grand Prix – Race Classification*. https://www.fia.com/events/fia-formula-one-world-championship/season-2024/bahrain-grand-prix/race-classification
-3. FIA. *2024 Formula 1 Sporting Regulations*, Issue 5, 28-02-2024, art. 30. https://api.fia.com/sites/default/files/fia_2024_formula_1_sporting_regulations_-_issue_5_-_2024-02-28.pdf
+3. FIA. *2024 Formula 1 Sporting Regulations*, Issue 5, 28-02-2024, art. 30. https://api.fia.com/sites/default/files/fia_2024_formula_1_sporting_regulations_-_issue_5_-_2024-02-28.pdf (art. 30.2 y 30.5 comprobados en el texto el 2026-11-09).
 4. Kirkpatrick, S., Gelatt, C. D. y Vecchi, M. P. (1983). Optimization by Simulated Annealing. *Science*, 220(4598), 671–680. https://doi.org/10.1126/science.220.4598.671
 5. Hajek, B. (1988). Cooling Schedules for Optimal Annealing. *Mathematics of Operations Research*, 13(2), 311–329.
-6. Heilmeier, A., Graf, M. y Lienkamp, M. (2018). A Race Simulation for Strategy Decisions in Circuit Motorsports. *IEEE ITSC*. https://doi.org/10.1109/itsc.2018.8570012 (parámetros de `TUMFTM/race-simulation`, LGPL-3.0).
-7. SciPy. *scipy.optimize.dual_annealing*. https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.dual_annealing.html
-8. Jolpica F1 API (sucesora de Ergast), usada para conciliar la vuelta 1 con la convención oficial.
+6. Heilmeier, A., Graf, M. y Lienkamp, M. (2018). A Race Simulation for Strategy Decisions in Circuit Motorsports. *IEEE ITSC*. https://doi.org/10.1109/itsc.2018.8570012. Parámetros `t_lap_sens_mass` y `b_fuel_perlap` tomados de `racesim/input/parameters/pars_Sakhir_2019.ini` y uso comprobado en `racesim/src/combustioncar.py`, repositorio https://github.com/TUMFTM/race-simulation (LGPL-3.0), consultado el 2026-11-09.
+7. Jolpica F1 API (sucesora de Ergast), https://github.com/jolpica/jolpica-f1 (datos CC BY-NC-SA 4.0), consultada el 2026-11-06. Se usó para conciliar la vuelta 1 con la convención oficial.

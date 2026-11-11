@@ -1,6 +1,6 @@
 # Filtro de calidad propio de OpenF1 (MA-02)
 
-**Responsable:** Mario Fernando Rocha. **Revisión pendiente:** Luis Pedro Lira (LP-01).
+**Responsable:** Mario Fernando Rocha. **Revisado por:** Luis Pedro Lira (2026-11-08).
 **Fecha:** 2026-11-06. **Versión del filtro:** `openf1-v1`.
 **Código:** `src/openf1_quality.py`. **Pruebas:** `tests/test_openf1_quality.py`.
 **Evidencia:** `docs/evidence/openf1_exclusiones.csv` (motivo por vuelta), `docs/evidence/openf1_filtro_calidad.json` (reglas, conteos, intervalos de banderas, cobertura).

@@ -4,12 +4,12 @@ Estado al 2026-11-08, rama `luis-gilberto/entrega`. Marcar `[x]` solo con eviden
 
 | Criterio | Pts | Evidencia en el repositorio | Estado |
 |---|---:|---|---|
-| Problema y justificación | 4 | `report/informe.md` §1–2, `docs/datos_openf1.md` | [ ] Falta MA-06 (redacción de Mario) |
+| Problema y justificación | 4 | `report/informe.md` §1–2, `docs/datos_openf1.md` | [x] MA-06 redactada por Mario el 2026-11-09 (§1 con contexto, justificación y caso; §2 y §4 ampliadas; referencias comprobadas) y revisada por Luis Pedro sin cambios |
 | Investigación adicional | 5 | `docs/tecnica_recocido.md`: fundamentos, 3 fuentes, alternativas, límites | [ ] Falta revisión de Jonathan (IH-07) |
 | Formulación | 5 | `docs/modelo_simulacion.md`, `docs/calibracion.md`, informe §3–4 | [ ] Falta JO-05 (revisión de Ihan) |
 | Simulación funcional | 7 | `src/model.py`, `src/simulation.py`, `python main.py simulate`, pruebas | [x] 103 pruebas OK, también en clon limpio |
 | Técnica adicional implementada | 6 | `src/optimization*.py`, `docs/evidence/optimization/`, Figura 5 | [x] 29/30 al óptimo |
-| Experimentos y validación | 5 | `src/validation.py`, `src/experiments.py`, `docs/evidence/{validation,experiments}/` | [ ] Falta revisión de Mario a LP-06 |
+| Experimentos y validación | 5 | `src/validation.py`, `src/experiments.py`, `docs/evidence/{validation,experiments}/` | [x] LP-06 revisada y aprobada por Mario el 2026-11-09 (`docs/validacion_experimentos.md` §8) |
 | Comparación real | 6 | Informe §8, `docs/validacion_experimentos.md` §5.5 | [x] |
 | Resultados y conclusiones | 4 | 4 figuras comprometidas + 1 adicional desde CSV (`src/visualization.py`), tablas, informe §9–10 | [x] |
 | Presentación y dominio | 8 | `presentation/guion.md`, `presentation/demo.md` | [ ] Faltan diapositivas y ensayo (EQ-04) |

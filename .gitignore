@@ -25,3 +25,4 @@ work/
 report/build/
 # Figura 1 contiene tiempos por vuelta de OpenF1/Jolpica (CC BY-NC-SA); se regenera con validate + figures
 report/figures/fig1_validacion_stint3.png
+.DS_Store

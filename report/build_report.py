@@ -33,7 +33,8 @@ SOURCE = REPORT_DIR / 'informe.md'
 BUILD = REPORT_DIR / 'build'
 LOGO = REPORT_DIR / 'assets/logo_uvg.png'
 FONT = 'Times New Roman'
-INLINE = re.compile(r'(\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*)')
+INLINE = re.compile(r'(\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*|\[[^\]]+\]\([^)]+\))')
+LINK = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
 
 
 def set_font(run, size=12, bold=None, italic=None, mono=False):
@@ -58,8 +59,30 @@ def add_inline(paragraph, text, size=12, bold=False):
             set_font(paragraph.add_run(piece[1:-1]), size - 1, bold=bold, mono=True)
         elif piece.startswith('*') and piece.endswith('*') and len(piece) > 2:
             set_font(paragraph.add_run(piece[1:-1]), size, bold=bold, italic=True)
+        elif link := LINK.fullmatch(piece):
+            set_font(paragraph.add_run(link.group(1)), size, bold=bold)
         else:
             set_font(paragraph.add_run(piece), size, bold=bold)
+
+
+def new_list_numbering(doc, paragraph):
+    """Instancia de numeración nueva que reinicia en 1.
+
+    El estilo 'List Number' comparte un solo contador en todo el documento, así que sin
+    esto cada lista numerada continúa la anterior (Conclusiones empezaba en 6).
+    """
+    numbering = doc.part.numbering_part.element
+    style_num_id = paragraph.style.element.pPr.numPr.numId.val
+    abstract_id = next(num.abstractNumId.val for num in numbering.num_lst if num.numId == style_num_id)
+    num = numbering.add_num(abstract_id)
+    num.add_lvlOverride(ilvl=0).add_startOverride(1)
+    return num.numId
+
+
+def set_list_numbering(paragraph, num_id):
+    num_pr = paragraph._p.get_or_add_pPr().get_or_add_numPr()
+    num_pr.get_or_add_ilvl().val = 0
+    num_pr.get_or_add_numId().val = num_id
 
 
 def body_paragraph(doc, text, style=None, align=WD_ALIGN_PARAGRAPH.JUSTIFY, size=12):
@@ -116,21 +139,27 @@ def add_image(doc, target):
     doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 
+COVER_HEADER = (
+    ('UNIVERSIDAD DEL VALLE DE GUATEMALA', 14, True),
+    ('Modelación y Simulación', 14, True),
+    ('Erick Marroquín', 12, False),
+    ('Sección: 20', 12, False),
+)
+
+
 def cover(doc, title, meta):
+    for line, size, bold in COVER_HEADER:
+        paragraph = doc.add_paragraph()
+        paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        set_font(paragraph.add_run(line), size, bold=bold)
     if LOGO.exists():
         doc.add_picture(str(LOGO), width=Cm(6))
         doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
     else:
-        for _ in range(4):
-            doc.add_paragraph()
-    for line in ('Universidad del Valle de Guatemala', 'Modelización y Simulación'):
-        paragraph = doc.add_paragraph()
-        paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        set_font(paragraph.add_run(line), 14, bold=True)
-    doc.add_paragraph()
+        doc.add_paragraph()
     paragraph = doc.add_paragraph()
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    set_font(paragraph.add_run(title), 18, bold=True)
+    add_inline(paragraph, title, 22, bold=True)
     doc.add_paragraph()
     for line in meta:
         body_paragraph(doc, line, align=WD_ALIGN_PARAGRAPH.CENTER)
@@ -150,11 +179,12 @@ def build_docx(source: Path, out: Path) -> Path:
     title = lines[0].lstrip('# ').strip()
     meta, i = [], 1
     while i < len(lines) and not lines[i].startswith('## '):
-        if lines[i].startswith('**'):
+        if lines[i].strip() and not lines[i].startswith('> '):
             meta.append(lines[i])
         i += 1
     cover(doc, title, meta)
 
+    list_num_id = None
     while i < len(lines):
         line = lines[i]
         if line.startswith('```'):
@@ -177,7 +207,10 @@ def build_docx(source: Path, out: Path) -> Path:
         elif match := re.match(r'!\[[^\]]*\]\(([^)]+)\)', line):
             add_image(doc, match.group(1))
         elif re.match(r'\d+\. ', line):
-            body_paragraph(doc, re.sub(r'^\d+\. ', '', line), style='List Number')
+            paragraph = body_paragraph(doc, re.sub(r'^\d+\. ', '', line), style='List Number')
+            if line.startswith('1. ') or list_num_id is None:
+                list_num_id = new_list_numbering(doc, paragraph)
+            set_list_numbering(paragraph, list_num_id)
         elif line.startswith('- '):
             body_paragraph(doc, line[2:], style='List Bullet')
         elif line.startswith('> '):

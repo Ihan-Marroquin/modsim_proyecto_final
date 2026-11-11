@@ -1,6 +1,6 @@
 # Conciliación de la diferencia de +0.475 s (MA-02)
 
-**Responsable:** Mario Fernando Rocha. **Revisión pendiente:** Luis Pedro Lira.
+**Responsable:** Mario Fernando Rocha. **Revisado por:** Luis Pedro Lira (2026-11-08).
 **Fecha:** 2026-11-06.
 **Código:** `src/reconciliation.py`. **Pruebas:** `tests/test_reconciliation.py`.
 **Comando:** `python main.py download` y después `python main.py reconcile`.

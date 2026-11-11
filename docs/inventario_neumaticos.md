@@ -1,6 +1,6 @@
 # Inventario de neumáticos y espacio de estrategias (MA-05)
 
-**Responsable:** Mario Fernando Rocha. **Coordinar con:** Ihan Marroquin (IH-05) y Jonathan Zacarias (JO-02). **Revisión pendiente:** Luis Pedro Lira.
+**Responsable:** Mario Fernando Rocha. **Coordinar con:** Ihan Marroquin (IH-05) y Jonathan Zacarias (JO-02). **Revisado por:** Luis Pedro Lira (2026-11-08).
 **Fecha:** 2026-11-06. **Estado: inventario INFERIDO, no certificado.**
 **Código:** `src/inventory.py`. **Pruebas:** `tests/test_inventory.py`. **Configuración:** `configs/tyre_inventory_bahrain_2024.json`.
 **Comando:** `python main.py inventory` (después de `python main.py download`). **Evidencia:** `docs/evidence/inventario_neumaticos.json`.
@@ -18,7 +18,14 @@ Fuente: https://api.fia.com/sites/default/files/fia_2024_formula_1_sporting_regu
 | 30.5j | Pirelli publica la lista de juegos disponibles de cada piloto | **No se obtuvo**: por eso el inventario es inferido |
 | 30.5l | En carrera seca: **al menos dos especificaciones distintas**, una de ellas obligatoria (30.2c)ii) | `min_distinct_compounds = 2` |
 
-**Por verificar:** cuáles fueron las especificaciones obligatorias de carrera en Bahréin 2024 (se comunican en las notas del evento, art. 30.2c)ii). Con SOFT y HARD como únicos compuestos permitidos, toda estrategia factible incluye HARD. Hay que confirmar que HARD era obligatoria.
+**Especificaciones obligatorias (resuelto el 2026-11-09).** Texto comprobado en el reglamento:
+- Art. 30.2 c) ii): la FIA comunica por evento *«the mandatory dry-weather race tyre specification(s) (up to two (2))»*.
+- Art. 30.5 l): cada piloto usa *«at least two different specifications of dry-weather tyres during the race, at least one of which must be a mandatory dry-weather race tyre specification»*.
+
+No se encontró publicada la lista del evento: Pirelli nominó C1 (HARD), C2 (MEDIUM) y C3 (SOFT). La restricción se puede justificar sin esa lista:
+1. VER corrió solo SOFT y HARD y su resultado fue válido. Por eso al menos una de esas dos especificaciones era obligatoria.
+2. Con SOFT y HARD como únicos compuestos modelados, `min_distinct_compounds = 2` obliga a usar ambos.
+3. Entonces toda estrategia factible del modelo incluye la especificación obligatoria y cumple el art. 30.5 l).
 
 ## 2. Reconstrucción del fin de semana de VER (OpenF1)
 
@@ -79,7 +86,7 @@ Decidido antes de ver cualquier resultado de optimización.
 
 1. La continuidad de edad es una heurística: si dos juegos tienen la misma edad, la asignación es ambigua (pasa una vez en la Práctica 1, sin efecto en los conteos).
 2. Qué juegos se devolvieron se infiere de las reglas, no de la lista oficial de Pirelli.
-3. Las especificaciones obligatorias de carrera no están verificadas.
+3. No se obtuvo la lista oficial de especificaciones obligatorias del evento. La sección 1 muestra que la restricción cumple el art. 30.5 l) sin necesitarla.
 4. Los límites de edad del escenario principal vienen de otros pilotos y autos. Indican que el stint es físicamente posible, no cuánto tardaría VER en esas vueltas.
 
 ## 7. Revisión

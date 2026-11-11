@@ -1,6 +1,6 @@
 # Validación, experimentos y comparación con la carrera real (LP-01 a LP-06)
 
-**Responsable:** Luis Pedro Lira. **Revisión pendiente:** Mario Fernando Rocha (LP-06). **Integra en el informe:** Luis Gilberto Marroquin.
+**Responsable:** Luis Pedro Lira. **Revisión:** Mario Fernando Rocha, aprobada el 2026-11-09 (LP-06, sección 8). **Integra en el informe:** Luis Gilberto Marroquin.
 **Fecha:** 2026-11-08. **Rama:** `luis-pedro/validacion`, creada desde `7a740c6`.
 **Código:** `src/validation.py`, `src/experiments.py`, comandos `validate` y `experiments` en `main.py`.
 **Pruebas:** `tests/test_validation.py`, `tests/test_experiments.py`, `tests/test_strategy_conventions.py`.
@@ -261,3 +261,20 @@ El resultado es compatible con que la estrategia histórica ya estaba en el grup
 | Tablas de validación | `docs/evidence/validation/validacion.json`, `sensibilidad_tendencia_validacion.csv` | Métricas agregadas por conjunto y escenario |
 
 Los demás archivos de `results/experiments/` se regeneran con `python main.py experiments`. `vueltas_replicas.csv` (6840 filas, desglose por vuelta de las 120 réplicas) no se versiona por tamaño.
+
+## 8. Revisión de Mario (LP-06)
+
+- [x] **Aprobada, 2026-11-09**, sobre `main` en `c4fc3ba`. Con la caché local de OpenF1 se regeneró `python main.py validate`. `validacion.json` es idéntico a `docs/evidence/validation/validacion.json` salvo `computed_at_utc` y `code_state`. Pasan las 103 pruebas.
+- [x] Recalculadas por separado, todas coinciden:
+  - Descomposición 0.7622 − 0.6872·μ (20·d_SOFT = 1.5220; 21·d_HARD = 2.2092) y equilibrio en ×1.109.
+  - Mejora de +0.0750 s con ×1.00 y de −0.0624 s con ×1.20.
+  - IC sin emparejar ±0.674 s y σ·√57 = 1.231 s.
+  - Cocientes 6.1×, 109× y 11.3×, y 0.21 s por cada 0.01 s/vuelta de d_HARD.
+  - MAE de entrenamiento 0.1176 s, sobre 33 vueltas.
+  - Errores de las vueltas 39 (+2.271 s) y 40 (−1.678 s), y error positivo en todas las vueltas 42–52.
+  - Pérdida implícita 215.679 − 191.005 = 24.674 s.
+  - Siete huellas de entrada en el manifiesto.
+- [x] Las afirmaciones sobre datos y calibración (secciones 2, 4.3 y 5.5) son coherentes con MA-01 a MA-05: vuelta 1 oficial de 97.284 s, pit lane FIA de 25.064 y 24.209 s, parada 37–38 no usada en la calibración y aviso de transparencia del stint 3.
+- Observaciones menores, que no bloquean:
+  1. Secciones 4.1 y 6.4: «vuelta rápida deliberada en la 39». En `docs/filtro_calidad_openf1.md`, sección 4, es una hipótesis: la vuelta rápida daba un punto en 2024. Se sugiere «probablemente deliberada».
+  2. Sección 4.1: el filtro describe los tiempos que bajan en las vueltas 41–46, no en las 42–52. Conviene citar la sección 4 de ese documento y el rango que sí analiza.

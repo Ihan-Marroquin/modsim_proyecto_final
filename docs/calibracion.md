@@ -1,6 +1,6 @@
 # Calibración de parámetros reales (MA-04)
 
-**Responsable:** Mario Fernando Rocha. **Revisión pendiente:** Luis Pedro Lira y Jonathan Zacarias (modelo, JO-01/JO-02).
+**Responsable:** Mario Fernando Rocha. **Revisado por:** Luis Pedro Lira (2026-11-08) y Jonathan Zacarias (2026-11-06).
 **Fecha:** 2026-11-06. Jonathan aprobó en llamada fijar la tendencia con referencia externa y hacer sensibilidad.
 **Código:** `src/calibration.py`. **Pruebas:** `tests/test_calibration.py`.
 **Comandos:** `python main.py download`, `python main.py reconcile` y después `python main.py calibrate`. La partición no se regenera: se verifica contra la congelada.
@@ -40,7 +40,7 @@ Una prueba (`test_losses_follow_simulator_convention_without_double_counting`) v
 **Limitaciones de la referencia:**
 - Son autos de 2019, no de 2024.
 - Solo representa el combustible: no incluye la evolución de la pista (goma acumulada; la pista se enfría de 23.8 a 21.9 °C).
-- Antes de citarla en el informe hay que confirmar en el artículo la definición de ambos campos.
+- Definición de ambos campos comprobada en el código y los parámetros de TUM el 2026-11-09 (sección 7).
 
 ## 3. Resultados
 
@@ -133,5 +133,10 @@ sens = {k: parameters_from_dict(v) for k, v in cfg['sensitivity_parameters'].ite
 
 - [x] Luis Pedro: reproduce `python main.py calibrate`, obtiene los mismos parámetros y `validation_laps_read: []` (2026-11-08). `parameters`, `sensitivity_parameters` y `details` son idénticos a `docs/evidence/calibracion.json`. La pérdida de pits se comprobó con la parada 37–38 en LP-03 (`docs/validacion_experimentos.md`).
 - [x] Jonathan: confirma convención de pits y arranque y el escenario principal de tendencia (2026-11-06, JO-01/JO-02/JO-03; ver `docs/modelo_simulacion.md`).
-- [ ] Verificar en Heilmeier et al. (2018) la definición de `t_lap_sens_mass` y `b_fuel_perlap`.
+- [x] Verificar la definición de `t_lap_sens_mass` y `b_fuel_perlap` (Mario, 2026-11-09). Se comprobó en el repositorio que acompaña a Heilmeier et al. (2018):
+  - `pars_Sakhir_2019.ini` define `t_lap_sens_mass: [s/kg] lap time mass sensitivity` = 0.023, único para la pista.
+  - El mismo archivo define `b_fuel_perlap: [kg/lap] fuel mass consumption per lap` = 1.93, igual para los 10 equipos, con `m_fuel` = 110 kg ≈ 57 × 1.93.
+  - En `racesim/src/combustioncar.py`, `t_add_car` suma `self.m_fuel * t_lap_sens_mass` con la masa **actual**, y `drive_lap` resta `b_fuel_perlap` al final de cada vuelta.
+  - Por eso cada vuelta es 0.023 × 1.93 = 0.0444 s más rápida, como se usa aquí.
+  - Matiz: TUM activa `auto_consumption_adjust`, que solo puede aumentar el consumo, y usa un consumo menor bajo Safety Car. Ninguno de los dos aplica a esta referencia nominal.
 - [x] Observaciones / fecha / commit: 2026-11-06, Jonathan Zacarias revisó y confirmó las convenciones en `src/model.py` y `src/simulation.py`.
