@@ -99,7 +99,7 @@ En macOS/Linux, el ejecutable del entorno está en `.venv/bin/python`. `requirem
 - `src/visualization.py`: las cuatro figuras comprometidas y la de convergencia, leídas de la evidencia sin números escritos a mano.
 - `src/replay.py` y `presentation/replay/`: reproducción interactiva del simulador, generada con `main.py replay`.
 - `report/`: informe integrado (`informe.md`), generador Word/PDF y lista de la rúbrica.
-- `presentation/`: guion de 15 minutos y guía de la demo con respaldo.
+- `presentation/`: diapositivas en PDF (`presentacion_proyecto_f1.pdf`) y plantilla y mapa de la reproducción interactiva (`replay/`).
 - `src/openf1_data.py`: adquisición histórica pública comprobada.
 - `src/data.py`: auditoría y adaptador alternativo FastF1.
 - `tests/`: consistencia del motor, optimizador y manejo de datos.
