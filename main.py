@@ -1,6 +1,7 @@
 """CLI inicial. Ejecutar desde la raíz del proyecto."""
 import argparse
 import json
+import webbrowser
 from dataclasses import asdict
 from pathlib import Path
 from src.domain import Constraints, parameters_from_dict, strategy_from_dict
@@ -44,9 +45,24 @@ def main():
     compare = sub.add_parser('compare', help='Demo: estrategia histórica contra la candidata congelada (LG-02)')
     compare.add_argument('--degradation-multiplier', type=float, default=1.0)
     compare.add_argument('--candidate', default='docs/evidence/optimization/candidate.json')
+    replay = sub.add_parser('replay', help='Abrir la reproducción interactiva de las estrategias en Bahréin')
+    replay.add_argument('--no-open', action='store_true', help='Generar la reproducción sin abrir el navegador')
+    replay.add_argument('--output-dir', default='results/replay', help='Directorio de salida para el HTML')
     figures = sub.add_parser('figures', help='Generar las figuras del informe desde la evidencia (LG-01)')
     figures.add_argument('--output-dir', default='report/figures')
     args = parser.parse_args()
+    if args.command == 'replay':
+        from src.replay import build_replay
+        page = build_replay(ROOT, ROOT / args.output_dir)
+        print(f'Reproducción interactiva: {page}')
+        if not args.no_open:
+            try:
+                opened = webbrowser.open_new_tab(page.as_uri())
+            except (OSError, webbrowser.Error):
+                opened = False
+            if not opened:
+                print('Abre la ruta anterior con tu navegador.')
+        return
     if args.command == 'compare':
         from src.model import simulate_bahrain_case
         candidate = strategy_from_dict(json.loads((ROOT / args.candidate).read_text(encoding='utf-8')))

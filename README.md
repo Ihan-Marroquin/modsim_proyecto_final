@@ -55,6 +55,7 @@ Falta repetir esta prueba en la computadora de otro integrante.
 Python 3.12 recomendado; también se probó con 3.14.6. Desde la raíz del repositorio:
 
 ```powershell
+python main.py replay            # abrir la reproducción interactiva en el navegador
 python -m unittest discover -s tests -v
 python main.py optimize
 python main.py simulate --strategy docs/evidence/optimization/candidate.json
@@ -69,6 +70,14 @@ python main.py download
 ```
 
 La optimización y la simulación se ejecutan sin internet con los parámetros versionados. `optimize` genera el resumen, la candidata, los pilotos y las trazas en `results/optimization/`. La descarga OpenF1 sí requiere internet y conserva las respuestas para reutilizarlas.
+
+### Reproducción interactiva
+
+Ejecuta `python main.py replay` desde la raíz del proyecto. El comando corre la histórica y la candidata congelada con desgaste ×1.00 y ×1.20, guarda `results/replay/bahrein.html` y lo abre en el navegador predeterminado. Funciona sin internet y usa solo la biblioteca estándar de Python.
+
+Pulsa **Reproducir** para seguir la carrera o **Ir a segundas paradas** para enfocarte en las vueltas 36 y 37. Cambia **Desgaste** para ver el resultado de sensibilidad. El reloj, los juegos y las paradas salen del simulador. La posición entre vueltas se interpola sobre la geometría de Sakhir.
+
+`python main.py replay --no-open` deja listo el HTML para copiarlo o abrirlo más tarde. La geometría procede de [f1-circuits](https://github.com/bacinger/f1-circuits) y su licencia MIT está en `presentation/replay/LICENSE-MAP.txt`.
 
 Para bibliotecas opcionales de análisis:
 
@@ -88,6 +97,7 @@ En macOS/Linux, el ejecutable del entorno está en `.venv/bin/python`. `requirem
 - `src/validation.py`: validación en el stint 3 reservado y reconstrucción completa, por separado.
 - `src/experiments.py`: experimentos A/B/C/D, diferencias pareadas, incertidumbre y sensibilidad.
 - `src/visualization.py`: las cuatro figuras comprometidas y la de convergencia, leídas de la evidencia sin números escritos a mano.
+- `src/replay.py` y `presentation/replay/`: reproducción interactiva del simulador, generada con `main.py replay`.
 - `report/`: informe integrado (`informe.md`), generador Word/PDF y lista de la rúbrica.
 - `presentation/`: guion de 15 minutos y guía de la demo con respaldo.
 - `src/openf1_data.py`: adquisición histórica pública comprobada.

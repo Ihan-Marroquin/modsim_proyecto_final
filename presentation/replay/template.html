@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Bahréin 2024 · Reproducción de la simulación</title>
+<style>
+:root{color-scheme:dark;--bg:#101417;--panel:#181e23;--line:#343e45;--text:#f5f3ed;--muted:#acb6bd;--sand:#ffd281;--base:#83d7ff;--candidate:#ffbd78;--soft:#eb7f88;--hard:#e3e7eb}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 "Segoe UI",sans-serif}
+main{max-width:1220px;margin:auto;padding:26px clamp(14px,3vw,38px) 18px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+h1,h2,p{margin:0}
+h1{font-family:"Bahnschrift","Segoe UI",sans-serif;line-height:1.02;font-weight:650;font-size:clamp(2.1rem,5vw,3.65rem);letter-spacing:-.04em}
+h2{font-size:1rem}
+.kicker{letter-spacing:.12em;text-transform:uppercase;font-size:.74rem;font-weight:650;color:var(--sand);margin-bottom:6px}
+.sub,.note,.small{color:var(--muted)}
+.sub{margin-top:6px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(255px,310px);gap:14px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px}
+.map-panel{overflow:hidden;position:relative;background:radial-gradient(ellipse at center,#263038,#181e23 80%)}
+.map-title{position:absolute;top:14px;left:16px;pointer-events:none}
+.map-title .small{font-size:.8rem}
+canvas{display:block;width:100%;height:clamp(305px,43vw,425px)}
+.side{padding:14px;display:grid;gap:10px;align-content:start}
+.team{border:1px solid var(--line);padding:11px 12px;border-radius:9px}
+.team h2{display:flex;align-items:center;gap:9px}
+.dot{width:.65rem;height:.65rem;background:var(--base);border-radius:50%;display:inline-block}
+.candidate .dot{background:var(--candidate);border-radius:2px}
+.state{margin-top:4px;font-size:1.02rem}
+.small{font-size:.87rem}
+.result{border-top:1px solid var(--line);padding:8px 2px 0}
+.delta{font:650 2.15rem/1.13 "Bahnschrift","Segoe UI",sans-serif;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.result p:last-child{margin-top:3px}
+.controls{padding:12px 14px;margin-top:14px}
+.controls-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+button,select{font:inherit;color:var(--text);background:#242d34;border:1px solid #46545d;border-radius:8px;padding:7px 10px;min-height:39px}
+button,select,input[type=range]{cursor:pointer}
+button:hover,select:hover{border-color:var(--sand)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--sand);outline-offset:3px}
+#play{min-width:110px;background:var(--sand);color:#1e1a15;font-weight:650;border-color:var(--sand)}
+.seek-row{display:flex;align-items:center;gap:12px;margin-top:7px}
+#seek{accent-color:var(--sand);flex:1;min-width:0}
+#clock{min-width:91px;text-align:right;font-variant-numeric:tabular-nums}
+.stints{margin-top:14px;padding:12px 14px}
+.stint-row{display:grid;grid-template-columns:104px minmax(0,1fr);gap:9px;align-items:center;margin-top:8px}
+.bar{position:relative;display:flex;height:20px;border-radius:4px;overflow:hidden}
+.segment{color:#1a1c20;display:grid;place-items:center;font-size:.72rem;font-weight:700}
+.position{position:absolute;top:0;bottom:0;width:3px;background:#14181c;box-shadow:0 0 0 1px #fff;transform:translateX(-50%)}
+.stop-list{margin-left:113px;margin-top:4px}
+footer{font-size:.82rem;margin-top:11px;color:var(--muted)}
+a{color:var(--base)}
+summary{cursor:pointer}
+pre{white-space:pre-wrap}
+@media(max-width:730px){.layout{grid-template-columns:1fr}.side{grid-template-columns:1fr 1fr}.result{grid-column:1/-1}.map-title{top:9px;left:11px}}
+@media(max-width:455px){.stint-row{grid-template-columns:75px minmax(0,1fr)}.stop-list{margin-left:84px}button,select{min-height:44px}.state{font-size:.91rem}}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <p class="kicker">Equipo 5 · Modelización y Simulación</p>
+      <h1>Bahréin 2024</h1>
+      <p class="sub">Verstappen · 57 vueltas · Dos estrategias simuladas</p>
+    </div>
+    <label>Desgaste <select id="scenario">
+      <option value="base">Nominal ×1.00</option>
+      <option value="wear">Aumentado ×1.20</option>
+    </select></label>
+  </header>
+
+  <div class="layout">
+    <section class="panel map-panel" aria-label="Recorrido de las dos estrategias en Sakhir">
+      <div class="map-title"><h2>Circuito de Sakhir</h2><p class="small">Movimiento ilustrado por vuelta</p></div>
+      <canvas id="map" role="img" aria-label="Mapa del circuito. Círculo azul: histórica simulada. Cuadrado ámbar: candidata simulada.">Mapa de Sakhir con las dos estrategias simuladas.</canvas>
+    </section>
+    <section class="panel side" aria-label="Estado de la simulación">
+      <article class="team">
+        <h2><span class="dot"></span> Histórica simulada</h2>
+        <p class="state" id="historical-state"></p>
+        <p class="small" id="historical-lap"></p>
+        <p class="small" id="historical-total"></p>
+      </article>
+      <article class="team candidate">
+        <h2><span class="dot"></span> Candidata simulada</h2>
+        <p class="state" id="candidate-state"></p>
+        <p class="small" id="candidate-lap"></p>
+        <p class="small" id="candidate-total"></p>
+      </article>
+      <div class="result" aria-live="polite">
+        <p class="small">Ventaja de la candidata al terminar</p>
+        <p class="delta" id="delta"></p>
+        <p class="small" id="result-text"></p>
+      </div>
+    </section>
+  </div>
+
+  <section class="panel controls" aria-label="Controles de reproducción">
+    <div class="controls-row">
+      <button id="play" type="button">▶ Reproducir</button>
+      <button id="restart" type="button">Reiniciar</button>
+      <button id="jump" type="button">Ir a segundas paradas</button>
+      <label>Velocidad <select id="speed"><option value="12">12×</option><option value="60">60×</option><option value="120" selected>120×</option><option value="240">240×</option></select></label>
+    </div>
+    <div class="seek-row">
+      <label for="seek">Tiempo</label>
+      <input id="seek" type="range" min="0" step="0.1" value="0" aria-label="Tiempo simulado de carrera">
+      <output id="clock" for="seek">0:00.0</output>
+    </div>
+  </section>
+
+  <section class="panel stints" aria-label="Cronograma de neumáticos">
+    <h2>Neumáticos por vuelta</h2>
+    <div class="stint-row"><span>Histórica</span><div id="historical-stints" class="bar"></div></div>
+    <p class="stop-list small" id="historical-stops"></p>
+    <div class="stint-row"><span>Candidata</span><div id="candidate-stints" class="bar"></div></div>
+    <p class="stop-list small" id="candidate-stops"></p>
+  </section>
+  <footer>
+    <p>Los tiempos, compuestos y paradas provienen del simulador del equipo. La posición se interpola sobre la pista y la pérdida agrupada de pits se representa junto a la meta. Referencia FIA observada: <span id="official-time"></span>.</p>
+    <details><summary>Fuentes y licencia de la geometría</summary>
+      <p><a href="https://github.com/Ihan-Marroquin/modsim_proyecto_final">Simulador del proyecto</a> · <a href="https://github.com/bacinger/f1-circuits/blob/master/circuits/bh-2002.geojson">Geometría del circuito, Tomislav Bacinger</a>.</p>
+      <pre>__MAP_LICENSE__</pre>
+    </details>
+  </footer>
+</main>
+
+<script id="race-data" type="application/json">__RACE_DATA__</script>
+<script>
+(() => {
+  "use strict";
+  const byId = id => document.getElementById(id);
+  const data = JSON.parse(byId("race-data").textContent);
+  byId("official-time").textContent = data.official_time_s.toFixed(3) + " s";
+  const canvas = byId("map");
+  const ctx = canvas.getContext("2d");
+  const play = byId("play");
+  const seek = byId("seek");
+  const speed = byId("speed");
+  const scenario = byId("scenario");
+  const kinds = ["historical","candidate"];
+  const colors = ["#83d7ff","#ffbd78"];
+  const views = Object.fromEntries(kinds.map(kind => [kind,Object.fromEntries(
+    ["state","lap","total","stints","stops"].map(part => [part,byId(kind + "-" + part)]))]));
+  let elapsed = 0;
+  let playing = false;
+  let lastFrame = null;
+  let frame = 0;
+  let route = [];
+  let lengths = [];
+  let raceLength = 0;
+  let scene;
+
+  const formatTime = t => {
+    const tenths = Math.floor(t * 10);
+    return Math.floor(tenths / 600) + ":" + ((tenths % 600) / 10).toFixed(1).padStart(4,"0");
+  };
+  const total = laps => laps[laps.length-1].end;
+  function buildTimeline(kind, laps) {
+    const view = views[kind];
+    view.stints.replaceChildren();
+    let start = 0;
+    const stops = laps.filter(row => row.stop).map(row => row.lap);
+    const bounds = [...stops, laps.length];
+    for (const end of bounds) {
+      const compound = laps[start].tyre;
+      const segment = document.createElement("span");
+      segment.className = "segment";
+      segment.style.width = ((end - start) / laps.length * 100) + "%";
+      segment.style.background = compound === "SOFT" ? "var(--soft)" : "var(--hard)";
+      segment.textContent = compound;
+      segment.setAttribute("aria-label", compound + ", vueltas " + (start+1) + " a " + end);
+      view.stints.append(segment);
+      start = end;
+    }
+    view.cursor = document.createElement("span");
+    view.cursor.className = "position";
+    view.cursor.setAttribute("aria-hidden","true");
+    view.stints.append(view.cursor);
+    view.stops.textContent = "Paradas al final de " + stops.join(" y ");
+    view.total.textContent = "Total simulado: " + total(laps).toFixed(3) + " s";
+  }
+  function updateScenario() {
+    scene = data.scenes[scenario.value];
+    raceLength = Math.max(...kinds.map(kind => total(scene[kind])));
+    elapsed = Math.min(elapsed,raceLength);
+    seek.max = raceLength;
+    for (const kind of kinds) buildTimeline(kind, scene[kind]);
+    const delta = total(scene.historical) - total(scene.candidate);
+    byId("delta").textContent = (delta >= 0 ? "+" : "−") + Math.abs(delta).toFixed(4) + " s";
+    byId("result-text").textContent = delta >= 0 ? "La candidata termina antes." : "La histórica termina antes.";
+    render();
+  }
+  function resize() {
+    const bounds = canvas.getBoundingClientRect();
+    const ratio = window.devicePixelRatio || 1;
+    canvas.width = Math.round(bounds.width * ratio);
+    canvas.height = Math.round(bounds.height * ratio);
+    ctx.setTransform(ratio,0,0,ratio,0,0);
+    const xs = data.track.map(p => p[0]);
+    const ys = data.track.map(p => p[1]);
+    const lowX = Math.min(...xs), lowY = Math.min(...ys);
+    const spanX = Math.max(...xs)-lowX, spanY = Math.max(...ys)-lowY;
+    const scale = Math.min((bounds.width-55)/spanX,(bounds.height-86)/spanY);
+    const left = (bounds.width-spanX*scale)/2;
+    const top = 35+(bounds.height-35-spanY*scale)/2;
+    route = data.track.map(p => [left+(p[0]-lowX)*scale,top+(p[1]-lowY)*scale]);
+    lengths = [0];
+    for (let i=1;i<route.length;i++) lengths.push(lengths[i-1]+Math.hypot(route[i][0]-route[i-1][0],route[i][1]-route[i-1][1]));
+    render();
+  }
+  function position(progress,offset) {
+    const distance = progress * lengths.at(-1);
+    const hit = lengths.findIndex((length,i) => i > 0 && length >= distance);
+    const i = hit < 0 ? route.length-1 : hit;
+    const [x,y] = route[i-1];
+    const dx = route[i][0]-x, dy = route[i][1]-y;
+    const segment = lengths[i]-lengths[i-1];
+    const f = (distance-lengths[i-1])/segment;
+    return [x+f*dx-offset*dy/segment,y+f*dy+offset*dx/segment];
+  }
+  function stateAt(laps,t) {
+    const index = laps.findIndex(row => t < row.end);
+    if (index === -1) return {row:laps.at(-1),progress:1,pit:false,finished:true};
+    const row = laps[index];
+    const start = index ? laps[index-1].end : 0;
+    const drive = row.end-start-row.pit;
+    const progress = Math.min(1, (t-start)/drive);
+    return {row,progress,pit:row.pit>0 && progress===1,finished:false};
+  }
+  function drawTrack() {
+    const width = canvas.clientWidth, height = canvas.clientHeight;
+    ctx.clearRect(0,0,width,height);
+    ctx.lineCap="round";
+    ctx.lineJoin="round";
+    ctx.beginPath();
+    ctx.moveTo(...route[0]);
+    for (const p of route.slice(1)) ctx.lineTo(...p);
+    ctx.strokeStyle="#6a777e";
+    ctx.lineWidth=21;
+    ctx.stroke();
+    ctx.strokeStyle="#384249";
+    ctx.lineWidth=16;
+    ctx.stroke();
+    const a = position(0,-11), b = position(0,11);
+    ctx.beginPath();
+    ctx.moveTo(...a);
+    ctx.lineTo(...b);
+    ctx.lineWidth=3;
+    ctx.strokeStyle="#f4f0e3";
+    ctx.stroke();
+    ctx.fillStyle="#f4f0e3";
+    ctx.font="12px Segoe UI";
+    ctx.textBaseline="middle";
+    ctx.fillText("Meta",Math.max(8,a[0]-44),a[1]-13);
+  }
+  function drawCar(state,index) {
+    const [x,y] = position(state.pit || state.finished ? 0 : state.progress, (index ? 1 : -1)*(state.pit ? 15 : 5));
+    ctx.fillStyle=colors[index];
+    ctx.strokeStyle="#111619";
+    ctx.lineWidth=2.5;
+    ctx.beginPath();
+    if (index === 0) ctx.arc(x,y,7.5,0,Math.PI*2);
+    else ctx.rect(x-6.5,y-6.5,13,13);
+    ctx.fill();
+    ctx.stroke();
+  }
+  function render() {
+    if (!route.length || !scene) return;
+    drawTrack();
+    for (const [index,kind] of kinds.entries()) {
+      const laps = scene[kind];
+      const s = stateAt(laps,elapsed);
+      const v = views[kind];
+      v.state.textContent = s.finished ? "Llegó a meta" : s.pit ? "En pits · vuelta " + s.row.lap : "En pista · vuelta " + s.row.lap + " / " + laps.length;
+      v.lap.textContent = s.row.tyre + " · edad al cierre: " + s.row.age + " vueltas";
+      v.cursor.style.left = ((s.row.lap-1+s.progress)/laps.length*100) + "%";
+      drawCar(s,index);
+    }
+    seek.value = elapsed;
+    byId("clock").value = formatTime(elapsed);
+    seek.setAttribute("aria-valuetext", formatTime(elapsed));
+  }
+  function setPlaying(value) {
+    playing=value;
+    play.textContent=value ? "Ⅱ Pausar" : elapsed >= raceLength ? "▶ Repetir" : "▶ Reproducir";
+    lastFrame=null;
+    cancelAnimationFrame(frame);
+    if (value) frame=requestAnimationFrame(tick);
+  }
+  function tick(now) {
+    if (!playing) return;
+    if (lastFrame !== null) elapsed=Math.min(raceLength,elapsed+(now-lastFrame)/1000*Number(speed.value));
+    lastFrame=now;
+    render();
+    if (elapsed>=raceLength) setPlaying(false);
+    else frame=requestAnimationFrame(tick);
+  }
+  play.addEventListener("click",() => {
+    if (!playing && elapsed>=raceLength) elapsed=0;
+    setPlaying(!playing);
+    render();
+  });
+  byId("restart").addEventListener("click",() => {
+    elapsed=0;
+    setPlaying(false);
+    render();
+  });
+  byId("jump").addEventListener("click",() => {
+    const pitStarts=kinds.map(kind => scene[kind].filter(row => row.stop).at(-1))
+      .map(row => row.end-row.pit);
+    elapsed=Math.max(0,Math.min(...pitStarts)-18);
+    speed.value="12";
+    setPlaying(false);
+    render();
+  });
+  seek.addEventListener("input",() => {
+    elapsed=Math.min(raceLength,Number(seek.value));
+    if (elapsed >= raceLength-.1) elapsed=raceLength;
+    setPlaying(false);
+    render();
+  });
+  scenario.addEventListener("change",() => {
+    setPlaying(false);
+    updateScenario();
+    setPlaying(false);
+  });
+  updateScenario();
+  new ResizeObserver(resize).observe(canvas);
+  resize();
+})();
+</script>
+</body>
+</html>

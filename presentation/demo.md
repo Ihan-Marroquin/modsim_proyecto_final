@@ -1,6 +1,19 @@
 # Demo en vivo (LG-02) — 3 minutos, Luis Gilberto
 
-Todo corre sin internet en menos de 2 s por comando (medido el 2026-11-08 en Windows, Python 3.14, `.venv` con `requirements.txt`). Las cifras esperadas salen de esas ejecuciones y coinciden con `docs/evidence/`.
+Los comandos de la demo corren sin internet con los parámetros versionados. Las cifras esperadas coinciden con `docs/evidence/`.
+
+## Demo con reproducción interactiva
+
+Desde el directorio del proyecto:
+
+```bash
+python main.py compare
+python main.py replay
+```
+
+`compare` muestra los dos tiempos y su diferencia en la terminal. `replay` ejecuta las dos estrategias con desgaste nominal y aumentado, y abre la reproducción en el navegador. En la pantalla, pulsar **Ir a segundas paradas** y luego **Reproducir**. La candidata para al final de la 36 y la histórica al final de la 37. Cambiar desgaste de ×1.00 a ×1.20 para mostrar cómo pasa de +0.0750 s a −0.0624 s.
+
+Los tiempos son los del simulador. La posición dentro de cada vuelta se interpola sobre el circuito. Para preparar una copia de respaldo, ejecutar `python main.py replay --no-open` y copiar `results/replay/bahrein.html`.
 
 ## Antes de exponer
 
