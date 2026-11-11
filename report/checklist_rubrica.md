@@ -12,7 +12,7 @@ Estado al 2026-11-08, rama `luis-gilberto/entrega`. Marcar `[x]` solo con eviden
 | Experimentos y validación | 5 | `src/validation.py`, `src/experiments.py`, `docs/evidence/{validation,experiments}/` | [x] LP-06 revisada y aprobada por Mario el 2026-11-09 (`docs/validacion_experimentos.md` §8) |
 | Comparación real | 6 | Informe §8, `docs/validacion_experimentos.md` §5.5 | [x] |
 | Resultados y conclusiones | 4 | 4 figuras comprometidas + 1 adicional desde CSV (`src/visualization.py`), tablas, informe §9–10 | [x] |
-| Presentación y dominio | 8 | `presentation/guion.md`, `presentation/demo.md` | [ ] Faltan diapositivas y ensayo (EQ-04) |
+| Presentación y dominio | 8 | `presentation/presentacion_proyecto_f1.pdf`, demo interactiva con `python main.py replay` (`src/replay.py`, `presentation/replay/`) | [ ] Faltan diapositivas y ensayo (EQ-04) |
 
 ## Entregables finales
 
