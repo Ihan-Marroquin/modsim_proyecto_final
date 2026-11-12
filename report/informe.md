@@ -14,7 +14,7 @@ Guatemala, 9 de noviembre del 2026
 
 ## Resumen
 
-Se construyó un simulador por eventos discretos de una carrera de Fórmula 1, calibrado con 33 vueltas de entrenamiento de Verstappen en Bahréin 2024, y se le conectó un recocido simulado discreto que busca las vueltas de parada y la secuencia de neumáticos de menor tiempo esperado. El modelo se validó sin reajuste en el stint 3, reservado antes de calibrar: MAE de 0.712 s por vuelta, sesgo de +0.456 s (el modelo es más lento que la realidad) y error acumulado de +8.203 s en 18 vueltas. El recocido alcanzó el óptimo de la enumeración de 1323 estrategias factibles en 29 de 30 búsquedas. La candidata congelada (paradas en 17 y 36) sería 0.075 s más rápida que la estrategia histórica según el modelo, pero esa ventaja se invierte con +20 % de degradación (−0.062 s), cambia de signo según la tendencia de carrera (+1.007 / +0.075 / −0.857 s), es menor que su error estándar por parámetros (0.128 s) y unas 110 veces menor que el error acumulado de la validación. **No se detectó una mejora robusta**: la estrategia histórica ya estaba entre las equivalentes del modelo.
+Se construyó un simulador por eventos discretos de una carrera de Fórmula 1, calibrado con 33 vueltas de entrenamiento de Verstappen en Bahréin 2024, y se le conectó un recocido simulado discreto que busca las vueltas de parada y la secuencia de neumáticos de menor tiempo esperado. El modelo se validó sin reajuste en el stint 3, reservado antes de calibrar: MAE de 0.712 s por vuelta, sesgo de +0.456 s (el modelo es más lento que la realidad) y error acumulado de +8.203 s en 18 vueltas. El recocido alcanzó el óptimo de la enumeración de 1323 estrategias factibles en 29 de 30 búsquedas. En el escenario principal, la candidata congelada (paradas en 17 y 36) es 0.075 s más rápida que la histórica simulada. La diferencia se invierte con +20 % de degradación (−0.062 s), cambia de signo según la tendencia de carrera (+1.007 / +0.075 / −0.857 s) y es menor que su error estándar por parámetros (0.128 s). **No se detectó una mejora robusta.** Con el límite estricto de edad, la candidata queda fuera y las seis estrategias factibles empatan con la histórica.
 
 ## 1. Problema y objetivos
 
@@ -244,17 +244,17 @@ Todas las figuras se generan con `python main.py figures` desde los CSV y JSON d
 
 ## 10. Conclusiones
 
-1. El simulador reproduce exactamente el entrenamiento y la primera parada, pero en el stint 3 reservado es más lento que la realidad (sesgo +0.456 s/vuelta, +8.203 s acumulados). El error de validación es la medida honesta de su precisión; la reconstrucción completa (+9.957 s) no es validación.
+1. El modelo obtuvo un MAE de entrenamiento de 0.118 s por vuelta. En las 18 vueltas reservadas del stint 3, el MAE fue de 0.712 s, con un sesgo de +0.456 s por vuelta y un error acumulado de +8.203 s. La reconstrucción completa (+9.957 s respecto de la FIA) incluye las vueltas usadas en el ajuste.
 2. El recocido simulado discreto funciona y está verificado: encontró el óptimo de la enumeración en 29 de 30 búsquedas con unas 67 simulaciones por búsqueda.
-3. **No se detectó una mejora robusta.** La candidata solo supera a la histórica (0.075 s) con la tendencia principal, la degradación nominal y el límite de edad amplio. La ventaja se invierte con +20 % de degradación, cambia de signo con la tendencia no identificable, desaparece con la cobertura estricta y es mucho menor que el error del modelo.
-4. El resultado es compatible con que la estrategia histórica de Red Bull ya estaba entre las estrategias equivalentes del modelo. No permite afirmar que la candidata habría sido más rápida en la carrera real.
+3. **No se detectó una mejora robusta.** En el escenario principal, con degradación nominal y límite de edad amplio, la candidata aventaja a la histórica simulada por 0.075 s. La ventaja se invierte con +20 % de degradación, cambia de signo al variar la tendencia y es menor que su error estándar por parámetros (0.128 s).
+4. Con el límite estricto de edad, la candidata deja de ser factible y las seis estrategias permitidas empatan con la histórica. Recomendamos conservar la histórica como referencia y validar con más carreras y varios stints por compuesto antes de proponer cambios en pista.
 
 ## 11. Limitaciones
 
 1. Ruido aditivo, gaussiano, independiente e igual para ambos compuestos; con semillas compartidas se cancela.
 2. El EE por parámetros supone tendencia fija, normalidad e independencia (SOFT con autocorrelación 0.21) y no incluye el error de especificación.
 3. La tendencia de carrera no es identificable con un stint por compuesto; el signo de la ventaja depende de ella.
-4. Validación pequeña: 18 vueltas consecutivas de un piloto en una carrera, con ritmo administrado y la vuelta rápida en la 39.
+4. Validación pequeña: 18 vueltas de un mismo stint, de un piloto en una carrera, con ritmo administrado y la vuelta rápida en la 39.
 5. Pérdida de pits fija, desgaste lineal sin *cliff*, sin tráfico, rivales ni Safety Car; inventario inferido; MEDIUM excluido.
 6. La candidata usa HARD hasta edad 21 en una fase de carrera que el HARD nunca corrió con VER: es extrapolación.
 7. Transparencia: el equipo vio los tiempos del stint 3 durante la revisión de datos, antes de congelar la partición; los parámetros y la tendencia se fijaron sin ellos y nada se reajustó después.
@@ -268,6 +268,7 @@ python -m unittest discover -s tests
 python main.py simulate                       # histórica, sin internet
 python main.py optimize                       # pilotos, 30 búsquedas y candidata
 python main.py compare                        # histórica contra candidata
+python main.py replay                         # reproducción interactiva, sin internet
 python main.py experiments                    # 120 réplicas A/B/C/D
 python main.py download                       # OpenF1 (internet)
 python main.py reconcile

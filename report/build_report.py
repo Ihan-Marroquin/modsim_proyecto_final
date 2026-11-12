@@ -25,6 +25,7 @@ from pathlib import Path
 from docx import Document
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Cm, Pt, RGBColor
 
@@ -89,6 +90,10 @@ def body_paragraph(doc, text, style=None, align=WD_ALIGN_PARAGRAPH.JUSTIFY, size
     paragraph = doc.add_paragraph(style=style)
     paragraph.alignment = align
     paragraph.paragraph_format.space_after = Pt(6)
+    if text.startswith(('**Figura ', '**Diagrama ')):
+        paragraph.paragraph_format.keep_together = True
+    if text.startswith('*Fuente:'):
+        paragraph.paragraph_format.keep_with_next = True
     add_inline(paragraph, text, size)
     return paragraph
 
@@ -109,10 +114,15 @@ def add_table(doc, rows):
     table = doc.add_table(rows=1 + len(body), cols=len(header))
     table.style = 'Table Grid'
     table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    for row in table.rows:
+        row._tr.get_or_add_trPr().append(OxmlElement('w:cantSplit'))
+    table.rows[0]._tr.get_or_add_trPr().append(OxmlElement('w:tblHeader'))
     for j, value in enumerate(header):
         cell = table.rows[0].cells[j]
         cell.text = ''
-        add_inline(cell.paragraphs[0], value, 10, bold=True)
+        paragraph = cell.paragraphs[0]
+        paragraph.paragraph_format.keep_with_next = True
+        add_inline(paragraph, value, 10, bold=True)
     for i, row in enumerate(body, start=1):
         for j, value in enumerate(row[:len(header)]):
             cell = table.rows[i].cells[j]
@@ -122,10 +132,11 @@ def add_table(doc, rows):
 
 
 def add_code(doc, lines):
-    for line in lines:
+    for i, line in enumerate(lines):
         paragraph = doc.add_paragraph()
         paragraph.paragraph_format.space_after = Pt(0)
         paragraph.paragraph_format.left_indent = Cm(0.5)
+        paragraph.paragraph_format.keep_with_next = i < len(lines) - 1
         set_font(paragraph.add_run(line), 9, mono=True)
     doc.add_paragraph().paragraph_format.space_after = Pt(2)
 
@@ -135,8 +146,14 @@ def add_image(doc, target):
     if not path.exists():
         body_paragraph(doc, f'[Figura no disponible: {target}. Ejecutar `python main.py figures`.]')
         return
-    doc.add_picture(str(path), width=Cm(15.5))
-    doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
+    picture = doc.add_picture(str(path), width=Cm(15.5))
+    max_height = Cm(13.8)
+    if picture.height > max_height:
+        picture.width = int(picture.width * max_height / picture.height)
+        picture.height = max_height
+    paragraph = doc.paragraphs[-1]
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    paragraph.paragraph_format.keep_with_next = True
 
 
 COVER_HEADER = (
